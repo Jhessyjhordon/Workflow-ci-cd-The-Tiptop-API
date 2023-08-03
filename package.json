@@ -1,0 +1,45 @@
+{
+  "name": "the-tiptop-api",
+  "version": "1.0.0",
+  "description": "Cette Api a été mis en place, par un groupe d'étudiant, dans le cadre d'un projet de fin d'année pour validation du Diplome de Master 2 Architecte Web, il offre des points de terminaison pour le siteweb Jeux Concours Thé Tiptop ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon --watch ." 
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://51.254.97.98/dev/the-tiptop-api.git"
+  },
+  "keywords": [
+    "Thé",
+    "Tiptop",
+    "concours",
+    "tirage"
+  ],
+  "authors": [
+    {
+      "name": "Vwez",
+      "email": "desirv63@gmail.com"
+    },
+    {
+      "name": "Aru",
+      "email": "aru@gmail.com"
+    },
+    {
+      "name": "talseum",
+      "email": "talseum@gmail.com"
+    }
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

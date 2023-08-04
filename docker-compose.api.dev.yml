@@ -1,0 +1,52 @@
+version: "3"
+networks:
+  public:
+
+services:
+  api:
+    container_name: TheTiptop_Api
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - 4000:${PORT}
+    networks:
+      - public
+    # environment:
+    volumes:
+      - .:/api
+    depends_on:
+      - db
+  # test:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #     command: ["pytest","test", "-v"] à modifier
+  #   networks:
+  #     - public
+  #   environment:
+  #   volumes:
+  #     - .:/api
+  #   stdin_open: true
+  #   tty:true
+  #   depends_on:
+  #     - db
+  db:
+    container_name: TheTiptop_Bb
+    image: mysql:latest
+    env_file:
+      - .env
+    ports:
+      - 3307:3306
+    networks:
+      - public
+    restart: always
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+volumes:
+  mysql-data:

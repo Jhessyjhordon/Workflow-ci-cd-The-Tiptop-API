@@ -5,11 +5,11 @@ const Validator = require('../utils/userValidators');
 const userMiddleware = require('../middlewares/userMiddleware');
 const userController = require('../controllers/userController');
 
-router.get('/')
-router.get('/:id')
-router.delete('/:id')
-router.put('/:id', userMiddleware.validateRegister(Validator.user))
-router.post('/register', userMiddleware.validateRegister(Validator.user), userController.UserRegister)
-router.post('/login', userMiddleware.validateLogin(Validator.login), authController.UserLogin)
+router.get('/', userController.getAllUsers)
+router.get('/:id', userMiddleware.validateUserId(Validator.userIdSchema), userController.getUserById)
+router.delete('/:id', userMiddleware.validateUserId(Validator.userIdSchema), userController.deleteUserById)
+router.put('/:id', userMiddleware.validateRegister(Validator.userSchema), userController.updateUserById)
+router.post('/register', userMiddleware.validateRegister(Validator.userSchema), userController.UserRegister)
+router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userController.UserLogin)
 
-module.exports = reouter
+module.exports = router

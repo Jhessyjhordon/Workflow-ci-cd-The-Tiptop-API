@@ -1,11 +1,11 @@
 const Yup = require('yup')
 
-let login = Yup.object({
+let loginSchema = Yup.object({
     email: Yup.string().required().email().min(1).max(155),
     password: Yup.string().required().min(1).max(255)
 });
 
-let user = Yup.object({
+let userSchema = Yup.object({
     lastname: Yup.string().required().min(1).max(155),
     firstname: Yup.string().required().min(1).max(155),
     email: Yup.string().required().email().min(1).max(155),
@@ -13,6 +13,9 @@ let user = Yup.object({
     password: Yup.string().required().min(1).max(255),
 });
 
+// Schéma pour valider l'ID utilisateur
+const userIdSchema = Yup.object({
+    id: Yup.number().required().positive().integer()
+});
 
-
-module.exports = {login, user}
+module.exports = {loginSchema, userSchema, userIdSchema}

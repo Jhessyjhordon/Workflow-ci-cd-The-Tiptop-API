@@ -19,7 +19,18 @@ const validateLogin = (schema) => async (req, res, next) => {
   }
 };
 
+const validateUserId = (schema) => async (req, res, next) => {
+  try {
+      await schema.validate(req.params);
+
+      return next();
+  } catch (err) {
+      return res.status(400).json({ type: err.name, message: err.message });
+  }
+};
+
 module.exports = { 
   validateRegister,
-  validateLogin
+  validateLogin,
+  validateUserId,
 } 

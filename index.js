@@ -18,7 +18,7 @@ app.get('/', function (req, res, next) {
 })
  
 // Intégrer Swagger UI à votre application
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 app.use('/user', userRoutes);
 
 

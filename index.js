@@ -7,6 +7,7 @@ const cors = require('cors');
 const app = express();
 
 const userRoutes = require('./routes/userRoutes')
+const shopRoutes = require('./routes/shopRoutes')
 
 
 app.use(cors());
@@ -20,6 +21,7 @@ app.get('/', function (req, res, next) {
 // Intégrer Swagger UI à votre application
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 app.use('/user', userRoutes);
+app.use('/shop', shopRoutes);
 
 
 const PORT = process.env.PORT || 4000;

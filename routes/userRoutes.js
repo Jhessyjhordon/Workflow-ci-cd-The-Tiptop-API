@@ -10,7 +10,7 @@ const userController = require('../controllers/userController');
  * tags:
  *   name: Users
  *   description: API pour la gestion des utilisateurs
- * /users:
+ * /user:
  *   get:
  *     summary: Récupère la liste de tous les utilisateurs
  *     tags: [Users]
@@ -22,7 +22,7 @@ router.get('/', userController.getAllUsers)
 
 /**
  * @swagger
- * /users/{id}:
+ * /user/{id}:
  *   get:
  *     summary: Récupère un utilisateur par son ID
  *     tags: [Users]
@@ -97,7 +97,7 @@ router.put('/:id', userMiddleware.validateRegister(Validator.userSchema), userCo
 
 /**
  * @swagger
- * /users:
+ * /user:
  *   post:
  *     summary: Create a new user
  *     tags: [Users]

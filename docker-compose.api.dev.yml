@@ -12,7 +12,10 @@ services:
       - 4000:${PORT}
     networks:
       - public
-    # environment:
+    environment:
+      - PORT=${PORT}
+      - HOSTNAME={HOSTNAME}
+      - JWT_SECRET_KEY={JWT_SECRET_KEY}
     volumes:
       - .:/api
     depends_on:

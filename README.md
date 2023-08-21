@@ -2,7 +2,7 @@
 The Thé Tiptop API
 
 Cette Api a été mis en place, par un groupe d'étudiant, dans le cadre d'un projet de fin d'année pour validation du Diplome de Master 2 Architecte Web, il offre des points de terminaison pour le siteweb Jeux Concours Thé Tiptop.
-## Lancer The-Tiptop-API en mode développemeent
+## Lancer The-Tiptop-API en mode développement
 - Clonner premièrement le projet avec la commande suivante: 
     
  		git clone http://51.254.97.98/dev/the-tiptop-api.git

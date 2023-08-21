@@ -1,10 +1,13 @@
 const Yup = require('yup');
 
 const ticketSchema = Yup.object({
-    valeur: Yup.number().required().positive(),
-    description: Yup.string().required().min(1).max(255),
-    pourcentage_gagnant: Yup.number().required().positive(),
-    idUser: Yup.number().required().positive().integer(),
+    numTicket: Yup.number().required().positive(),
+    montantTicket: Yup.number().required().positive(),
+    dateAchat: Yup.date().required(),
+    gainAttribue: Yup.boolean().required(),
+    statusGain: Yup.string().required().min(1).max(255),
+    batchId: Yup.number().required().positive().integer(),
+    userId: Yup.number().required().positive().integer(),
     
 });
 

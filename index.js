@@ -8,6 +8,7 @@ const app = express();
 
 const userRoutes = require('./routes/userRoutes')
 const shopRoutes = require('./routes/shopRoutes')
+const batchRoutes = require('./routes/batchRoutes')
 
 
 app.use(cors());
@@ -22,6 +23,7 @@ app.get('/', function (req, res, next) {
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 app.use('/user', userRoutes);
 app.use('/shop', shopRoutes);
+app.use('/batch', batchRoutes);
 
 
 const PORT = process.env.PORT || 4000;

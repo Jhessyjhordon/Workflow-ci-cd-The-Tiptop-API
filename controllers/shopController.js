@@ -9,7 +9,7 @@ const month = today.getMonth() + 1;
 const day = today.getDate();
 const formattedToday = `${day}/${month}/${year}`;
 
-getShopById = async (req, res) => {
+const getShopById = async (req, res) => {
     const shopId = req.params.id;
     const selectQuery = "SELECT * FROM shop WHERE id = ?;";
     const connect = db.connection();
@@ -138,7 +138,7 @@ updateShopById = async (req, res) => {
     }
 };
 
-ShopCreation = async (req, res) => {
+createShop = async (req, res) => {
     const body = req.body;
     const insertQuery = "INSERT INTO shop (name, adress, employeeId, city, createdAt, UpdatedAt) VALUES (?, ?, ?, ?, ?, ?);"; 
     const connect = db.connection();
@@ -168,4 +168,4 @@ ShopCreation = async (req, res) => {
     }
 };
 
-module.exports = { getShopById, deleteShopById, getAllShops, updateShopById, ShopCreation};
+module.exports = { getShopById, deleteShopById, getAllShops, updateShopById, createShop};

@@ -143,7 +143,7 @@ router.get('/', shopController.getAllShops)
 router.get('/:id', shopMiddleware.validateShopId(Validator.shopIdSchema), shopController.getShopById)
 router.delete('/:id', shopMiddleware.validateShopId(Validator.shopIdSchema), shopController.deleteShopById)
 router.put('/:id', shopMiddleware.validateShop(Validator.shopSchema), shopController.updateShopById)
-router.post('/', shopMiddleware.validateShop(Validator.shopSchema), shopController.ShopCreation)
+router.post('/', shopMiddleware.validateShop(Validator.shopSchema), shopController.createShop)
 
 
 module.exports = router

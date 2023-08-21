@@ -10,7 +10,7 @@ const ticketController = require('../controllers/ticketController');
  * tags:
  *   name: Tickets
  *   description: API pour la gestion des Tickets
- * /tickets:
+ * /ticket:
  *   get:
  *     summary: Récupère la liste de tous les tickets
  *     tags: [Tickets]
@@ -37,7 +37,7 @@ const ticketController = require('../controllers/ticketController');
  *       500:
  *         description: Une erreur de serveur s'est produite
  * 
- * /tickets/{id}:
+ * /ticket/{id}:
  *   get:
  *     summary: Récupère un ticket par son ID
  *     tags: [Tickets]

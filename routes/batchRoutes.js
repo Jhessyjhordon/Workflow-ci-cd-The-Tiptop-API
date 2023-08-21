@@ -135,3 +135,5 @@ router.get('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), bat
 router.delete('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.deleteBatchById)
 router.put('/:id', batchMiddleware.validateBatch(Validator.batchSchema), batchController.updateBatchById)
 router.post('/', batchMiddleware.validateBatch(Validator.batchSchema), batchController.createBatch)
+
+module.exports = router

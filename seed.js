@@ -5,6 +5,8 @@ const path = require('path');
 const seedFiles = fs.readdirSync('./seeds');
 const connection = db.connection();
 
+seedFiles.sort(); // Tri des fichiers par ordre alphabétique (qui correspond à l'ordre numérique)
+
 seedFiles.forEach(async (seedFile) => {
     const seedPath = path.join('./seeds', seedFile);
     const seedFunction = require(seedPath);

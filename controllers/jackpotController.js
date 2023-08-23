@@ -77,12 +77,12 @@ const getJackpotById = async (req, res) => {
 const updateJackpotById = async (req, res) => {
     const jackpotId = req.params.id;
     const body = req.body;
-    const updateQuery = "UPDATE jackpot SET dateClientGagnant = ?, idUser = ?, updatedAt = ? WHERE id = ? ;";
+    const updateQuery = "UPDATE jackpot SET dateClientGagnant = ?, userId = ?, updatedAt = ? WHERE id = ? ;";
     const connect = db.connection();
 
     try {
         const updateResult = await new Promise((resolve, reject) => {
-            connect.execute(updateQuery, [body.dateClientGagnant, body.idUser, formattedToday, jackpotId], function (err, results, fields) {
+            connect.execute(updateQuery, [body.dateClientGagnant, body.userId, formattedToday, jackpotId], function (err, results, fields) {
                 if (err) {
                     return reject(err);
                 }
@@ -107,12 +107,12 @@ const updateJackpotById = async (req, res) => {
 
 const createJackpot = async (req, res) => {
     const body = req.body;
-    const insertQuery = "INSERT INTO jackpot (dateClientGagnant, idUser, createdAt, updatedAt) VALUES (?, ?, ?, ?);";
+    const insertQuery = "INSERT INTO jackpot (dateClientGagnant, userId, createdAt, updatedAt) VALUES (?, ?, ?, ?);";
     const connect = db.connection();
 
     try {
         const insertResult = await new Promise((resolve, reject) => {
-            connect.execute(insertQuery, [body.dateClientGagnant, body.idUser, formattedToday, formattedToday], function (err, results, fields) {
+            connect.execute(insertQuery, [body.dateClientGagnant, body.userId, formattedToday, formattedToday], function (err, results, fields) {
                 if (err) {
                     return reject(err);
                 }

@@ -110,13 +110,13 @@ const getAllBatches = async (req, res) => {
 const updateBatchById = async (req, res) => {
     const batchId = req.params.id;
     const body = req.body;
-    const updateQuery = "UPDATE batch SET valeur = ?, description = ?, pourcentage_gagnant = ?, idUser = ?, updatedAt = ? WHERE id = ? ;";
-    const formattedToday = new Date().toISOString(); // Vous devez formater la date au format requis pour votre base de données
+    const updateQuery = "UPDATE batch SET valeur = ?, description = ?, pourcentage_gagnant = ?, userId = ?, type_lot=?, updatedAt = ? WHERE id = ? ;";
+    const formattedToday = new Date().toISOString();
     const connect = db.connection();
 
     try {
         const updateResult = await new Promise((resolve, reject) => {
-            connect.execute(updateQuery, [body.valeur, body.description, body.pourcentage_gagnant, body.idUser, formattedToday, batchId], function (err, results, fields) {
+            connect.execute(updateQuery, [body.valeur, body.description, body.pourcentage_gagnant, body.userId, body.type_lot, formattedToday, batchId], function (err, results, fields) {
                 if (err) {
                     return reject(err);
                 }
@@ -141,13 +141,13 @@ const updateBatchById = async (req, res) => {
 
 const createBatch = async (req, res) => {
     const body = req.body;
-    const insertQuery = "INSERT INTO batch (valeur, description, pourcentage_gagnant, idUser, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);"; 
-    const formattedToday = new Date().toISOString(); // Vous devez formater la date au format requis pour votre base de données
+    const insertQuery = "INSERT INTO batch (valeur, description, pourcentage_gagnant, userId, type_lot, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);"; 
+    const formattedToday = new Date().toISOString();
     const connect = db.connection();
 
     try {
         const insertResult = await new Promise((resolve, reject) => {
-            connect.execute(insertQuery, [body.valeur, body.description, body.pourcentage_gagnant, body.idUser, formattedToday, formattedToday], function (err, results, fields) {
+            connect.execute(insertQuery, [body.valeur, body.description, body.pourcentage_gagnant, body.userId, body.type_lot, formattedToday, formattedToday], function (err, results, fields) {
                 if (err) {
                     return reject(err);
                 }

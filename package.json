@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon --watch ."
+    "seed": "node seed.js",
+    "dev": "concurrently \"nodemon --watch .\" \"npm run seed\"",
+    "start-with-seed": "npm run seed && npm start"
   },
   "repository": {
     "type": "git",
@@ -25,11 +27,11 @@
     },
     {
       "name": "Aru",
-      "email": "aru@gmail.com"
+      "email": "alexandrehuynh@etudiant.ief2i.fr"
     },
     {
-      "name": "talseum",
-      "email": "talseum@gmail.com"
+      "name": "craquitos",
+      "email": "jhessyismael@etudiant.ief2i.fr"
     }
   ],
   "license": "ISC",
@@ -38,6 +40,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.1",
     "mysql2": "^3.6.0",
     "swagger-jsdoc": "^6.2.8",
@@ -45,6 +48,10 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "chai": "^4.3.7",
+    "concurrently": "^8.2.1",
+    "mocha": "^10.2.0",
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
   }
 }

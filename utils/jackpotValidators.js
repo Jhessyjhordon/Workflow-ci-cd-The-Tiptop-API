@@ -2,7 +2,7 @@ const Yup = require('yup');
 
 const jackpotchema = Yup.object({
     dateClientGagant: Yup.date().required(),
-    idUser: Yup.number().required().positive().integer(),
+    userId: Yup.number().required().positive().integer(),
     
 });
 

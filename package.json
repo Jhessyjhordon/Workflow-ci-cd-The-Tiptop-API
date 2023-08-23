@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon --watch ."
+    "seed": "node seed.js",
+    "dev": "nodemon --watch .",
+    "start-with-seed": "npm run seed && npm start"
   },
   "repository": {
     "type": "git",
@@ -28,7 +30,7 @@
       "email": "aru@gmail.com"
     },
     {
-      "name": "talseum",
+      "name": "craquitos",
       "email": "talseum@gmail.com"
     }
   ],

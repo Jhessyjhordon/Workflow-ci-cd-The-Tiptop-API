@@ -37,9 +37,9 @@ const numRecords = 100;
 
     try {
       await connection.execute(insertQuery, [numTicket, montantTicket, dateAchat, gainAttribue, statusGain, batchId, userId]);
-      console.log(`Inserted jackpot record ${i + 1} successfully`);
+      console.log(`Inserted ticket record ${i + 1} successfully`);
     } catch (error) {
-      console.error(`Error inserting jackpot record ${i + 1}: ${error.message}`);
+      console.error(`Error inserting ticket record ${i + 1}: ${error.message}`);
     }
   }
 

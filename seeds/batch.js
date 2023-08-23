@@ -26,7 +26,7 @@ const batchList = ["Infuseur à thé",
       await connection.execute(insertQuery, [valeur, description, pourcentage_gagnant, batchList[i], userId]);
       console.log(`Inserted batch record ${batchList[i]} successfully`);
     } catch (error) {
-      console.error(`Error inserting jackpot record ${batchList[i]}: ${error.message}`);
+      console.error(`Error inserting batch record ${batchList[i]}: ${error.message}`);
     }
   }
 

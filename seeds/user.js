@@ -1,7 +1,7 @@
 const faker = require('faker');
 const db = require('./db');
 
-const numRecords = 10;
+const numRecords = 15;
 
 (async () => {
   const connection = db.connection();
@@ -13,7 +13,7 @@ const numRecords = 10;
     const phone = faker.phone.phoneNumber();
     const password = faker.internet.password();
     const idCompteExt = faker.random.number({ min: 1000, max: 9999 });
-    const role = faker.random.arrayElement(['customer', 'employee']); // Remplacez par les rôles possibles
+    const role = i < 5 ? "employee" : "customer"; 
 
     const insertQuery = `
       INSERT INTO user (lastname, firstname, email, phone, password, idCompteExt, role, createdAt, updatedAt)

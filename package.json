@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "seed": "node seed.js",
-    "dev": "nodemon --watch .",
+    "dev": "concurrently \"nodemon --watch .\" \"npm run seed\"",
     "start-with-seed": "npm run seed && npm start"
   },
   "repository": {

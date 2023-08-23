@@ -12,18 +12,18 @@ const batchList = ["Infuseur à thé",
   const connection = db.connection();
 
   for (let i = 0; i < length(batchList); i++) {
-    const idUser = faker.random.number({ min: 3, max: 5 });
+    const userId = faker.random.number({ min: 5, max: 5 });
     const valeur = faker.random.number({ min: 1, max: 1000 }); 
     const description = faker.lorem.sentence(); 
     const pourcentage_gagnant = faker.random.number({ min: 1, max: 100 });
 
     const insertQuery = `
-      INSERT INTO batch (valeur, description, pourcentage_gagnant, type_lot, idUser, createdAt, updatedAt)
+      INSERT INTO batch (valeur, description, pourcentage_gagnant, type_lot, userId, createdAt, updatedAt)
       VALUES (?, ?, ?, ?, ?, NOW(), NOW());
     `;
 
     try {
-      await connection.execute(insertQuery, [valeur, description, pourcentage_gagnant, batchList[i], idUser]);
+      await connection.execute(insertQuery, [valeur, description, pourcentage_gagnant, batchList[i], userId]);
       console.log(`Inserted batch record ${batchList[i]} successfully`);
     } catch (error) {
       console.error(`Error inserting jackpot record ${batchList[i]}: ${error.message}`);

@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "init-db": "node init-db.js",
     "start": "node index.js",
     "seed": "node seed.js",
-    "dev": "concurrently \"nodemon --watch .\" \"npm run seed\"",
-    "start-with-seed": "npm run seed && npm start"
+    "dev": "npm run init-db && concurrently \"npm run seed\" \"nodemon --watch .\"",
+    "start-with-seed": "npm run init-db && npm start"
   },
   "repository": {
     "type": "git",

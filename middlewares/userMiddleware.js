@@ -1,3 +1,5 @@
+require('dotenv').config();
+var jwt = require('jsonwebtoken')
 
 const validateRegister = (schema) => async (req, res, next) => {
     try {
@@ -29,8 +31,33 @@ const validateUserId = (schema) => async (req, res, next) => {
   }
 };
 
+const checkIfUserIsEmployee = (req, res, next) => {
+  const token = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET_KEY);
+  // const user = req.user; // L'objet utilisateur décodé à partir du token
+  if (token.role !== 'employee') {
+      return res.status(403).json({
+          error: true,
+          message: 'Accès refusé : vous n\'êtes pas autorisé à effectuer cette action.'
+      });
+  }
+  next();
+};
+const checkIfUserToken = (req, res, next) => {
+  const token = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET_KEY);
+  if (!token) {
+      return res.status(403).json({
+          error: true,
+          message: 'Accès refusé : vous n\'êtes pas autorisé à effectuer cette action.'
+      });
+  }
+  next();
+};
+
+
 module.exports = { 
   validateRegister,
   validateLogin,
   validateUserId,
+  checkIfUserIsEmployee,
+  checkIfUserToken
 } 

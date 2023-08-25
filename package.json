@@ -8,7 +8,7 @@
     "init-db": "node init-db.js",
     "start": "node index.js",
     "seed": "node seed.js",
-    "dev": "npm run init-db && concurrently \"npm run seed\" \"nodemon --watch .\"",
+    "dev": "npm run init-db && concurrently \"nodemon --watch .\"",
     "start-with-seed": "npm run init-db && npm start"
   },
   "repository": {

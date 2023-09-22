@@ -62,7 +62,7 @@ router.get('/:id',userMiddleware.checkIfUserToken, userMiddleware.validateUserId
  *       500:
  *         description: Erreur lors de la suppression de l'utilisateur
  */
-router.delete('/:id', userMiddleware.checkIfUserToken, userMiddleware.checkIfUserIsAmployee,userMiddleware.validateUserId(Validator.userIdSchema), userController.deleteUserById)
+router.delete('/:id', userMiddleware.checkIfUserToken, userMiddleware.checkIfUserIsEmployee,userMiddleware.validateUserId(Validator.userIdSchema), userController.deleteUserById)
 
 /**
  * @swagger

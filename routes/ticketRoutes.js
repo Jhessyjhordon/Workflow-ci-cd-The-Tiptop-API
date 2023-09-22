@@ -149,3 +149,5 @@ router.get('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema), 
 router.delete('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema), ticketController.deleteTicketById)
 router.put('/:id', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.updateTicketById)
 router.post('/', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.createTicket)
+
+module.exports = router

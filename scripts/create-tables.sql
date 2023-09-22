@@ -1,5 +1,3 @@
--- Script SQL pour créer les tables
-
 -- Table user
 CREATE TABLE user (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -7,36 +5,38 @@ CREATE TABLE user (
     firstname VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     phone VARCHAR(15) NOT NULL,
+    idCompteExt INT NOT NULL,
     password VARCHAR(255) NOT NULL,
     role ENUM('employee', 'customer') NOT NULL,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Table batch
+-- Table batch (lot)
 CREATE TABLE batch (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     startDate DATE NOT NULL,
     endDate DATE NOT NULL,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Table jackpot
+-- Table jackpot (gros lot)
 CREATE TABLE jackpot (
     id INT PRIMARY KEY AUTO_INCREMENT,
     amount DECIMAL(10, 2) NOT NULL,
     batchId INT NOT NULL,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (batchId) REFERENCES batch(id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Table shop
+-- Table shop (boutique)
 CREATE TABLE shop (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     location VARCHAR(255) NOT NULL,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Table ticket
 CREATE TABLE ticket (
@@ -49,4 +49,4 @@ CREATE TABLE ticket (
     FOREIGN KEY (userId) REFERENCES user(id),
     FOREIGN KEY (shopId) REFERENCES shop(id),
     FOREIGN KEY (batchId) REFERENCES batch(id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

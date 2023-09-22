@@ -120,3 +120,5 @@ router.get('/:id', jackpotMiddleware.validateJackpotId(Validator.validateJackpot
 router.delete('/:id', jackpotMiddleware.validateJackpotId(Validator.validateJackpotId), jackpotController.deleteJackpotById)
 router.put('/:id', jackpotMiddleware.validateJackpotId(Validator.jackpotchema), jackpotController.updateJackpotById)
 router.post('/', jackpotMiddleware.validateJackpot(Validator.jackpotchema), jackpotController.createJackpot)
+
+module.exports = router

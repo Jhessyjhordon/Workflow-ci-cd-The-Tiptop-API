@@ -1,174 +1,163 @@
 const db = require('../db');
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
+const Batch = require('../models/batchModel')
 require('dotenv').config();
 
-const today = new Date();
-const year = today.getFullYear();
-const month = today.getMonth() + 1;
-const day = today.getDate();
-const formattedToday = `${day}/${month}/${year}`;
 
 const getBatchById = async (req, res) => {
     const batchId = req.params.id;
-    const selectQuery = "SELECT * FROM batch WHERE id = ?;";
-    const connect = db.connection();
 
-    try {
-        const results = await new Promise((resolve, reject) => {
-            connect.execute(selectQuery, [batchId], function (err, results, fields) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
-        });
+  try {
+    // Utilisez Sequelize pour rechercher le lot par ID
+    const batch = await Batch.findByPk(batchId);
 
-        if (results.length === 0) {
-            return res.status(404).json({
-                error: true,
-                message: ["Lot non trouvé"]
-            });
-        }
-
-        return res.status(200).json({
-            error: false,
-            message: ['Lot trouvé'],
-            batch: results[0]
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la récupération du lot"]
-        });
-    } finally {
-        db.disconnect(connect);
+    if (!batch) {
+      return res.status(404).json({
+        error: true,
+        message: ["Lot non trouvé"]
+      });
     }
+
+    return res.status(200).json({
+      error: false,
+      message: ['Lot trouvé'],
+      batch: batch.toJSON() // Convertissez le modèle en objet JSON
+    });
+  } catch (error) {
+    console.error('Erreur de requête Sequelize :', error);
+    return res.status(500).json({
+      error: true,
+      message: ["Une erreur est survenue lors de la récupération du lot"]
+    });
+  }
 };
 
+// Définissez la fonction deleteBatchById avec Sequelize
 const deleteBatchById = async (req, res) => {
     const batchId = req.params.id;
-    const deleteQuery = "DELETE FROM batch WHERE id = ?;";
-    const connect = db.connection();
-
+  
     try {
-        const deleteResult = await new Promise((resolve, reject) => {
-            connect.execute(deleteQuery, [batchId], function (err, results, fields) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
+      // Utilisez Sequelize pour supprimer le lot par ID
+      const deleteCount = await Batch.destroy({
+        where: { id: batchId }
+      });
+  
+      if (deleteCount === 0) {
+        return res.status(404).json({
+          error: true,
+          message: ["Lot non trouvé"]
         });
-
-        return res.status(200).json({
-            error: false,
-            message: ['Lot supprimé avec succès']
-        });
-
+      }
+  
+      return res.status(200).json({
+        error: false,
+        message: ['Lot supprimé avec succès']
+      });
     } catch (error) {
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la suppression du lot"]
-        });
-    } finally {
-        db.disconnect(connect);
+      console.error('Erreur de requête Sequelize :', error);
+      return res.status(500).json({
+        error: true,
+        message: ["Une erreur est survenue lors de la suppression du lot"]
+      });
     }
-};
+  };
 
+// Définissez la fonction getAllBatches avec Sequelize
 const getAllBatches = async (req, res) => {
-    const selectQuery = "SELECT * FROM batch;";
-    const connect = db.connection();
-
     try {
-        const results = await new Promise((resolve, reject) => {
-            connect.execute(selectQuery, function (err, results, fields) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
+      // Utilisez Sequelize pour récupérer tous les lots
+      const batches = await Batch.findAll();
+  
+      if (batches.length === 0) {
+        return res.status(404).json({
+          error: true,
+          message: ["Aucun lot trouvé"]
         });
-
-        return res.status(200).json({
-            error: false,
-            message: ['Liste des Lots'],
-            batches: results
-        });
-
+      }
+  
+      return res.status(200).json({
+        error: false,
+        message: ['Liste des Lots'],
+        batches
+      });
     } catch (error) {
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la récupération des Lots"]
-        });
-    } finally {
-        db.disconnect(connect);
+      console.error('Erreur de requête Sequelize :', error);
+      return res.status(500).json({
+        error: true,
+        message: ["Une erreur est survenue lors de la récupération des Lots"]
+      });
     }
-};
+  };
 
+// Définissez la fonction updateBatchById avec Sequelize
 const updateBatchById = async (req, res) => {
     const batchId = req.params.id;
     const body = req.body;
-    const updateQuery = "UPDATE batch SET valeur = ?, description = ?, pourcentage_gagnant = ?, userId = ?, type_lot=?, updatedAt = ? WHERE id = ? ;";
-    const formattedToday = new Date().toISOString();
-    const connect = db.connection();
-
+  
     try {
-        const updateResult = await new Promise((resolve, reject) => {
-            connect.execute(updateQuery, [body.valeur, body.description, body.pourcentage_gagnant, body.userId, body.type_lot, formattedToday, batchId], function (err, results, fields) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
+      // Utilisez Sequelize pour trouver le lot à mettre à jour par son ID
+      const batchToUpdate = await Batch.findByPk(batchId);
+  
+      if (!batchToUpdate) {
+        return res.status(404).json({
+          error: true,
+          message: ["Lot non trouvé"]
         });
-
-        return res.status(200).json({
-            error: false,
-            message: ['Lot mis à jour avec succès']
-        });
-
+      }
+  
+      // Effectuez la mise à jour des champs
+      batchToUpdate.valeur = body.valeur;
+      batchToUpdate.description = body.description;
+      batchToUpdate.pourcentage_gagnant = body.pourcentage_gagnant;
+      batchToUpdate.userId = body.userId;
+      batchToUpdate.type_lot = body.type_lot;
+  
+      // Enregistrez les modifications dans la base de données
+      await batchToUpdate.save();
+  
+      return res.status(200).json({
+        error: false,
+        message: ['Lot mis à jour avec succès']
+      });
     } catch (error) {
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la mise à jour du lot"]
-        });
-    } finally {
-        db.disconnect(connect);
-    }
-};
+      console.error('Erreur de mise à jour de lot avec Sequelize :', error);
+      return res.status(500).json({
+        error: true,
+        message: ["Une erreur est survenue lors de la mise à jour du lot"]
+      });
+    }   
+  };
 
+// Définissez la fonction createBatch avec Sequelize
 const createBatch = async (req, res) => {
     const body = req.body;
-    const insertQuery = "INSERT INTO batch (valeur, description, pourcentage_gagnant, userId, type_lot, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);"; 
-    const formattedToday = new Date().toISOString();
-    const connect = db.connection();
-
+  
     try {
-        const insertResult = await new Promise((resolve, reject) => {
-            connect.execute(insertQuery, [body.valeur, body.description, body.pourcentage_gagnant, body.userId, body.type_lot, formattedToday, formattedToday], function (err, results, fields) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
-        });
-
-        return res.status(201).json({
-            error: false,
-            message: ['Lot enregistré avec succès']
-        });
-
+      // Utilisez Sequelize pour créer un nouvel enregistrement Batch
+      const newBatch = await Batch.create({
+        valeur: body.valeur,
+        description: body.description,
+        pourcentage_gagnant: body.pourcentage_gagnant,
+        userId: body.userId,
+        type_lot: body.type_lot,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+  
+      return res.status(201).json({
+        error: false,
+        message: ['Lot enregistré avec succès'],
+        batch: newBatch // Vous pouvez également renvoyer les données du lot créé si nécessaire
+      });
     } catch (error) {
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de l'enregistrement du lot"]
-        });
-    } finally {
-        db.disconnect(connect);
+      console.error('Erreur lors de la création du lot avec Sequelize :', error);
+      return res.status(500).json({
+        error: true,
+        message: ["Une erreur est survenue lors de l'enregistrement du lot"]
+      });
     }
-};
+  };
 
 
 module.exports = {getBatchById, deleteBatchById, getAllBatches, updateBatchById, createBatch};

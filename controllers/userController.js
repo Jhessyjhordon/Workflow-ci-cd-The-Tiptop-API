@@ -200,4 +200,72 @@ const updateUserById = async (req, res) => {
     }
 };
 
+const getUserById = async (req, res) => {
+    const userId = req.params.id;
+    const selectQuery = "SELECT * FROM user WHERE id = ?;";
+    const connect = db.connection();
+
+    try {
+        const results = await new Promise((resolve, reject) => {
+            connect.execute(selectQuery, [userId], function (err, results, fields) {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+            });
+        });
+
+        if (results.length === 0) {
+            return res.status(404).json({
+                error: true,
+                message: ["Utilisateur non trouvé"]
+            });
+        }
+
+        return res.status(200).json({
+            error: false,
+            message: ['Utilisateur trouvé'],
+            ticket: results[0]
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: ["Une erreur est survenue lors de la récupération de l'utilisateur"]
+        });
+    } finally {
+        db.disconnect(connect);
+    }
+};
+
+
+const deleteUserById = async (req, res) => {
+    const ticketId = req.params.id;
+    const deleteQuery = "DELETE FROM user WHERE id = ?;";
+    const connect = db.connection();
+
+    try {
+        const deleteResult = await new Promise((resolve, reject) => {
+            connect.execute(deleteQuery, [ticketId], function (err, results, fields) {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+            });
+        });
+
+        return res.status(200).json({
+            error: false,
+            message: ['Utlisateur supprimé avec succès']
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: ["Une erreur est survenue lors de la suppression de l'utilisateur"]
+        });
+    } finally {
+        db.disconnect(connect);
+    }
+};
 module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers};

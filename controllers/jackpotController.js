@@ -1,25 +1,24 @@
 const db = require('../db');
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
+const Jackpot = require('../models/jackpotModel')
 require('dotenv').config();
 
 const today = new Date();
 const formattedToday = today.toISOString();
 
 const getAllJackpots = async (req, res) => {
-    const selectQuery = "SELECT * FROM jackpot;";
-    const connect = db.connection();
 
     try {
-        const results = await new Promise((resolve, reject) => {
-            connect.execute(selectQuery, function (err, results, fields) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
-        });
+        const Jackpots = await Jackpot.findAll();
 
+        if (Jackpots.length === 0) {
+            return res.status(404).json({
+              error: true,
+              message: ["Aucun lot trouvé"]
+            });
+        }
+        
         return res.status(200).json({
             error: false,
             message: ['Liste des jackpots'],
@@ -27,142 +26,141 @@ const getAllJackpots = async (req, res) => {
         });
 
     } catch (error) {
+        console.error('Erreur de requête Sequelize :', error);
         return res.status(500).json({
             error: true,
             message: ["Une erreur est survenue lors de la récupération des jackpots"]
         });
-    } finally {
-        db.disconnect(connect);
     }
 };
 
 const getJackpotById = async (req, res) => {
     const jackpotId = req.params.id;
-    const selectQuery = "SELECT * FROM jackpot WHERE id = ?;";
-    const connect = db.connection();
-
+  
     try {
-        const results = await new Promise((resolve, reject) => {
-            connect.execute(selectQuery, [jackpotId], function (err, results, fields) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
+      // Utilisez Sequelize pour rechercher le jackpot par son ID
+      const jackpot = await Jackpot.findByPk(jackpotId);
+  
+      if (!jackpot) {
+        return res.status(404).json({
+          error: true,
+          message: ["Jackpot non trouvé"]
         });
-
-        if (results.length === 0) {
-            return res.status(404).json({
-                error: true,
-                message: ["Jackpot non trouvé"]
-            });
-        }
-
-        return res.status(200).json({
-            error: false,
-            message: ['Jackpot trouvé'],
-            jackpot: results[0]
-        });
-
+      }
+  
+      return res.status(200).json({
+        error: false,
+        message: ['Jackpot trouvé'],
+        jackpot: jackpot
+      });
+  
     } catch (error) {
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la récupération du jackpot"]
-        });
-    } finally {
-        db.disconnect(connect);
+      console.error('Erreur lors de la récupération du jackpot avec Sequelize :', error);
+      return res.status(500).json({
+        error: true,
+        message: ["Une erreur est survenue lors de la récupération du jackpot"]
+      });
     }
-};
+  };
 
-const updateJackpotById = async (req, res) => {
+  const updateJackpotById = async (req, res) => {
     const jackpotId = req.params.id;
     const body = req.body;
-    const updateQuery = "UPDATE jackpot SET dateClientGagnant = ?, userId = ?, updatedAt = ? WHERE id = ? ;";
-    const connect = db.connection();
-
+  
     try {
-        const updateResult = await new Promise((resolve, reject) => {
-            connect.execute(updateQuery, [body.dateClientGagnant, body.userId, formattedToday, jackpotId], function (err, results, fields) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
+      // Utilisez Sequelize pour mettre à jour le jackpot par son ID
+      const [updatedRowsCount] = await Jackpot.update(
+        {
+          dateClientGagnant: body.dateClientGagnant,
+          userId: body.userId,
+          updatedAt: new Date()
+        },
+        {
+          where: {
+            id: jackpotId
+          }
+        }
+      );
+  
+      if (updatedRowsCount === 0) {
+        return res.status(404).json({
+          error: true,
+          message: ["Jackpot non trouvé"]
         });
-
-        return res.status(200).json({
-            error: false,
-            message: ['Jackpot mis à jour avec succès']
-        });
-
+      }
+  
+      return res.status(200).json({
+        error: false,
+        message: ['Jackpot mis à jour avec succès']
+      });
+  
     } catch (error) {
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la mise à jour du jackpot"]
-        });
-    } finally {
-        db.disconnect(connect);
+      console.error('Erreur lors de la mise à jour du jackpot avec Sequelize :', error);
+      return res.status(500).json({
+        error: true,
+        message: ["Une erreur est survenue lors de la mise à jour du jackpot"]
+      });
     }
-};
+  };
 
-const createJackpot = async (req, res) => {
+  const createJackpot = async (req, res) => {
     const body = req.body;
-    const insertQuery = "INSERT INTO jackpot (dateClientGagnant, userId, createdAt, updatedAt) VALUES (?, ?, ?, ?);";
-    const connect = db.connection();
-
+  
     try {
-        const insertResult = await new Promise((resolve, reject) => {
-            connect.execute(insertQuery, [body.dateClientGagnant, body.userId, formattedToday, formattedToday], function (err, results, fields) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
-        });
-
-        return res.status(201).json({
-            error: false,
-            message: ['Jackpot enregistré avec succès']
-        });
-
+      // Utilisez Sequelize pour créer un nouveau jackpot
+      const newJackpot = await Jackpot.create({
+        dateClientGagnant: body.dateClientGagnant,
+        userId: body.userId,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+  
+      return res.status(201).json({
+        error: false,
+        message: ['Jackpot enregistré avec succès'],
+        jackpot: newJackpot
+      });
+  
     } catch (error) {
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de l'enregistrement du jackpot"]
-        });
-    } finally {
-        db.disconnect(connect);
+      console.error('Erreur lors de la création du jackpot avec Sequelize :', error);
+      return res.status(500).json({
+        error: true,
+        message: ["Une erreur est survenue lors de l'enregistrement du jackpot"]
+      });
     }
-};
+  };
 
+  // Définissez la fonction deleteJackpotById avec Sequelize
 const deleteJackpotById = async (req, res) => {
     const jackpotId = req.params.id;
-    const deleteQuery = "DELETE FROM jackpot WHERE id = ?;";
-    const connect = db.connection();
-
+  
     try {
-        const deleteResult = await new Promise((resolve, reject) => {
-            connect.execute(deleteQuery, [jackpotId], function (err, results, fields) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
+      // Utilisez Sequelize pour supprimer le jackpot par son ID
+      const deleteCount = await Jackpot.destroy({
+        where: {
+          id: jackpotId
+        }
+      });
+  
+      if (deleteCount === 0) {
+        return res.status(404).json({
+          error: true,
+          message: ["Jackpot non trouvé"]
         });
-
-        return res.status(200).json({
-            error: false,
-            message: ['Jackpot supprimé avec succès']
-        });
-
+      }
+  
+      return res.status(200).json({
+        error: false,
+        message: ['Jackpot supprimé avec succès']
+      });
+  
     } catch (error) {
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la suppression du jackpot"]
-        });
-    } finally {
-        db.disconnect(connect);
+      console.error('Erreur lors de la suppression du jackpot avec Sequelize :', error);
+      return res.status(500).json({
+        error: true,
+        message: ["Une erreur est survenue lors de la suppression du jackpot"]
+      });
     }
-};
+  };
 
 module.exports = { getAllJackpots, getJackpotById, updateJackpotById, createJackpot, deleteJackpotById };

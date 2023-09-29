@@ -89,7 +89,7 @@ const UserLogin = async (req, res) => {
             });
         }
 
-        const token = jwt.sign({ email: results[0].email }, process.env.JWT_SECRET_KEY);
+        const token = jwt.sign({ email: results[0].email, role: results[0].role }, process.env.JWT_SECRET_KEY);
 
         return res.status(200).json({
             error: false,
@@ -109,10 +109,30 @@ const UserLogin = async (req, res) => {
 
 // Contrôleur pour la route GET '/'
 const getAllUsers = async (req, res) => {
+    const token = req.headers.authorization; // Récupérer le token de l'en-tête
     const selectQuery = "SELECT * FROM user;";
     const connect = db.connection();
 
     try {
+        // Vérifier la présence du token
+        if (!token) {
+            return res.status(401).json({
+                error: true,
+                message: ["Accès non autorisé"] //Token manquant
+            });
+        }
+
+        // Décoder le token pour obtenir les informations utilisateur
+        const decodedToken = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET_KEY);
+
+        // Vérifier le rôle de l'utilisateur (assumons que le rôle est stocké dans decodedToken.role)
+        if (decodedToken.role !== 'employee') {
+            return res.status(403).json({
+                error: true,
+                message: ["Accès refusé"]
+            });
+        }
+
         const results = await new Promise((resolve, reject) => {
             connect.execute(selectQuery, function (err, results, fields) {
                 if (err) {
@@ -129,6 +149,12 @@ const getAllUsers = async (req, res) => {
         });
 
     } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                error: true,
+                message: ["Veillez vous reconnecter"] //Token expiré
+            });
+        }
         return res.status(500).json({
             error: true,
             message: ["Une erreur est survenue lors de la récupération des utilisateurs"]
@@ -138,75 +164,9 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-// Contrôleur pour la route GET '/:id'
-const getUserById = async (req, res) => {
-    const userId = req.params.id;
-    const selectQuery = "SELECT * FROM user WHERE id = ?;";
-    const connect = db.connection();
-
-    try {
-        const results = await new Promise((resolve, reject) => {
-            connect.execute(selectQuery, [userId], function (err, results, fields) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
-        });
-
-        if (results.length === 0) {
-            return res.status(404).json({
-                error: true,
-                message: ["Utilisateur non trouvé"]
-            });
-        }
-
-        return res.status(200).json({
-            error: false,
-            message: ['Utilisateur trouvé'],
-            user: results[0]
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la récupération de l'utilisateur"]
-        });
-    } finally {
-        db.disconnect(connect);
-    }
-};
 
 // Contrôleur pour la route DELETE '/:id'
-const deleteUserById = async (req, res) => {
-    const userId = req.params.id;
-    const deleteQuery = "DELETE FROM user WHERE id = ?;";
-    const connect = db.connection();
 
-    try {
-        const deleteResult = await new Promise((resolve, reject) => {
-            connect.execute(deleteQuery, [userId], function (err, results, fields) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
-        });
-
-        return res.status(200).json({
-            error: false,
-            message: ['Utilisateur supprimé avec succès']
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la suppression de l'utilisateur"]
-        });
-    } finally {
-        db.disconnect(connect);
-    }
-};
 
 // Contrôleur pour la route PUT '/:id'
 const updateUserById = async (req, res) => {
@@ -240,4 +200,72 @@ const updateUserById = async (req, res) => {
     }
 };
 
+const getUserById = async (req, res) => {
+    const userId = req.params.id;
+    const selectQuery = "SELECT * FROM user WHERE id = ?;";
+    const connect = db.connection();
+
+    try {
+        const results = await new Promise((resolve, reject) => {
+            connect.execute(selectQuery, [userId], function (err, results, fields) {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+            });
+        });
+
+        if (results.length === 0) {
+            return res.status(404).json({
+                error: true,
+                message: ["Utilisateur non trouvé"]
+            });
+        }
+
+        return res.status(200).json({
+            error: false,
+            message: ['Utilisateur trouvé'],
+            ticket: results[0]
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: ["Une erreur est survenue lors de la récupération de l'utilisateur"]
+        });
+    } finally {
+        db.disconnect(connect);
+    }
+};
+
+
+const deleteUserById = async (req, res) => {
+    const ticketId = req.params.id;
+    const deleteQuery = "DELETE FROM user WHERE id = ?;";
+    const connect = db.connection();
+
+    try {
+        const deleteResult = await new Promise((resolve, reject) => {
+            connect.execute(deleteQuery, [ticketId], function (err, results, fields) {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+            });
+        });
+
+        return res.status(200).json({
+            error: false,
+            message: ['Utlisateur supprimé avec succès']
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: ["Une erreur est survenue lors de la suppression de l'utilisateur"]
+        });
+    } finally {
+        db.disconnect(connect);
+    }
+};
 module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers};

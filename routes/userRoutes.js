@@ -18,7 +18,7 @@ const userController = require('../controllers/userController');
  *       200:
  *         description: Liste des utilisateurs récupérée avec succès
  */
-router.get('/', userController.getAllUsers)
+router.get('/', userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsEmployee,userController.getAllUsers)
 
 /**
  * @swagger
@@ -39,7 +39,7 @@ router.get('/', userController.getAllUsers)
  *       404:
  *         description: Utilisateur non trouvé
  */
-router.get('/:id', userMiddleware.validateUserId(Validator.userIdSchema), userController.getUserById)
+router.get('/:id',userMiddleware.checkIfUserToken, userMiddleware.validateUserId(Validator.userIdSchema), userController.getUserById)
 
 /**
  * @swagger
@@ -62,7 +62,7 @@ router.get('/:id', userMiddleware.validateUserId(Validator.userIdSchema), userCo
  *       500:
  *         description: Erreur lors de la suppression de l'utilisateur
  */
-router.delete('/:id', userMiddleware.validateUserId(Validator.userIdSchema), userController.deleteUserById)
+router.delete('/:id', userMiddleware.checkIfUserToken, userMiddleware.checkIfUserIsEmployee,userMiddleware.validateUserId(Validator.userIdSchema), userController.deleteUserById)
 
 /**
  * @swagger
@@ -93,7 +93,7 @@ router.delete('/:id', userMiddleware.validateUserId(Validator.userIdSchema), use
  *       500:
  *         description: Erreur lors de la mise à jour de l'utilisateur
  */
-router.put('/:id', userMiddleware.validateRegister(Validator.userSchema), userController.updateUserById)
+router.put('/:id', userMiddleware.checkIfUserToken, userMiddleware.validateRegister(Validator.userSchema), userController.updateUserById)
 
 /**
  * @swagger

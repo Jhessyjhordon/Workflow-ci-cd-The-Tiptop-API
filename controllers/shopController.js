@@ -140,12 +140,12 @@ updateShopById = async (req, res) => {
 
 createShop = async (req, res) => {
     const body = req.body;
-    const insertQuery = "INSERT INTO shop (name, adress, employeeId, city, createdAt, UpdatedAt) VALUES (?, ?, ?, ?, ?, ?);"; 
+    const insertQuery = "INSERT INTO shop (name, adress, employeeId, city, userId, createdAt, UpdatedAt) VALUES (?, ?, ?, ?, ?, ?);"; 
     const connect = db.connection();
 
     try {
         const insertResult = await new Promise((resolve, reject) => {
-            connect.execute(insertQuery, [body.name, body.adress, body.employeeId, body.city, formattedToday, formattedToday], function (err, results, fields) {
+            connect.execute(insertQuery, [body.name, body.adress, body.employeeId, body.city, body.userId, formattedToday, formattedToday], function (err, results, fields) {
                 if (err) {
                     return reject(err);
                 }

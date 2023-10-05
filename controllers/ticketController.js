@@ -9,8 +9,6 @@ const month = today.getMonth() + 1;
 const day = today.getDate();
 const formattedToday = `${day}/${month}/${year}`;
 
-const db = require('../db');
-
 const createTicket = async (req, res) => {
     const body = req.body;
     const insertQuery = "INSERT INTO ticket (numTicket, montantTicket, dateAchat, gainAttribue, statusGain, batchId, userId, createAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"; 

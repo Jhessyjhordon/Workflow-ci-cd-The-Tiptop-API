@@ -8,18 +8,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    env_file:
+      - .env
     ports:
       - 4000:${PORT}
     networks:
       - public
     environment:
       - PORT=${PORT}
-      - HOSTNAME={HOSTNAME}
-      - JWT_SECRET_KEY={JWT_SECRET_KEY}
+      - HOSTNAME=${HOSTNAME}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
     volumes:
       - .:/api
     depends_on:
       - db
+    command: sh -c 'while ! nc -z db 3306; do sleep 1; done; npm run dev'
   # test:
   #   build:
   #     context: .

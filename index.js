@@ -9,6 +9,8 @@ const app = express();
 const userRoutes = require('./routes/userRoutes')
 const shopRoutes = require('./routes/shopRoutes')
 const batchRoutes = require('./routes/batchRoutes')
+const ticketRoutes = require('./routes/ticketRoutes')
+const jackpothRoutes = require('./routes/jackpotRoutes')
 
 
 app.use(cors());
@@ -24,6 +26,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true })
 app.use('/user', userRoutes);
 app.use('/shop', shopRoutes);
 app.use('/batch', batchRoutes);
+app.use('/ticket', ticketRoutes);
+app.use('/jackpot', jackpothRoutes);
 
 
 const PORT = process.env.PORT || 4000;

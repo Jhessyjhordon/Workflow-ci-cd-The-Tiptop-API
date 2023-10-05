@@ -13,4 +13,4 @@ EXPOSE 4100
 # Commande de démarrage de votre application
 # CMD ["node", "dist/index.js"]
 # ou
-CMD ["npm", "start"]
+CMD ["npm", "run", "start-with-seed"]

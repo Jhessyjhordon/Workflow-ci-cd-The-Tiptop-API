@@ -11,6 +11,8 @@ let userSchema = Yup.object({
     email: Yup.string().required().email().min(1).max(155),
     phone: Yup.string().required().min(8).max(15),
     password: Yup.string().required().min(1).max(255),
+    idCompteExt:Yup.string().required().min(1).max(155),
+    role: Yup.string().required().min(1).max(155),
 });
 
 // Schéma pour valider l'ID utilisateur

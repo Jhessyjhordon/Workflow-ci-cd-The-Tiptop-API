@@ -1,12 +1,26 @@
 var mysql      = require('mysql2');
 require('dotenv').config();
 
+//appel de sequilize
+const {Sequelize, DataTypes}  = require("sequelize");
+const sequelize = new Sequelize(
+    process.env.MYSQL_DATABASE,
+    'root',
+    process.env.MYSQL_ROOT_PASSWORD,
+  {
+    host: process.env.HOSTNAME,
+    dialect: 'mysql'
+  }
+);
+
 const connection = () => {
     let connection =  mysql.createConnection({
         host     : process.env.HOSTNAME,
-        user     : process.env.MYSQL_USER,
-        password : process.env.MYSQL_PASSWORD,
-        database : process.env.MYSQL_DATABASE
+        user     : "root",
+        password : process.env.MYSQL_ROOT_PASSWORD,
+        database : process.env.MYSQL_DATABASE,
+        port: process.env.ACCESS_DB_PORT, 
+        // socketPath:"/var/run/mysqld/mysqld.sock"
     });
     connection.connect();
 
@@ -27,7 +41,9 @@ const select = (select, array, connection) => {
 module.exports = {
     select,
     disconnect,
-    connection
+    connection,
+    sequelize,
+    DataTypes
 }
 
 

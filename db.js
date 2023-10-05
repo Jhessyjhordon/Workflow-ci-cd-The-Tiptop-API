@@ -1,6 +1,7 @@
 var mysql      = require('mysql2');
 require('dotenv').config();
 
+//appel de sequilize
 const {Sequelize, DataTypes}  = require("sequelize");
 const sequelize = new Sequelize(
     process.env.MYSQL_DATABASE,

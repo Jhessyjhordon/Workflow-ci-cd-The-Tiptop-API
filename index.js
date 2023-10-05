@@ -32,7 +32,7 @@ app.use('/jackpot', jackpothRoutes);
 
 const PORT = process.env.PORT || 4000;
 
-
+// test pipeline from the api index.js 2
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur le port ${PORT}`);
   });

@@ -1,6 +1,6 @@
 FROM node:14-alpine
 
-WORKDIR /api
+WORKDIR /var/jenkins_home/workspace/the-tiptop-api/
 
 COPY package*.json ./
 
@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 4000
+EXPOSE 4100
 
 # Commande de démarrage de votre application
 # CMD ["node", "dist/index.js"]

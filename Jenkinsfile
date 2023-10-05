@@ -15,7 +15,7 @@ pipeline {
                         doGenerateSubmoduleConfigurations: false,
                         extensions: [[$class: 'CleanCheckout']],
                         submoduleCfg: [],
-                        userRemoteConfigs: [[credentialsId: 'the-tiptop-api-repo-token', url: 'http://51.254.97.98/dev/the-tiptop-api']]
+                        userRemoteConfigs: [[credentialsId: 'the-tiptop-api-repo-token', url: 'http://51.254.97.98:81/dev/the-tiptop-api']]
                     ])
                 }
             }

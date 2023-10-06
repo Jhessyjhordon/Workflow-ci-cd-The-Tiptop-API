@@ -6,7 +6,8 @@ const user_data = [];
 const numRecords = 15;
 
 for (let i = 0; i < numRecords; i++) {
-  const hashedPassword = "$argon2d$v=19$m=12,t=3,p=1$amFkc25tMHMxYWIwMDAwMA$QSsgSyAtNDmhby49Mj0J+g";
+  const hashedPassword = "password";
+  // const hashedPassword = "$argon2d$v=19$m=12,t=3,p=1$amFkc25tMHMxYWIwMDAwMA$QSsgSyAtNDmhby49Mj0J+g";
   const lastname = i === 0 ? "Antipas" : faker.name.lastName();
   const firstname = i === 0 ? "Fidele" : faker.name.firstName();
   user_data.push({

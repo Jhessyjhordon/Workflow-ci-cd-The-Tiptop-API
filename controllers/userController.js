@@ -98,6 +98,7 @@ const UserLogin = async (req, res) => {
         });
 
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             error: true,
             message: ["Une erreur est survenue lors de la connexion"]

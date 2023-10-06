@@ -13,14 +13,16 @@ const ticketRoutes = require('./routes/ticketRoutes')
 const jackpothRoutes = require('./routes/jackpotRoutes')
 
 
-app.use(cors());
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(cors({
+  origin: 'http://51.254.97.98:4000/',
+}));
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/', function (req, res, next) {
-  res.json({msg: 'Welcome to th2 Tiptop Api documentation'})
+  res.json({ msg: 'Welcome to th2 Tiptop Api documentation' })
 })
- 
+
 // Intégrer Swagger UI à votre application
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 app.use('/user', userRoutes);
@@ -34,5 +36,5 @@ const PORT = process.env.PORT || 4000;
 
 // test pipeline from the api index.js 2
 app.listen(PORT, () => {
-    console.log(`Serveur démarré sur le port ${PORT}`);
-  });
+  console.log(`Serveur démarré sur le port ${PORT}`);
+});

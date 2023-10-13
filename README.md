@@ -5,13 +5,15 @@ Cette Api a été mis en place, par un groupe d'étudiant, dans le cadre d'un pr
 ## Lancer The-Tiptop-API en mode développement
 - Clonner premièrement le projet avec la commande suivante: 
     
- 		git clone http://51.254.97.98/dev/the-tiptop-api.git
+ 		git clone http://51.254.97.98:81/dev/the-tiptop-api.git
 
 - Acceder au repertoire `the-tiptop-api` dans votre terminal
 
 - Executer la commande suivante:
 
 		sudo docker compose -f docker-compose.api.dev.yml up
+		# If you are Root on your Laptop, run the following
+		docker compose -f docker-compose.api.dev.yml up
 
 
 Votre serveur d'api sera disponible sur : **[http://localhost:4000/](http://localhost:4000/)** :flame: :flame:

@@ -18,7 +18,7 @@ const sequelize = new Sequelize(
 
 const connection = () => {
     let connection =  mysql.createConnection({
-        host     : process.env.HOSTNAME,
+        host     : process.env.DB_HOST,
         user     : "root",
         password : process.env.MYSQL_ROOT_PASSWORD,
         database : process.env.MYSQL_DATABASE,

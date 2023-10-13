@@ -16,7 +16,7 @@ services:
       - public
     environment:
       - PORT=${PORT}
-      - HOSTNAME=${HOSTNAME}
+      - DB_HOST=${DB_HOST}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
     volumes:
       - .:/api

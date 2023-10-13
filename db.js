@@ -14,11 +14,11 @@ const sequelize = new Sequelize(
 );
 
 // console.log(sequelize);
-// console.log("MYSQL_DATABASE -> ", process.env.MYSQL_DATABASE, " MYSQL_ROOT_PASSWORD -> ", process.env.MYSQL_ROOT_PASSWORD, " HOSTNAME -> ", process.env.HOSTNAME);
+// console.log("MYSQL_DATABASE -> ", process.env.MYSQL_DATABASE, " MYSQL_ROOT_PASSWORD -> ", process.env.MYSQL_ROOT_PASSWORD, " DBHOSTNAME -> ", process.env.HOSTNAME);
 
 const connection = () => {
     let connection =  mysql.createConnection({
-        host     : process.env.HOSTNAME,
+        host     : process.env.DBHOSTNAME,
         user     : "root",
         password : process.env.MYSQL_ROOT_PASSWORD,
         database : process.env.MYSQL_DATABASE,

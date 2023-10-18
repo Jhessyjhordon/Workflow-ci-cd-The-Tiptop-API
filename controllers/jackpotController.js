@@ -71,7 +71,7 @@ const getJackpotById = async (req, res) => {
       // Utilisez Sequelize pour mettre à jour le jackpot par son ID
       const [updatedRowsCount] = await Jackpot.update(
         {
-          dateClientGagnant: body.dateClientGagnant,
+          date_tirage: body.date_tirage,
           userId: body.userId,
           updatedAt: new Date()
         },

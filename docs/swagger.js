@@ -7,18 +7,33 @@ const options = {
     info: {
       title: 'Thé Tiptop Api',
       version: '1.0.0',
-      description: 'Cette Api, a été mis en place dans le cadre du projet de fin d\'un projet de fin d\'année pour validation du Diplome de Master 2 Architecte Web',
+      description: 'Cette API a été mise en place dans le cadre d\'un projet de fin d\'année pour la validation du diplôme de Master 2 Architecte Web.',
       license: {
-        name: "MIT",
-        url: "https://spdx.org/licenses/MIT.html",
+        name: 'MIT',
+        url: 'https://spdx.org/licenses/MIT.html',
       },
-      
     },
     servers: [
       {
-        url: "http://localhost:4000",
+        url: 'http://localhost:4000',
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "apiKey",
+          name: "x-auth-token",
+          scheme: "bearer",
+          in: "header",
+        },
+      },
+    },
+    security: [{ 
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+      },
+    }], // Utilisation de Bearer
   },
   apis: ['./routes/*.js'],
 };

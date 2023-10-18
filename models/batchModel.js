@@ -14,6 +14,14 @@ const Batch = db.sequelize.define("Batch", {
       type: db.DataTypes.DECIMAL,
       allowNull: false,
     },
+    state: { 
+      type: db.DataTypes.ENUM('unchecked','checked', 'claimed', 'recieved'),
+      defaultValue: 'unchecked'
+    },
+    user_id: {
+      type: db.DataTypes.INTEGER,
+      allowNull: false,
+    },
     description: {
       type: db.DataTypes.TEXT,
       allowNull: false,

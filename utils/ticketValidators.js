@@ -10,9 +10,19 @@ const ticketSchema = Yup.object({
     userId: Yup.number().required().positive().integer(),
     
 });
+const ticketPatchSchema = Yup.object({
+    numTicket: Yup.number().positive(),
+    montantTicket: Yup.number().positive(),
+    dateAchat: Yup.date(),
+    gainAttribue: Yup.boolean(),
+    statusGain: Yup.string().min(1).max(255),
+    batchId: Yup.number().positive().integer(),
+    userId: Yup.number().positive().integer(),
+    
+});
 
 const ticketIdSchema = Yup.object({
     id: Yup.number().required().positive().integer()
 });
 
-module.exports = { ticketSchema, ticketIdSchema};
+module.exports = { ticketSchema, ticketIdSchema, ticketPatchSchema};

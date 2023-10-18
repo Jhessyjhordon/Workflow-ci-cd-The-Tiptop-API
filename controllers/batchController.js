@@ -2,7 +2,6 @@ const db = require('../db');
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 const Batch = require('../models/batchModel')
-const { batchPatchSchema } = require('../utils/batchValidators');
 
 require('dotenv').config();
 
@@ -20,6 +19,40 @@ const getBatchById = async (req, res) => {
         message: ["Lot non trouvé"]
       });
     }
+
+    return res.status(200).json({
+      error: false,
+      message: ['Lot trouvé'],
+      batch: batch.toJSON() // Convertissez le modèle en objet JSON
+    });
+  } catch (error) {
+    console.error('Erreur de requête Sequelize :', error);
+    return res.status(500).json({
+      error: true,
+      message: ["Une erreur est survenue lors de la récupération du lot"]
+    });
+  }
+};
+
+const verifyBatch = async (req, res) => {
+    const batchId = req.body.id;
+
+  try {
+    // Utilisez Sequelize pour rechercher le lot par ID
+    const batch = await Batch.findByPk(batchId);
+
+    if (!batch) {
+      return res.status(404).json({
+        error: true,
+        message: ["Lot non trouvé"]
+      });
+    }
+
+    batchToUpdate.state = 'checked';
+    batchToUpdate.updatedAt = new Date();
+    await batchToUpdate.save();
+
+    console.log(`lot ${batch.id} varifié`)
 
     return res.status(200).json({
       error: false,
@@ -107,18 +140,17 @@ const updateBatchById = async (req, res) => {
           message: ["Lot non trouvé"]
         });
       }
-      console.log("ci dessous, le lot à modifier")
-      console.log(batchToUpdate)
       // Effectuez la mise à jour des champs
       batchToUpdate.valeur = body.valeur;
       batchToUpdate.description = body.description;
       batchToUpdate.pourcentage_gagnant = body.pourcentage_gagnant;
       batchToUpdate.user_id = body.user_id;
       batchToUpdate.type_lot = body.type_lot;
+      batchToUpdate.updatedAt = new Date();
   
       // Enregistrez les modifications dans la base de données
       await batchToUpdate.save();
-      console.log("ci dessous, le lot à modifier")
+      console.log("lot modifié")
       console.log(batchToUpdate)
       return res.status(200).json({
         error: false,
@@ -152,8 +184,6 @@ const updateBatchById = async (req, res) => {
         
         if (key in batchToUpdate) {
           batchToUpdate[key] = valeur
-
-         ue[key];
         }
       }
       // Enregistrez les modifications dans la base de données
@@ -202,4 +232,4 @@ const createBatch = async (req, res) => {
   };
 
 
-module.exports = {getBatchById, deleteBatchById, getAllBatches, updateBatchById, createBatch, partialUpdateBatchById};
+module.exports = {getBatchById, deleteBatchById, getAllBatches, updateBatchById, createBatch, partialUpdateBatchById, verifyBatch};

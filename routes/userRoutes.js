@@ -215,6 +215,7 @@ router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userC
  *         - password
  *         - role
  *         - birthDate
+ *         - address
  *       properties:
  *         lastname:
  *           type: string
@@ -222,6 +223,9 @@ router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userC
  *         firstname:
  *           type: string
  *           description: user firstname
+ *         address:
+ *           type: string
+ *           description: user address
  *         email:
  *           type: string
  *           format: email
@@ -258,5 +262,6 @@ router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userC
  *         updatedAt: 2020-03-10T04:05:06.157Z
  *         birthDate: 1990-01-17
  *         role: customer
+ *         address: 15 rue Babo, 91101 ville X
  */
 module.exports = router

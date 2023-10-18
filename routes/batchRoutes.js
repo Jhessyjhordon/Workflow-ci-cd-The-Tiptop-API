@@ -30,6 +30,19 @@ const batchController = require('../controllers/batchController');
  *     responses:
  *       201:
  *         description: Lot créé avec succès.
+ * /batch/varify:
+ *   post:
+ *     summary: Verifier un lot
+ *     tags: [Batches]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/VerifyBatch'
+ *     responses:
+ *       201:
+ *         description: Lot créé avec succès.
  * 
  * /batch/{id}:
  *   get:
@@ -143,6 +156,14 @@ const batchController = require('../controllers/batchController');
  *         type_lot: Infuseur à thé
  *         pourcentage_gagnant: 10
  *         user_id: 1
+ *     VerifyBatch:
+ *       type: object
+ *       required:
+ *         - batchId
+ *       properties:
+ *         batchId:
+ *           type: number
+ *           description: id du lot
  *     BatchPatchSchema:
  *       type: object
  *       properties:
@@ -173,5 +194,6 @@ router.delete('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), 
 router.put('/:id', batchMiddleware.validateBatch(Validator.batchSchema), batchController.updateBatchById)
 router.patch('/:id', batchMiddleware.validateBatchPatch(Validator.batchPatchSchema), batchController.partialUpdateBatchById);
 router.post('/', batchMiddleware.validateBatch(Validator.batchSchema), batchController.createBatch)
+router.post('/varify', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.verifyBatch)
 
 module.exports = router

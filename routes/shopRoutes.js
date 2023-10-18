@@ -97,6 +97,31 @@ const shopController = require('../controllers/shopController');
  *         description: Boutique non trouvée
  *       500:
  *         description: Erreur lors de la mise à jour de l'utilisateur
+ *   patch:
+ *     summary: Met à jour partielementune boutique par son ID
+ *     tags: [Shops]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID de la boutique à mettre à jour
+ *       - in: body
+ *         name: user
+ *         description: Nouvelles informations de la boutique
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/ShopPatchSchema'
+ *     responses:
+ *       200:
+ *         description: Boutique mis à jour avec succès
+ *       400:
+ *         description: Données de mise à jour invalides
+ *       404:
+ *         description: Boutique non trouvée
+ *       500:
+ *         description: Erreur lors de la mise à jour de l'utilisateur
  * 
  * 
  * components:
@@ -108,7 +133,7 @@ const shopController = require('../controllers/shopController');
  *         - adress
  *         - createdAt
  *         - updatedAt
- *         - employeeId
+ *         - userId
  *         - city
  *       properties:
  *         name:
@@ -121,7 +146,7 @@ const shopController = require('../controllers/shopController');
  *           type: string
  *           format: date
  *           description: The date the shop was updated
- *         employeeId:
+ *         userId:
  *           type: string
  *           description: shop id manager
  *         createdAt:
@@ -135,14 +160,34 @@ const shopController = require('../controllers/shopController');
  *         name: la boutique
  *         adress: 101 rue du Po, 93200  
  *         UpdatedAt: 2020-03-10T04:05:06.157Z
- *         employeeId: 6798
+ *         userId: 4
  *         createdAt: 2020-03-10T04:05:06.157Z
+ *         city: Montreuil
+ *     ShopPatchSchema:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: shop name
+ *         adress:
+ *           type: string
+ *           description: shop address
+ *         userId:
+ *           type: string
+ *           description: shop id manager
+ *         city:
+ *           type: string
+ *           description: shop city
+ *       example:
+ *         name: la boutique
+ *         adress: 101 rue du Po, 93200
  *         city: Montreuil
  */
 router.get('/', shopController.getAllShops)
 router.get('/:id', shopMiddleware.validateShopId(Validator.shopIdSchema), shopController.getShopById)
 router.delete('/:id', shopMiddleware.validateShopId(Validator.shopIdSchema), shopController.deleteShopById)
 router.put('/:id', shopMiddleware.validateShop(Validator.shopSchema), shopController.updateShopById)
+router.patch('/:id', shopMiddleware.validateShop(Validator.shopPatchSchema), shopController.partialUpdateShopById)
 router.post('/', shopMiddleware.validateShop(Validator.shopSchema), shopController.createShop)
 
 

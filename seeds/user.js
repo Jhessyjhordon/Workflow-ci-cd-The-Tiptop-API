@@ -19,13 +19,14 @@ for (let i = 0; i < numRecords; i++) {
   user_data.push({
     firstname: firstname,
     lastname: lastname,
-    email: `${firstname.toLowerCase() }.${lastname.toLowerCase()}@gmail.com`,
+    email: `${firstname.toLowerCase()}.${lastname.toLowerCase()}@gmail.com`,
     phone: faker.phone.phoneNumber(),
     password: hashedPassword,
     // idCompteExt: faker.random.number({ min: 1000, max: 9999 }),
     role: i < 5 ? i == 0 ? "admin": "employee" : "customer",
     birthDate: faker.date.between("1985-01-01", "2000-01-01"),
     isVerify: i < 8 ? true : false,
+    address: `${faker.address.streetAddress()} rue ${faker.address.streetAddress()}, ${faker.address.zipCode()} ${faker.address.city()}`
   });
 }
 // }

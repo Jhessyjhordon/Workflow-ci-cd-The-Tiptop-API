@@ -118,7 +118,7 @@ router.put('/:id', userMiddleware.checkIfUserToken, userMiddleware.validateRegis
  *         description: Some server error
  *
  */
-router.post('/', userMiddleware.validateRegister(Validator.userSchema), userController.UserRegister)
+router.post('/', userMiddleware.validateUserCreation(Validator.userSchema), userController.UserCreation)
 
 /**
  * @swagger
@@ -174,25 +174,33 @@ router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userC
  *     UserRegistration:
  *       type: object
  *       required:
- *         - login
- *         - pasword
+ *         - email
+ *         - password
+ *         - firstname
+ *         - lastname
  *       properties:
- *         login:
+ *         email:
  *           type: string
- *           description: User login
- *         pasword:
+ *           description: User email
+ *         password:
  *           type: string
  *           description: user password
+ *         firstname:
+ *           type: string
+ *           description: user firstname
+ *         lastname:
+ *           type: string
+ *           description: user lastname
  *     LoginCredentials:
  *       type: object
  *       required:
- *         - login
- *         - pasword
+ *         - email
+ *         - password
  *       properties:
- *         login:
+ *         email:
  *           type: string
  *           description: User login
- *         pasword:
+ *         password:
  *           type: string
  *           description: user password
  *     User:
@@ -203,6 +211,8 @@ router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userC
  *         - email
  *         - phone
  *         - password
+ *         - role
+ *         - birthDate
  *       properties:
  *         lastname:
  *           type: string
@@ -224,6 +234,17 @@ router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userC
  *           type: string
  *           format: date
  *           description: The date the user was added
+ *         updatedAt:
+ *           type: string
+ *           format: date
+ *           description: The date the user was added
+ *         birthDate:
+ *           type: string
+ *           format: date
+ *           description: User birth Date
+ *         role:
+ *          type: string
+ *          description: user role
  *       example:
  *         id: 45
  *         lastname: Toto
@@ -232,5 +253,8 @@ router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userC
  *         phone: 0798456798
  *         password: vfvnoenvkneknvo875kfksFvFFFGHfJH455
  *         createdAt: 2020-03-10T04:05:06.157Z
+ *         updatedAt: 2020-03-10T04:05:06.157Z
+ *         birthDate: 1990-01-17
+ *         role: customer
  */
 module.exports = router

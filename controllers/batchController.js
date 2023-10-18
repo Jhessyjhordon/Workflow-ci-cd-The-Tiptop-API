@@ -2,6 +2,8 @@ const db = require('../db');
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 const Batch = require('../models/batchModel')
+const { batchPatchSchema } = require('../utils/batchValidators');
+
 require('dotenv').config();
 
 
@@ -105,17 +107,19 @@ const updateBatchById = async (req, res) => {
           message: ["Lot non trouvé"]
         });
       }
-  
+      console.log("ci dessous, le lot à modifier")
+      console.log(batchToUpdate)
       // Effectuez la mise à jour des champs
       batchToUpdate.valeur = body.valeur;
       batchToUpdate.description = body.description;
       batchToUpdate.pourcentage_gagnant = body.pourcentage_gagnant;
-      batchToUpdate.userId = body.userId;
+      batchToUpdate.user_id = body.user_id;
       batchToUpdate.type_lot = body.type_lot;
   
       // Enregistrez les modifications dans la base de données
       await batchToUpdate.save();
-  
+      console.log("ci dessous, le lot à modifier")
+      console.log(batchToUpdate)
       return res.status(200).json({
         error: false,
         message: ['Lot mis à jour avec succès']
@@ -129,6 +133,44 @@ const updateBatchById = async (req, res) => {
     }   
   };
 
+  const partialUpdateBatchById = async (req, res) => {
+    const batchId = req.params.id;
+    const body = req.body;
+  
+    try {
+      // Utilisez Sequelize pour trouver le lot à mettre à jour par son ID
+      const batchToUpdate = await Batch.findByPk(batchId);
+      console.log(batchToUpdate)
+      if (!batchToUpdate) {
+        return res.status(404).json({
+          error: true,
+          message: ["Lot non trouvé"]
+        });
+      }
+      
+      for (const [key, valeur] of Object.entries(body)) {
+        
+        if (key in batchToUpdate) {
+          batchToUpdate[key] = valeur
+
+         ue[key];
+        }
+      }
+      // Enregistrez les modifications dans la base de données
+      await batchToUpdate.save();
+      return res.status(200).json({
+        error: false,
+        message: ['Lot mis à jour avec succès']
+      });
+    } catch (error) {
+      console.error('Erreur de mise à jour de lot avec Sequelize :', error);
+      return res.status(500).json({
+        error: true,
+        message: ["Une erreur est survenue lors de la mise à jour du lot"]
+      });
+    }
+  };
+
 // Définissez la fonction createBatch avec Sequelize
 const createBatch = async (req, res) => {
     const body = req.body;
@@ -139,7 +181,7 @@ const createBatch = async (req, res) => {
         valeur: body.valeur,
         description: body.description,
         pourcentage_gagnant: body.pourcentage_gagnant,
-        userId: body.userId,
+        user_id: body.user_id,
         type_lot: body.type_lot,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -160,4 +202,4 @@ const createBatch = async (req, res) => {
   };
 
 
-module.exports = {getBatchById, deleteBatchById, getAllBatches, updateBatchById, createBatch};
+module.exports = {getBatchById, deleteBatchById, getAllBatches, updateBatchById, createBatch, partialUpdateBatchById};

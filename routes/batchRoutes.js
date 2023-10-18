@@ -63,6 +63,29 @@ const batchController = require('../controllers/batchController');
  *         description: Lot supprimé avec succès
  *       404:
  *         description: Lot non trouvé
+ *   patch:
+ *     summary: Met à jour partiellement un lot par son ID
+ *     tags: [Batches]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID du lot à mettre à jour
+ *       - in: body
+ *         name: batch
+ *         description: Nouvelles informations partielles du lot
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/BatchPatchSchema'
+ *     responses:
+ *       200:
+ *         description: Lot mis à jour avec succès
+ *       400:
+ *         description: Données de mise à jour partielles invalides
+ *       404:
+ *         description: Lot non trouvé
  * 
  *   put:
  *     summary: Met à jour un lot par son ID
@@ -95,10 +118,9 @@ const batchController = require('../controllers/batchController');
  *       required:
  *         - valeur
  *         - description
+ *         - type_lot
  *         - pourcentage_gagnant
- *         - idUser
- *         - createdAt
- *         - updatedAt
+ *         - user_id
  *       properties:
  *         valeur:
  *           type: number
@@ -106,27 +128,42 @@ const batchController = require('../controllers/batchController');
  *         description:
  *           type: string
  *           description: description du lot
+ *         type_lot:
+ *           type: string
+ *           description: typa auquel appartient le lot
  *         pourcentage_gagnant:
  *           type: number
  *           description: pourcentage gagnant du lot
- *         idUser:
+ *         user_id:
  *           type: number
  *           description: ID de l'utilisateur associé au lot
- *         createdAt:
- *           type: string
- *           format: date
- *           description: Date de création du lot
- *         updatedAt:
- *           type: string
- *           format: date
- *           description: Date de mise à jour du lot
  *       example:
  *         valeur: 100
  *         description: Lot de valeur 100
+ *         type_lot: Infuseur à thé
  *         pourcentage_gagnant: 10
- *         idUser: 123
- *         createdAt: 2023-08-18T10:00:00Z
- *         updatedAt: 2023-08-18T10:30:00Z
+ *         user_id: 1
+ *     BatchPatchSchema:
+ *       type: object
+ *       properties:
+ *         valeur:
+ *           type: number
+ *           description: valeur du lot
+ *         description:
+ *           type: string
+ *           description: description du lot
+ *         type_lot:
+ *           type: string
+ *           description: typa auquel appartient le lot
+ *         pourcentage_gagnant:
+ *           type: number
+ *           description: pourcentage gagnant du lot
+ *         user_id:
+ *           type: number
+ *           description: ID de l'utilisateur associé au lot
+ *       example:
+ *         valeur: 10
+ *         user_id: 3
  */
 
 
@@ -134,6 +171,7 @@ router.get('/', batchController.getAllBatches)
 router.get('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.getBatchById)
 router.delete('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.deleteBatchById)
 router.put('/:id', batchMiddleware.validateBatch(Validator.batchSchema), batchController.updateBatchById)
+router.patch('/:id', batchMiddleware.validateBatchPatch(Validator.batchPatchSchema), batchController.partialUpdateBatchById);
 router.post('/', batchMiddleware.validateBatch(Validator.batchSchema), batchController.createBatch)
 
 module.exports = router

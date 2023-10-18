@@ -14,6 +14,10 @@ const Batch = db.sequelize.define("Batch", {
       type: db.DataTypes.DECIMAL,
       allowNull: false,
     },
+    user_id: {
+      type: db.DataTypes.INTEGER,
+      allowNull: false,
+    },
     description: {
       type: db.DataTypes.TEXT,
       allowNull: false,

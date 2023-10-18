@@ -10,6 +10,15 @@ const validateRegister = (schema) => async (req, res, next) => {
       return res.status(409).json({ type: err.name, message: err.message });
     }
 };
+const validateUserCreation = (schema) => async (req, res, next) => {
+    try {
+      await schema.validate(req.body);
+
+      return next();
+    } catch (err) {
+      return res.status(409).json({ type: err.name, message: err.message });
+    }
+};
 
 const validateLogin = (schema) => async (req, res, next) => {
   try {
@@ -59,5 +68,6 @@ module.exports = {
   validateLogin,
   validateUserId,
   checkIfUserIsEmployee,
-  checkIfUserToken
+  checkIfUserToken,
+  validateUserCreation
 } 

@@ -126,6 +126,7 @@ router.post('/', userMiddleware.validateUserCreation(Validator.userSchema), user
  *   post:
  *     summary: Enregistre un nouvel utilisateur
  *     tags: [Users]
+ *     security: [] 
  *     requestBody:
  *       description: Informations de l'utilisateur à enregistrer
  *       required: true
@@ -149,6 +150,7 @@ router.post('/register', userMiddleware.validateRegister(Validator.userSchema), 
  *   post:
  *     summary: Connecte un utilisateur
  *     tags: [Users]
+ *     security: [] 
  *     requestBody:
  *       description: Informations de connexion de l'utilisateur
  *       required: true

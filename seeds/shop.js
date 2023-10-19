@@ -11,7 +11,7 @@ for (let i = 0; i < numRecords; i++) {
     name : faker.company.companyName(),
     address : faker.address.streetAddress(),
     city : faker.address.city(),
-    user_id : faker.random.number({ min: 1, max: 5 }),
+    userId : faker.random.number({ min: 1, max: 5 }),
   })
 }
 

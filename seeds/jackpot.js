@@ -10,7 +10,7 @@ futureDate.setDate(today.getDate() + 30);
 
 jackpot_data = [{
   date_tirage: faker.date.between(today, futureDate),
-  valeur: 360,
+  valeur: 360, // Un de thé d'une Valeur de 360
   user_id : faker.random.number({ min: 6, max: 15 }),
 }]
 

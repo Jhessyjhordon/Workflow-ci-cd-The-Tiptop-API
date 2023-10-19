@@ -20,6 +20,10 @@ const db = require('../db');
       type: db.DataTypes.STRING,
       allowNull: false,
     },
+    userId: {
+      type: db.DataTypes.INTEGER,
+      allowNull: false,
+    },
   }, {
     tableName: 'shop',
     timestamps: true,

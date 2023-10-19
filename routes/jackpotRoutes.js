@@ -99,10 +99,10 @@ const jackpotController = require('../controllers/jackpotController');
  *     Jackpot:
  *       type: object
  *       required:
- *         - dateClientGagnant
+ *         - date_tirage
  *         - idUser
  *       properties:
- *         dateClientGagnant:
+ *         date_tirage:
  *           type: string
  *           format: date-time
  *           description: Date du gain du client
@@ -110,8 +110,8 @@ const jackpotController = require('../controllers/jackpotController');
  *           type: number
  *           description: ID de l'utilisateur gagnant
  *       example:
- *         dateClientGagnant: 2023-08-18T12:00:00Z
- *         idUser: 123
+ *         date_tirage: 2023-08-18T12:00:00Z
+ *         idUser: 1
  */
 
 
@@ -120,5 +120,6 @@ router.get('/:id', jackpotMiddleware.validateJackpotId(Validator.validateJackpot
 router.delete('/:id', jackpotMiddleware.validateJackpotId(Validator.validateJackpotId), jackpotController.deleteJackpotById)
 router.put('/:id', jackpotMiddleware.validateJackpotId(Validator.jackpotchema), jackpotController.updateJackpotById)
 router.post('/', jackpotMiddleware.validateJackpot(Validator.jackpotchema), jackpotController.createJackpot)
+
 
 module.exports = router

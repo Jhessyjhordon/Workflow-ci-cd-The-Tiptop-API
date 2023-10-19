@@ -7,13 +7,13 @@ const User = db.sequelize.define('User', {
       primaryKey: true,
       autoIncrement: true,
     },
-    firstName: {
+    firstname: {
       type: db.DataTypes.STRING(255),
       allowNull: false
     },
-    lastName: {
-      type: db.DataTypes.STRING(255)
-      // allowNull defaults to true
+    lastname: {
+      type: db.DataTypes.STRING(255),
+      allowNull: false
     },
     email: {
         type: db.DataTypes.STRING(255),
@@ -21,17 +21,18 @@ const User = db.sequelize.define('User', {
       },
     phone: {
         type: db.DataTypes.STRING(15),
-        allowNull: false,
+        allowNull: true,
+      },
+    address: {
+        type: db.DataTypes.STRING(155),
+        allowNull: true,
       },
     password: { 
       type: db.DataTypes.STRING(255),
       allowNull: false,
      },
-    idCompteExt: { 
-      type: db.DataTypes.INTEGER,
-      allowNull: false },
     role: { 
-      type: db.DataTypes.ENUM('employee', 'customer'),
+      type: db.DataTypes.ENUM('admin','employee', 'customer'),
       allowNull: false,
     },
     birthDate:{

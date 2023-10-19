@@ -71,7 +71,6 @@ const ticketController = require('../controllers/ticketController');
  *         description: Ticket non trouvé
  *       500:
  *         description: Erreur lors de la suppression du ticket
- * 
  *   put:
  *     summary: Met à jour un ticket par son ID
  *     tags: [Tickets]
@@ -134,13 +133,13 @@ const ticketController = require('../controllers/ticketController');
  *           type: number
  *           description: ID de l'utilisateur associé au ticket
  *       example:
- *         numTicket: "T12345"
+ *         numTicket: "12"
  *         montantTicket: 50
  *         dateAchat: "2023-08-18"
  *         gainAttribue: false
  *         statusGain: "En attente"
  *         batchId: 1
- *         userId: 123
+ *         userId: 1
  */
 
 
@@ -148,6 +147,7 @@ router.get('/', ticketController.getAllTickets)
 router.get('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema), ticketController.getTicketById)
 router.delete('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema), ticketController.deleteTicketById)
 router.put('/:id', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.updateTicketById)
+// router.patch('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.partialUpdateTicketById)
 router.post('/', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.createTicket)
 
 module.exports = router

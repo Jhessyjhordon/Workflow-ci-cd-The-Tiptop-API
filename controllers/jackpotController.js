@@ -1,11 +1,11 @@
-const db = require('../db');
-const argon2 = require('argon2');
-const jwt = require('jsonwebtoken');
-const Jackpot = require('../models/jackpotModel')
+// const db = require('../db');
+// const argon2 = require('argon2');
+// const jwt = require('jsonwebtoken');
+const Jackpot = require('../models/jackpotModel') // <-------Alex doit voir ceci 
 require('dotenv').config();
 
 const today = new Date();
-const formattedToday = today.toISOString();
+// const formattedToday = today.toISOString();
 
 const getAllJackpots = async (req, res) => {
 

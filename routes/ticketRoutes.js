@@ -96,31 +96,6 @@ const ticketController = require('../controllers/ticketController');
  *         description: Ticket non trouvé
  *       500:
  *         description: Erreur lors de la mise à jour du ticket
- *   patch:
- *     summary: Met à jour partiel du ticket par son ID
- *     tags: [Tickets]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID du ticket à mettre à jour
- *       - in: body
- *         name: ticket
- *         description: Nouvelles informations du ticket
- *         required: true
- *         schema:
- *           $ref: '#/components/schemas/TicketPatchSchema'
- *     responses:
- *       200:
- *         description: Ticket mis à jour avec succès
- *       400:
- *         description: Données de mise à jour invalides
- *       404:
- *         description: Ticket non trouvé
- *       500:
- *         description: Erreur lors de la mise à jour du ticket
  * 
  * components:
  *   schemas:
@@ -165,34 +140,6 @@ const ticketController = require('../controllers/ticketController');
  *         statusGain: "En attente"
  *         batchId: 1
  *         userId: 1
- *     TicketPatchSchema:
- *       type: object
- *       properties:
- *         numTicket:
- *           type: string
- *           description: Numéro du ticket
- *         montantTicket:
- *           type: number
- *           description: Montant du ticket
- *         dateAchat:
- *           type: string
- *           format: date
- *           description: Date d'achat du ticket
- *         gainAttribue:
- *           type: boolean
- *           description: Indicateur de gain attribué
- *         statusGain:
- *           type: string
- *           description: Statut du gain
- *         batchId:
- *           type: number
- *           description: ID du lot associé au ticket
- *         userId:
- *           type: number
- *           description: ID de l'utilisateur associé au ticket
- *       example:
- *         numTicket: "12"
- *         montantTicket: 50
  */
 
 
@@ -200,7 +147,7 @@ router.get('/', ticketController.getAllTickets)
 router.get('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema), ticketController.getTicketById)
 router.delete('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema), ticketController.deleteTicketById)
 router.put('/:id', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.updateTicketById)
-router.patch('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.partialUpdateTicketById)
+// router.patch('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.partialUpdateTicketById)
 router.post('/', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.createTicket)
 
 module.exports = router

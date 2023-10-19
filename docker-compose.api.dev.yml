@@ -38,7 +38,7 @@ services:
   #   depends_on:
   #     - db
   db:
-    container_name: TheTiptop_Bb
+    container_name: TheTiptop_Db
     image: mysql:latest
     env_file:
       - .env

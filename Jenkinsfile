@@ -29,19 +29,17 @@ pipeline {
                         // Afficher la valeur de WORKSPACE
                         echo "WORKSPACE est : ${WORKSPACE}"
 
-                        // Utilisez withSonarQubeEnv avec le nom de votre configuration SonarQube
                         withSonarQubeEnv('SonarQube') {
-                            // Afficher les informations de l'outil SonarQube
-                            def scannerHome = tool name: 'SonarQubeApi'
-                            echo "scannerHome est : ${scannerHome}"
-
-                            // Afficher le chemin d'accès de Sonar
-                            echo "PATH+SONAR est : ${scannerHome}/bin"
-
-                            withEnv(["PATH+SONAR=${scannerHome}/bin"]) {
-                                sh "sonar-scanner \
-                                    -Dsonar.host.url=http://sonarqube.dsp-archiwebo22b-ji-rw-ah.fr:8082/ \
-                                    -Dsonar.login=${SONAR_TOKEN}"
+                            script {
+                                def scannerHome = tool name: 'SonarQubeApi'
+                                echo "scannerHome est : ${scannerHome}"
+                                // Afficher le chemin d'accès de Sonar
+                                echo "PATH+SONAR est : ${scannerHome}/bin"
+                                withEnv(["PATH+SONAR=${scannerHome}/bin"]) {
+                                    sh "sonar-scanner \
+                                        -Dsonar.host.url=http://sonarqube.dsp-archiwebo22b-ji-rw-ah.fr:8082/ \
+                                        -Dsonar.login=${SONAR_TOKEN}"
+                                }
                             }
                         }
                     }

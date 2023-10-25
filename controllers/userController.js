@@ -163,7 +163,8 @@ const UserLogin = async (req, res) => {
         console.error('Erreur lors de la connexion avec Sequelize :', error);
         return res.status(500).json({
             error: true,
-            message: ["Une erreur est survenue lors de la connexion"]
+            message: ["Une erreur est survenue lors de la connexion"],
+            details: error.message
         });
     }
 };

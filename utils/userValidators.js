@@ -6,8 +6,8 @@ let loginSchema = Yup.object({
 });
 
 let userSchema = Yup.object({
-    lastName: Yup.string().required().min(1).max(155),
-    firstName: Yup.string().required().min(1).max(155),
+    lastname: Yup.string().required().min(1).max(155),
+    firstname: Yup.string().required().min(1).max(155),
     email: Yup.string().required().email().min(1).max(155),
     phone: Yup.string().required().min(8).max(15),
     password: Yup.string().required().min(1).max(255),

@@ -71,6 +71,13 @@ pipeline {
         stage('Build and Deploy') {
             steps {
                 script {
+                    // Supprimer l'ancien conteneur, s'il existe
+                    def TheTiptopApiDevContainerExists = sh(script: "docker ps -a | grep -w TheTiptop_Api-dev", returnStatus: true) == 0
+                    if (TheTiptopApiDevContainerExists) {
+                        sh "docker stop TheTiptop_Api-dev"
+                        sh "docker rm TheTiptop_Api-dev"
+                    }
+
                     // Récupérer l'ID de l'image actuellement utilisée par le conteneur
                     echo "----==>>> Récupérer l'ID de l'image actuellement utilisée par le conteneur"
                     def currentImageId = sh(script: "docker ps -a --filter 'name=TheTiptop_Api-dev' --format '{{.Image}}'", returnStdout: true).trim()

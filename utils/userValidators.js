@@ -14,7 +14,7 @@ let userSchema = Yup.object({
     // idCompteExt:Yup.string().required().min(1).max(155),
     role: Yup.string().required().min(1).max(155),
     birthDate: Yup.date().required(),
-    address: Yup.string().required().email().min(1).max(155),
+    address: Yup.string().required().min(1).max(155),
     // isVerify:Yup.boolean()
 });
 

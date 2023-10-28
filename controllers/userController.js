@@ -36,6 +36,7 @@ const UserRegister = async (req, res) => {
             lastname: body.lastname,
             email: body.email,
             password: hash,
+            birthDate: body.birthDate,
             CreatedAt: new Date(),
             UpdatedAt: new Date(),
             isVerify: false,

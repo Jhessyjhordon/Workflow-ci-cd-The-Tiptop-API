@@ -13,8 +13,11 @@ const ticketRoutes = require('./routes/ticketRoutes')
 const jackpothRoutes = require('./routes/jackpotRoutes')
 
 
+// app.use(cors({
+//   origin: 'http://51.254.97.98:4000/',
+// }));
 app.use(cors({
-  origin: 'http://51.254.97.98:4000/',
+  origin: 'http://localhost:4200/',
 }));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

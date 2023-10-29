@@ -14,8 +14,11 @@ const jackpothRoutes = require('./routes/jackpotRoutes')
 
 
 app.use(cors({
-  origin: 'http://51.254.97.98:4000/',
+  origin: 'http://api.dev.dsp-archiwebo22b-ji-rw-ah.fr/',
 }));
+// app.use(cors({
+//   origin: 'http://51.254.97.98:4000/',
+// }));
 // app.use(cors({
 //   origin: 'http://localhost:4200/',
 // }));

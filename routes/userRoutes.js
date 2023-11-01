@@ -69,7 +69,7 @@ router.get('/', userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsEmp
  * tags:
  *   name: Users
  *   description: API pour la gestion des utilisateurs
- * /user:
+ * /user/role/client:
  *   get:
  *     summary: Récupère la liste de tous les utilisateurs ayant le rôle CLIENT
  *     tags: [Users]

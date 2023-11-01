@@ -42,6 +42,10 @@ const User = db.sequelize.define('User', {
     isVerify:{
         type: db.DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    photoUrl:{
+        type: db.DataTypes.STRING(255),
+        defaultValue: true
     }
   },{
     tableName: 'user', // Le nom de la table dans la base de données

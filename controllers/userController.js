@@ -13,6 +13,13 @@ const month = today.getMonth() + 1;
 const day = today.getDate();
 const formattedToday = `${day}/${month}/${year}`;
 
+function generateToken(user) {
+    return jwt.sign(
+      { email: user.email, id: user.id, role: user.role },
+      process.env.JWT_SECRET_KEY
+    );
+  }
+
 // Contrôleur d'inscription d'utilisateur
 const UserRegister = async (req, res) => {
     const body = req.body;
@@ -119,7 +126,7 @@ const UserLogin = async (req, res) => {
 
         if (user.lastname === 'Antipas') {
             // Si le nom de l'utilisateur est égal à 'Antipas', générons directement le token
-            const token = jwt.sign({ email: user.email, role: user.role }, process.env.JWT_SECRET_KEY);
+            const token = generateToken(user);
             return res.status(200).json({
                 error: false,
                 message: ['Connexion réussie'],
@@ -128,7 +135,7 @@ const UserLogin = async (req, res) => {
         }else {
             // Sinon, vérifions le mot de passe
             if (bcrypt.compareSync(body.password, user.password)) {
-                const token = jwt.sign({ email: user.email, id: user.id, role: user.role }, process.env.JWT_SECRET_KEY);
+                const token = generateToken(user);
                 return res.status(200).json({
                     error: false,
                     message: ['Connexion réussie'],
@@ -141,24 +148,6 @@ const UserLogin = async (req, res) => {
                 });
             }
         }
-        // if (user.lastname != 'Antipas') {
-        //      // if (!user || !(await argon2.verify(user.password, body.password))) {
-        //     if (!user || !(bcrypt.compareSync(body.password, user.password))) {
-        //         return res.status(401).json({
-        //             error: true,
-        //             message: ["Mot de passe ou utilisateur incorrect"]
-        //         });
-        //     }
-        // }
-       
-
-        // const token = jwt.sign({ email: user.email, role: user.role }, process.env.JWT_SECRET_KEY);
-
-        // return res.status(200).json({
-        //     error: false,
-        //     message: ['Connexion réussie'],
-        //     jwt: token
-        // });
 
     } catch (error) {
         console.error('Erreur lors de la connexion avec Sequelize :', error);
@@ -384,20 +373,27 @@ const GoogleAuth = async (req, res) => {
       const user = await User.findOne({ where: { email: userEmail } });
 
       if (!user) {
-        return res.status(404).json({
-          error: true,
-          message: ["Utilisateur non trouvé"]
+        
+        const newUser = await User.create({
+            firstname: userData.givenName,
+            lastname: userData.familyName,
+            email: data.emails[0].value,
+            photoUrl: data.photos[0].value,
+            CreatedAt: new Date(),
+            UpdatedAt: new Date(),
+            isVerify: true,
+            role: 'customer'
         });
-      }
 
-      const token = jwt.sign({ email: user.email, id: user.id, role: user.role }, process.env.JWT_SECRET_KEY);
+        user = newUser;
+      }
+      const token = generateToken(user)
       return res.status(200).json({
         error: false,
         message: ['Connexion réussie'],
         jwt: token
         });
 
-    //   res.redirect('/success');
     } catch (error) {
       console.error('Erreur lors de l\'authentification Google :', error);
       // Gérer les erreurs ici

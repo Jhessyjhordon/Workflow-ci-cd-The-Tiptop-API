@@ -1,9 +1,25 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const Validator = require('../utils/userValidators');
 
 const userMiddleware = require('../middlewares/userMiddleware');
 const userController = require('../controllers/userController');
+
+/**
+ * @swagger
+ * /user/auth/google:
+ *   get:
+ *     summary: Authentification via Google
+ *     description: Redirige l'utilisateur vers la page d'authentification Google pour autoriser l'accès à l'adresse e-mail.
+ *     tags: [Users]
+ *     responses:
+ *       '302':
+ *         description: Redirige l'utilisateur vers la page d'authentification Google
+ */
+router.get('/auth/google', passport.authenticate('google', { scope: ['email'] }));
+
+router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), userController.GoogleAuth);
 
 /**
  * @swagger

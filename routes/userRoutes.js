@@ -22,6 +22,21 @@ router.get('/', userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsEmp
 
 /**
  * @swagger
+ * tags:
+ *   name: Users
+ *   description: API pour la gestion des utilisateurs
+ * /user:
+ *   get:
+ *     summary: Récupère la liste de tous les utilisateurs ayant le rôle CLIENT
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Liste des utilisateurs récupérée avec succès
+ */
+router.get('/', userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsEmployee,userController.getAllUsersByRoleClient)
+
+/**
+ * @swagger
  * /user/{id}:
  *   get:
  *     summary: Récupère un utilisateur par son ID

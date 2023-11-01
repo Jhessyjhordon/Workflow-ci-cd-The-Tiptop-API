@@ -187,7 +187,7 @@ const getAllUsers = async (req, res) => {
         const decodedToken = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET_KEY);
 
         // Vérifier le rôle de l'utilisateur (assumons que le rôle est stocké dans decodedToken.role)
-        if (decodedToken.role !== 'employee') {
+        if (decodedToken.role !== 'client') {
             return res.status(403).json({
                 error: true,
                 message: ["Accès refusé"]

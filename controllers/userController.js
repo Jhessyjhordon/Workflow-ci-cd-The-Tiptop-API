@@ -224,9 +224,7 @@ const getAllUsersByRoleClient = async (req, res) => {
 
         // Récupérer la liste des utilisateurs ayant le rôle client
         const users = await User.findAll({
-            where: {
-                role: customer // On filtre pour ne retourner que les utilisateurs qui ont le rôle CLIENT
-            }   
+            where: { role: 'customer' } // On filtre pour ne retourner que les utilisateurs qui ont le rôle CUSTOMER  
         });
 
         return res.status(200).json({

@@ -51,6 +51,19 @@ const checkIfUserIsEmployee = (req, res, next) => {
   }
   next();
 };
+
+const checkIfUserIsEmployeeOrAdmin = (req, res, next) => {
+  const token = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET_KEY);
+  // const user = req.user; // L'objet utilisateur décodé à partir du token
+  if (token.role !== 'employee' && token.role !== 'admin') {
+      return res.status(403).json({
+          error: true,
+          message: 'Accès refusé : vous n\'êtes pas autorisé à effectuer cette action.'
+      });
+  }
+  next();
+};
+
 const checkIfUserToken = (req, res, next) => {
   const token = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET_KEY);
   if (!token) {
@@ -68,6 +81,7 @@ module.exports = {
   validateLogin,
   validateUserId,
   checkIfUserIsEmployee,
+  checkIfUserIsEmployeeOrAdmin,
   checkIfUserToken,
   validateUserCreation
 } 

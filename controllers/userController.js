@@ -1,24 +1,15 @@
+require('dotenv').config();
 const db = require('../db');
-const argon2 = require('argon2');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const path = require('path');
 const User = require('../models/userModel'); // Assurez-vous que le chemin est correct
+const uploadService = require('../services/uploadService');
+const authService = require('../services/authService');
 
-require('dotenv').config();
 
-// Récupérer la date du jour au format jour/mois/année
-const today = new Date();
-const year = today.getFullYear();
-const month = today.getMonth() + 1;
-const day = today.getDate();
-const formattedToday = `${day}/${month}/${year}`;
 
-function generateToken(user) {
-    return jwt.sign(
-      { email: user.email, id: user.id, role: user.role },
-      process.env.JWT_SECRET_KEY
-    );
-  }
 
 // Contrôleur d'inscription d'utilisateur
 const UserRegister = async (req, res) => {
@@ -126,7 +117,7 @@ const UserLogin = async (req, res) => {
 
         if (user.lastname === 'Antipas') {
             // Si le nom de l'utilisateur est égal à 'Antipas', générons directement le token
-            const token = generateToken(user);
+            const token = authService.generateToken(user);
             return res.status(200).json({
                 error: false,
                 message: ['Connexion réussie'],
@@ -161,7 +152,7 @@ const UserLogin = async (req, res) => {
 
 // Contrôleur pour la route GET '/'
 const getAllUsers = async (req, res) => {
-    const token = req.headers.authorization; // Récupérer le token de l'en-tête
+    const token =  req.headers.authorization; // Récupérer le token de l'en-tête
 
     try {
         // Vérifier la présence du token
@@ -173,7 +164,7 @@ const getAllUsers = async (req, res) => {
         }
 
         // Décoder le token pour obtenir les informations utilisateur
-        const decodedToken = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET_KEY);
+        const decodedToken = authService.decodeToken(token)
 
         // Vérifier le rôle de l'utilisateur (assumons que le rôle est stocké dans decodedToken.role)
         if (decodedToken.role !== 'employee') {
@@ -213,10 +204,19 @@ const getAllUsers = async (req, res) => {
 
 // Contrôleur pour la route PUT '/:id'
 const updateUserById = async (req, res) => {
+    const token =  req.headers.authorization; // Récupérer le token de l'en-tête
+
+    
     const userId = req.params.id;
     const body = req.body;
 
     try {
+        if (!token) {
+            return res.status(401).json({
+                error: true,
+                message: ["Accès non autorisé"] // Token manquant
+            });
+        }
         // Rechercher l'utilisateur par ID
         const userToUpdate = await User.findByPk(userId);
 
@@ -252,9 +252,16 @@ const updateUserById = async (req, res) => {
 
 // Contrôleur pour la route GET '/:id'
 const getUserById = async (req, res) => {
+    const token =  req.headers.authorization; 
     const userId = req.params.id;
 
     try {
+        if (!token) {
+            return res.status(401).json({
+                error: true,
+                message: ["Accès non autorisé"] // Token manquant
+            });
+        }
         // Rechercher l'utilisateur par ID
         const user = await User.findByPk(userId);
 
@@ -354,5 +361,40 @@ const GoogleAuth = async (req, res) => {
     }
   }
 
+  const uploadPhoto = async (req, res) => {
+    const token = req.headers.authorization;
+    if (!token){
+        console.error('Token non valide')
+        return res.status(400).send('Token non valide')
+    }
+    const decodedToken =  authService.decodeToken(token)
+
+
+    uploadService.upload(req, res, async (err) => {
+        try {
+            if (err) {
+                res.status(400).send('Erreur lors du téléchargement du fichier.');
+                console.error(err)
+            } else {
+                if (req.file) {
+                    const user = await User.findOne({ where: { id: decodedToken.id } }); // Utilisez l'ID de l'utilisateur
+                    if (user) {
+                        user.photoPath = req.file.path;
+                        await user.save();
+                        res.send('Fichier téléchargé et enregistré avec succès.');
+                    } else {
+                        res.status(404).send('Utilisateur non trouvé.');
+                    }
+                } else {
+                    res.status(400).send('Aucun fichier sélectionné.');
+                }
+            }
+        } catch (error) {
+            console.error('Erreur lors du téléchargement du fichier :', error);
+            res.status(500).send('Erreur lors du téléchargement du fichier.');
+        }
+    });
+};
+
   
-module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers, UserCreation, GoogleAuth};
+module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers, UserCreation, GoogleAuth, uploadPhoto};

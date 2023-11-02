@@ -447,4 +447,4 @@ const GoogleAuth = async (req, res) => {
 };
 
   
-module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers, UserCreation, GoogleAuth, uploadPhoto};
+module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers, getAllUsersByRoleClient, UserCreation, GoogleAuth, uploadPhoto};

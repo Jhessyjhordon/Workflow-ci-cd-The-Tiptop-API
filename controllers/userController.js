@@ -167,7 +167,7 @@ const getAllUsers = async (req, res) => {
         const decodedToken = authService.decodeToken(token)
 
         // Vérifier le rôle de l'utilisateur (assumons que le rôle est stocké dans decodedToken.role)
-        if (decodedToken.role !== 'employee') {
+        if (decodedToken.role !== 'admin') {
             return res.status(403).json({
                 error: true,
                 message: ["Accès refusé"]
@@ -447,4 +447,4 @@ const GoogleAuth = async (req, res) => {
 };
 
   
-module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers, UserCreation, GoogleAuth, uploadPhoto};
+module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers, getAllUsersByRoleClient, UserCreation, GoogleAuth, uploadPhoto};

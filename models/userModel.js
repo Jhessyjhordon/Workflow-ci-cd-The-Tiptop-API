@@ -29,7 +29,7 @@ const User = db.sequelize.define('User', {
       },
     password: { 
       type: db.DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
      },
     role: { 
       type: db.DataTypes.ENUM('admin','employee', 'customer'),
@@ -37,11 +37,15 @@ const User = db.sequelize.define('User', {
     },
     birthDate:{
         type: db.DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     isVerify:{
         type: db.DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    photoUrl:{
+        type: db.DataTypes.STRING(255),
+        defaultValue: true
     }
   },{
     tableName: 'user', // Le nom de la table dans la base de données

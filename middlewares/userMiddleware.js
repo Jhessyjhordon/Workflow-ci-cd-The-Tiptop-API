@@ -43,7 +43,7 @@ const validateUserId = (schema) => async (req, res, next) => {
 const checkIfUserIsEmployee = (req, res, next) => {
   const token = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET_KEY);
   // const user = req.user; // L'objet utilisateur décodé à partir du token
-  if (token.role !== 'employee') {
+  if (token.role !== 'customer') {
       return res.status(403).json({
           error: true,
           message: 'Accès refusé : vous n\'êtes pas autorisé à effectuer cette action.'

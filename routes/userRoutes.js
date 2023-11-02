@@ -1,9 +1,53 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const Validator = require('../utils/userValidators');
 
 const userMiddleware = require('../middlewares/userMiddleware');
 const userController = require('../controllers/userController');
+
+
+
+/**
+ * @swagger
+ * /user/upload:
+ *   post:
+ *     summary: Télécharge la photo de profil de l'utilisateur
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               profilePhoto:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Fichier téléchargé avec succès
+ *       400:
+ *         description: Aucun fichier sélectionné ou erreur lors du téléchargement du fichier
+ *       500:
+ *         description: Erreur serveur lors du téléchargement
+ */
+router.post('/upload', userController.uploadPhoto); 
+
+/**
+ * @swagger
+ * /user/auth/google:
+ *   get:
+ *     summary: Authentification via Google
+ *     description: Redirige l'utilisateur vers la page d'authentification Google pour autoriser l'accès à l'adresse e-mail.
+ *     tags: [Users]
+ *     responses:
+ *       '302':
+ *         description: Redirige l'utilisateur vers la page d'authentification Google
+ */
+router.get('/auth/google', passport.authenticate('google', { scope: ['email'] }));
+
+router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), userController.GoogleAuth);
 
 /**
  * @swagger
@@ -278,5 +322,6 @@ router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userC
  *         birthDate: 1990-01-17
  *         role: customer
  *         address: 15 rue Babo, 91101 ville X
+ *         photoUrl: uploads/profilePhoto-1635321342000.png
  */
 module.exports = router

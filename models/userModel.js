@@ -48,15 +48,15 @@ const User = db.sequelize.define('User', {
         defaultValue: true
     },
     token: {
-      type: DataTypes.STRING,
+      type: db.DataTypes.STRING(255),
       allowNull: true,
     },
     expiresAt: {
-      type: DataTypes.DATE,
+      type: db.DataTypes.DATE,
       allowNull: true,
     },
   confirmAt: {
-    type: DataTypes.DATE,
+    type: db.DataTypes.DATE,
     allowNull: true,
   },
   },{

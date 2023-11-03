@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel'); // Assurez-vous que le chemin est correct
 const uploadService = require('../services/uploadService');
 const authService = require('../services/authService');
+const mailService = require('../services/mailService')
 const accountCofirmationService = require('../services/accountCofirmationService');
 
 

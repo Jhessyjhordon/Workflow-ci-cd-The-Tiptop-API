@@ -4,14 +4,14 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: process.env.THETIPTOP_GAMIL_LOGIN,
-        pass: process.env.THETIPTOP_GAMIL_PASSWORD,
+        user: process.env.THETIPTOP_GMAIL_LOGIN,
+        pass: process.env.THETIPTOP_GMAIL_PASSWORD,
     },
 });
 
 function sendConfirmationEmail(userEmail, confirmationToken) {
     const mailOptions = {
-        from: process.env.THETIPTOP_GAMIL_LOGIN,
+        from: process.env.THETIPTOP_GMAIL_LOGIN,
         to: userEmail,
         subject: 'Confirmation de votre compte',
         text: `Cliquez sur ce lien pour confirmer votre compte : ${process.env.THETIPTOP_API_URL}user/confirm/${confirmationToken}`, //à mettre à jour 

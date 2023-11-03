@@ -46,7 +46,19 @@ const User = db.sequelize.define('User', {
     photoUrl:{
         type: db.DataTypes.STRING(255),
         defaultValue: true
-    }
+    },
+    token: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    expiresAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+  confirmAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },
   },{
     tableName: 'user', // Le nom de la table dans la base de données
     timestamps: true, // Pour inclure createdAt et updatedAt

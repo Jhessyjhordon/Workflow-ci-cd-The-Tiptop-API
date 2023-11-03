@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
+const { cleanExpiredLinks } = require('./tasks');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const app = express();
@@ -54,6 +55,7 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
+cleanExpiredLinks.start();
 app.get('/', function (req, res, next) {
   res.json({ msg: 'Welcome to th2 Tiptop Api documentation' })
 })

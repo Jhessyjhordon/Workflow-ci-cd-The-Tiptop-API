@@ -227,6 +227,28 @@ router.post('/register', userMiddleware.validateRegister(Validator.userSchema), 
  */
 router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userController.UserLogin)
 
+/**
+ * @swagger
+ * /user/confirm/{token}:
+ *   get:
+ *     summary: Confirme un utilisateur avec un token de confirmation
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         description: Token de confirmation de l'utilisateur
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Utilisateur confirmé avec succès
+ *       400:
+ *         description: Lien de confirmation invalide ou expiré
+ *       500:
+ *         description: Erreur lors de la confirmation de l'utilisateur
+ */
+router.get('/confirm/:token', userController.UserConfirme)
 
 /**
  * @swagger

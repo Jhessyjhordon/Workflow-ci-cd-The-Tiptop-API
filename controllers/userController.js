@@ -1,14 +1,11 @@
 require('dotenv').config();
-const db = require('../db');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
-const path = require('path');
 const User = require('../models/userModel'); // Assurez-vous que le chemin est correct
 const uploadService = require('../services/uploadService');
 const authService = require('../services/authService');
-
-
+const mailService = require('../services/mailService')
+const accountCofirmationService = require('../services/accountCofirmationService');
 
 
 // Contrôleur d'inscription d'utilisateur
@@ -38,7 +35,9 @@ const UserRegister = async (req, res) => {
             CreatedAt: new Date(),
             UpdatedAt: new Date(),
             isVerify: false,
-            role: 'customer' // Vous pouvez modifier le rôle selon vos besoins
+            role: 'customer', // Vous pouvez modifier le rôle selon vos besoins
+            token: accountCofirmationService.generateConfirmationToken(),
+            expiresAt: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
         });
 
         return res.status(200).json({
@@ -81,8 +80,9 @@ const UserCreation = async (req, res) => {
             birthDate: body.birthDate,
             CreatedAt: new Date(),
             UpdatedAt: new Date(),
-            isVerify: false,
-            role: body.role
+            isVerify: true,
+            role: body.role,
+            confirmAt: new Date()
         });
 
         return res.status(200).json({
@@ -446,5 +446,45 @@ const GoogleAuth = async (req, res) => {
     });
 };
 
+const UserConfirme = async (req, res) => {
+    const token = req.params.token;
+
+    try {
+        // Votre logique pour vérifier et confirmer l'utilisateur
+        const user = await User.findOne({ where: { token } });
+
+        if (!user) {
+            return res.status(404).json({ message: "Lien de confirmation invalide" });
+        }
+
+        if (new Date() > user.expiresAt) {
+            // return res.status(400).json({ message: "Le lien de confirmation a expiré" });
+            const newToken = accountCofirmationService.generateConfirmationToken(); // Générez un nouveau token
+
+            // Mise à jour du token et de la date d'expiration dans la base de données
+            user.token = newToken;
+            user.expiresAt = new Date(new Date().getTime() + 24 * 60 * 60 * 1000); // Expiration dans 24 heures
+            await user.save();
+
+            // Envoyer un nouvel email de confirmation
+            mailService.sendConfirmationEmail(user.email, newToken); // Utilisez le service mail approprié
+
+            return res.status(200).json({ message: 'Nouveau lien de confirmation envoyés' });
+        }
+
+        user.isVerify = true
+        user.confirmAt = new Date()
+        user.token = null
+        user.save()
+    
+        // await user.destroy({ where: { token } });
+
+        return res.status(200).json({ message: "Utilisateur confirmé avec succès" });
+    } catch (error) {
+        console.error('Erreur lors de la confirmation de l\'utilisateur :', error);
+        return res.status(500).json({ message: "Erreur lors de la confirmation de l'utilisateur" });
+    }
+};
+
   
-module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers, getAllUsersByRoleClient, UserCreation, GoogleAuth, uploadPhoto};
+module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers, getAllUsersByRoleClient, UserCreation, GoogleAuth, uploadPhoto, UserConfirme };

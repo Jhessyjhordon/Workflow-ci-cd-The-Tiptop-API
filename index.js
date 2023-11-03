@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
-const { cleanExpiredLinks } = require('./tasks');
+const { cleanExpiredLinks } = require('./tasks/scheduledTasks');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const app = express();

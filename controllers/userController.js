@@ -446,5 +446,34 @@ const GoogleAuth = async (req, res) => {
     });
 };
 
+const UserConfirme = async (req, res) => {
+    const token = req.params.token;
+
+    try {
+        // Votre logique pour vérifier et confirmer l'utilisateur
+        const user = await User.findOne({ where: { token } });
+
+        if (!user) {
+            return res.status(404).json({ message: "Lien de confirmation invalide" });
+        }
+
+        if (new Date() > user.expiresAt) {
+            return res.status(400).json({ message: "Le lien de confirmation a expiré" });
+        }
+
+        user.isVerify = true
+        user.confirmAt = new Date()
+        user.token = null
+        user.save()
+    
+        // await user.destroy({ where: { token } });
+
+        return res.status(200).json({ message: "Utilisateur confirmé avec succès" });
+    } catch (error) {
+        console.error('Erreur lors de la confirmation de l\'utilisateur :', error);
+        return res.status(500).json({ message: "Erreur lors de la confirmation de l'utilisateur" });
+    }
+};
+
   
-module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers, getAllUsersByRoleClient, UserCreation, GoogleAuth, uploadPhoto};
+module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers, getAllUsersByRoleClient, UserCreation, GoogleAuth, uploadPhoto, UserConfirme };

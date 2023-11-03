@@ -55,6 +55,10 @@ const User = db.sequelize.define('User', {
       type: DataTypes.DATE,
       allowNull: true,
     },
+  confirmAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },
   },{
     tableName: 'user', // Le nom de la table dans la base de données
     timestamps: true, // Pour inclure createdAt et updatedAt

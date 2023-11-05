@@ -18,10 +18,17 @@ let userSchema = Yup.object({
     // isVerify:Yup.boolean()
 });
 
+let userRegisterSchema = Yup.object({
+    lastname: Yup.string().required().min(1).max(155),
+    firstname: Yup.string().required().min(1).max(155),
+    email: Yup.string().required().email().min(1).max(155),
+    password: Yup.string().required().min(1).max(255),
+});
+
 
 // Schéma pour valider l'ID utilisateur
 const userIdSchema = Yup.object({
     id: Yup.number().required().positive().integer()
 });
 
-module.exports = {loginSchema, userSchema, userIdSchema}
+module.exports = {loginSchema, userSchema, userIdSchema, userRegisterSchema}

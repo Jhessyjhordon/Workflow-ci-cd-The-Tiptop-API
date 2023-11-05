@@ -201,7 +201,7 @@ router.post('/', userMiddleware.validateUserCreation(Validator.userSchema), user
  *       500:
  *         description: Erreur lors de l'enregistrement de l'utilisateur
  */
-router.post('/register', userMiddleware.validateRegister(Validator.userSchema), userController.UserRegister)
+router.post('/register', userMiddleware.validateRegister(Validator.userRegisterSchema), userController.UserRegister)
 
 /**
  * @swagger

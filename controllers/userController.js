@@ -132,7 +132,7 @@ const UserLogin = async (req, res) => {
         }else {
             // Sinon, vérifions le mot de passe
             if (bcrypt.compareSync(body.password, user.password)) {
-                const token = generateToken(user);
+                const token = authService.generateToken(user);
                 return res.status(200).json({
                     error: false,
                     message: ['Connexion réussie'],

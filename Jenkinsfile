@@ -40,11 +40,20 @@ pipeline {
             }
         }
 
+        stage('Run tests with Mocha & Chai') {
+            steps {
+                echo "Lancement des tests avec Mocha & Chai"
+                dir("${WORKSPACE}/the-tiptop-api-dev") {
+                    echo "Do something..."
+                }
+            }
+        }
+
 
         stage('SonarQube Analysis') {
             steps {
                 echo "Analyse SonarQube pour API"
-                dir("${WORKSPACE}") {
+                dir("${WORKSPACE}/the-tiptop-api-dev") {
                     withCredentials([string(credentialsId: 'SonarQubeApi', variable: 'SONAR_TOKEN')]) {
                         // Afficher la valeur de WORKSPACE
                         echo "WORKSPACE est : ${WORKSPACE}"

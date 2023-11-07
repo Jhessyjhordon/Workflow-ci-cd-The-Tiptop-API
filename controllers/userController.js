@@ -265,6 +265,7 @@ const updateUserById = async (req, res) => {
     
     const userId = req.params.id;
     const body = req.body;
+    const { currentPassword, newPassword } = req.body;
 
     try {
         if (!token) {
@@ -283,6 +284,19 @@ const updateUserById = async (req, res) => {
             });
         }
 
+        
+        // Vérification du mot de passe actuel
+        if (currentPassword && newPassword) {
+            const isCurrentPasswordValid  = await userToUpdate.comparePassword(currentPassword);
+
+            if (!isCurrentPasswordValid ) {
+                return res.status(401).json({
+                    error: true,
+                    message: ["Mot de passe actuel incorrect"]
+                });
+            }
+        }
+
         // Mettre à jour les champs de l'utilisateur
         userToUpdate.firstname = body.firstname;
         userToUpdate.lastname = body.lastname;
@@ -290,7 +304,12 @@ const updateUserById = async (req, res) => {
         userToUpdate.phone = body.phone;
         userToUpdate.address = body.address;
         userToUpdate.birthDate = body.birthDate;
-        userToUpdate.password = body.password;
+        // userToUpdate.password = body.password;
+
+        if (body.newPassword) {
+            // Mise à jour du mot de passe si un nouveau mot de passe est fourni
+            userToUpdate.password = newPassword;
+        }
 
         // Enregistrer les modifications dans la base de données
         await userToUpdate.save();

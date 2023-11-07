@@ -40,7 +40,7 @@ const UserRegister = async (req, res) => {
             UpdatedAt: new Date(),
             isVerify: false,
             role: 'customer', // Vous pouvez modifier le rôle selon vos besoins
-            token: accountCofirmationService.generateConfirmationToken(),
+            // token: accountCofirmationService.generateConfirmationToken(),
             expiresAt: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
         });
 

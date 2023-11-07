@@ -267,6 +267,9 @@ const updateUserById = async (req, res) => {
     const body = req.body;
     const { currentPassword, newPassword } = req.body;
 
+    console.log("------------------>",req.body);
+    console.log("==================>",currentPassword, newPassword);
+
     try {
         if (!token) {
             return res.status(401).json({
@@ -287,6 +290,7 @@ const updateUserById = async (req, res) => {
         
         // Vérification du mot de passe actuel
         if (currentPassword && newPassword) {
+            // bcrypt.compareSync(body.password, user.password)
             const isCurrentPasswordValid  = await userToUpdate.comparePassword(currentPassword);
 
             if (!isCurrentPasswordValid ) {
@@ -306,7 +310,7 @@ const updateUserById = async (req, res) => {
         userToUpdate.birthDate = body.birthDate;
         // userToUpdate.password = body.password;
 
-        if (body.newPassword) {
+        if (newPassword) {
             // Mise à jour du mot de passe si un nouveau mot de passe est fourni
             userToUpdate.password = newPassword;
         }

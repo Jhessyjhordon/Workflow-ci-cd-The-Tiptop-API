@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../index'); // Votre fichier d'application Express
+const server = require('../server'); 
 const expect = chai.expect;
 
 chai.use(chaiHttp);
@@ -11,15 +12,15 @@ describe('User Routes', () => {
   
     // Avant les tests, obtenir un token valide pour les routes qui en ont besoin
     before(async () => {
-      const response = await chai.request(app)
+      const response = await chai.request(server)
         .post('/user/login')
         .send({ email: 'user@example.com', password: 'password' }); // Utilisez des données appropriées pour les tests
       token = response.body.jwt;
     });
-  
+    
     describe('GET /user', () => {
         it('should get list of all users when token is provided and user is an employee', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get('/user')
                 .set('Authorization', `Bearer ${token_employee}`); // Utiliser un token d'employé valide
     
@@ -29,7 +30,7 @@ describe('User Routes', () => {
         });
     
         it('should not get list of all users when token is missing', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get('/user');
     
             expect(res).to.have.status(401);
@@ -40,7 +41,7 @@ describe('User Routes', () => {
     
         it('should not get list of all users when token is expired', async () => {
             const expiredToken = jwt.sign({ role: 'employee' }, process.env.JWT_SECRET_KEY, { expiresIn: '0s' }); // Générer un token expiré
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get('/user')
                 .set('Authorization', `Bearer ${expiredToken}`);
     
@@ -51,13 +52,13 @@ describe('User Routes', () => {
         });
     
         it('should not get list of all users when user is not an employee', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get('/user')
                 .set('Authorization', `Bearer ${token_customer}`); // Utiliser un token de client
     
             expect(res).to.have.status(403);
             expect(res.body).to.be.an('object');
-            expect(res.body.error).to.equal(true);
+            expect(res.body.error).to.equal(server);
             expect(res.body.message).to.include('Accès refusé');
         });
     });
@@ -65,7 +66,7 @@ describe('User Routes', () => {
   
     describe('GET /user/:id', () => {
         it('should get a user by ID (with valid token)', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get('/user/2')
                 .set('Authorization', `Bearer ${token}`);
             
@@ -76,7 +77,7 @@ describe('User Routes', () => {
         });
       
         it('should return a 404 if user ID does not exist', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get("/user/999")
                 .set('Authorization', `Bearer ${token}`);
           
@@ -86,7 +87,7 @@ describe('User Routes', () => {
         });
       
         it('should return a 400 if ID is not a valid number', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get('/user/invalid_id')
                 .set('Authorization', `Bearer ${token}`);
       
@@ -96,7 +97,7 @@ describe('User Routes', () => {
 
         it('should not get a user by ID (without token)', async () => {
             const userId = 'votre-id-d-utilisateur-factice';
-            const res = await chai.request(app).get(`/user/${userId}`);
+            const res = await chai.request(server).get(`/user/${userId}`);
 
             expect(res).to.have.status(403);
             expect(res.body.error).to.be.true;
@@ -105,7 +106,7 @@ describe('User Routes', () => {
         it('should not get a user by ID (with valid token but not employee role)', async () => {
             const invalidToken = 'autre-token-factice';
             const userId = 'votre-id-d-utilisateur-factice';
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get(`/user/${userId}`)
                 .set('Authorization', `Bearer ${invalidToken}`);
 
@@ -121,7 +122,7 @@ describe('User Routes', () => {
         const existingUserId = 'votre-id-d-utilisateur-existant';
     
         it('should delete a user by ID (with valid token and employee role)', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .delete('/user/15')
                 .set('Authorization', `Bearer ${token}`);
     
@@ -132,7 +133,7 @@ describe('User Routes', () => {
     
         it('should return a 404 if user ID does not exist (with valid token and employee role)', async () => {
             const nonExistentUserId = 'id-inexistant';
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .delete(`/user/${nonExistentUserId}`)
                 .set('Authorization', `Bearer ${token}`);
     
@@ -143,7 +144,7 @@ describe('User Routes', () => {
     
         it('should return a 400 if ID is not a valid number (with valid token and employee role)', async () => {
             const invalidUserId = 'id-invalide';
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .delete(`/user/${invalidUserId}`)
                 .set('Authorization', `Bearer ${token}`);
     
@@ -153,14 +154,14 @@ describe('User Routes', () => {
         });
     
         it('should not delete a user by ID (without token)', async () => {
-            const res = await chai.request(app).delete("/user/10");
+            const res = await chai.request(server).delete("/user/10");
     
             expect(res).to.have.status(403);
         });
     
         it('should not delete a user by ID (with valid token but not employee role)', async () => {
             const invalidToken = 'autre-token-factice';
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .delete("/user/11")
                 .set('Authorization', `Bearer ${invalidToken}`);
     
@@ -181,7 +182,7 @@ describe('User Routes', () => {
                 phone: '1234567890'
             };
     
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .put("/user/3")
                 .set('Authorization', `Bearer ${token}`)
                 .send(updatedUserData);
@@ -200,7 +201,7 @@ describe('User Routes', () => {
                 phone: '1234567890'
             };
     
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .put(`/user/${nonExistentUserId}`)
                 .set('Authorization', `Bearer ${token}`)
                 .send(updatedUserData);
@@ -219,7 +220,7 @@ describe('User Routes', () => {
                 phone: '1234567890'
             };
     
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .put(`/user/${invalidUserId}`)
                 .set('Authorization', `Bearer ${token}`)
                 .send(updatedUserData);
@@ -237,7 +238,7 @@ describe('User Routes', () => {
                 phone: '1234567890'
             };
     
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .put("/user/4")
                 .set('Authorization', `Bearer ${token}`)
                 .send(invalidUserData);
@@ -255,7 +256,7 @@ describe('User Routes', () => {
                 phone: '1234567890'
             };
     
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .put("/user/6")
                 .send(updatedUserData);
     
@@ -271,7 +272,7 @@ describe('User Routes', () => {
                 phone: '1234567890'
             };
     
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .put("/user/7")
                 .set('Authorization', `Bearer ${token}`)
                 .send(updatedUserData);
@@ -290,7 +291,7 @@ describe('User Routes', () => {
                 password: 'motdepasse'
             };
     
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .post('/user')
                 .send(newUser);
     
@@ -308,7 +309,7 @@ describe('User Routes', () => {
                 password: 'motdepasse'
             };
     
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .post('/user')
                 .set('Authorization', `Bearer ${token}`)
                 .send(newUser);
@@ -327,7 +328,7 @@ describe('User Routes', () => {
                 password: 'motdepasse'
             };
     
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .post('/user')
                 .send(invalidUserData);
     
@@ -345,7 +346,7 @@ describe('User Routes', () => {
                 password: 'motdepasse'
             };
     
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .post('/user')
                 .send(newUser);
     
@@ -363,7 +364,7 @@ describe('User Routes', () => {
     
             const invalidToken = 'token_invalide';
     
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .post('/user')
                 .set('Authorization', `Bearer ${invalidToken}`)
                 .send(newUser);
@@ -380,7 +381,7 @@ describe('User Routes', () => {
                 password: 'motdepasse'
             };
     
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .post('/user')
                 .set('Authorization', 'Bearer token_invalide')
                 .send(newUser);

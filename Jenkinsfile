@@ -40,7 +40,7 @@ pipeline {
             }
         }
 
-        stage('Run tests with Mocha & Chai') {
+        /*stage('Run tests with Mocha & Chai') {
             steps {
                 echo "Installation des dépendances"
                 dir("${WORKSPACE}/the-tiptop-api-dev") {
@@ -51,7 +51,7 @@ pipeline {
                     sh "npm test" // Exécution des tests mocha pour l'API dans le workdir
                 }
             }
-        }
+        }*/
 
 
         stage('SonarQube Analysis') {

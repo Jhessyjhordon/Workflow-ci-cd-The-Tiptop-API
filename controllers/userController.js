@@ -290,17 +290,17 @@ const updateUserById = async (req, res) => {
 
         
         // Vérification du mot de passe actuel
-        if (body.currentPassword && body.newPassword) {
-            // bcrypt.compareSync(body.password, user.password)
-            const isCurrentPasswordValid  = await userToUpdate.comparePassword(body.currentPassword);
+        // if (body.currentPassword && body.newPassword) {
+        //     // bcrypt.compareSync(body.password, user.password)
+        //     const isCurrentPasswordValid  = await userToUpdate.comparePassword(body.currentPassword);
 
-            if (!isCurrentPasswordValid ) {
-                return res.status(401).json({
-                    error: true,
-                    message: ["Mot de passe actuel incorrect"]
-                });
-            }
-        }
+        //     if (!isCurrentPasswordValid ) {
+        //         return res.status(401).json({
+        //             error: true,
+        //             message: ["Mot de passe actuel incorrect"]
+        //         });
+        //     }
+        // }
 
         // Mettre à jour les champs de l'utilisateur
         userToUpdate.firstname = body.firstname;
@@ -311,10 +311,10 @@ const updateUserById = async (req, res) => {
         userToUpdate.birthDate = body.birthDate;
         // userToUpdate.password = body.password;
 
-        if (body.newPassword) {
-            // Mise à jour du mot de passe si un nouveau mot de passe est fourni
-            userToUpdate.password = body.newPassword;
-        }
+        // if (body.newPassword) {
+        //     // Mise à jour du mot de passe si un nouveau mot de passe est fourni
+        //     userToUpdate.password = body.newPassword;
+        // }
 
         // Enregistrer les modifications dans la base de données
         await userToUpdate.save();

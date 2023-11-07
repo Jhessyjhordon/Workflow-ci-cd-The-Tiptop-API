@@ -267,8 +267,9 @@ const updateUserById = async (req, res) => {
     const body = req.body;
     const { currentPassword, newPassword } = req.body;
 
-    console.log("------------------>",req.body);
-    console.log("==================>",currentPassword, newPassword);
+    // console.log("------------------>",req.body);
+    // console.log("==================>",currentPassword, newPassword);
+    console.log("==================>",body.currentPassword, body.newPassword);
 
     try {
         if (!token) {

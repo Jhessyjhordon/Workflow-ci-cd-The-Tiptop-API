@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../index'); // Votre fichier d'application Express
+const server = require('../server'); 
 const expect = chai.expect;
 
 chai.use(chaiHttp);
@@ -11,7 +12,7 @@ describe('Jackpot Routes', () => {
   
     // Avant les tests, obtenir un token valide pour les routes qui en ont besoin
     before(async () => {
-      const response = await chai.request(app)
+      const response = await chai.request(server)
         .post('/user/login')
         .send({ email: 'user@example.com', password: 'password' }); // Utilisez des données appropriées pour les tests
       token = response.body.jwt;
@@ -19,7 +20,7 @@ describe('Jackpot Routes', () => {
   
     describe('GET /jackpot', () => {
         it('should get a list of all jackpots when token is provided', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get('/jackpot')
                 .set('Authorization', `Bearer ${token}`);
     
@@ -29,7 +30,7 @@ describe('Jackpot Routes', () => {
         });
     
         it('should not get list of all jackpots when token is missing', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get('/jackpot');
     
             expect(res).to.have.status(401);
@@ -40,7 +41,7 @@ describe('Jackpot Routes', () => {
     
         it('should not get list of all jackpots when token is expired', async () => {
             const expiredToken = jwt.sign({ role: 'employee' }, process.env.JWT_SECRET_KEY, { expiresIn: '0s' }); // Générer un token expiré
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get('/jackpot')
                 .set('Authorization', `Bearer ${expiredToken}`);
     
@@ -51,7 +52,7 @@ describe('Jackpot Routes', () => {
         });
     
         it('should not get list of all jackpots when user is not an employee', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get('/jackpot')
                 .set('Authorization', `Bearer ${token_customer}`); // Utiliser un token de client
     
@@ -64,7 +65,7 @@ describe('Jackpot Routes', () => {
 
     describe('GET /jackpot/:id', () => {
         it('should get a jackpot by ID (with valid token)', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get('/jackpot/2')
                 .set('Authorization', `Bearer ${token}`);
             
@@ -75,7 +76,7 @@ describe('Jackpot Routes', () => {
         });
       
         it('should return a 404 if jackpot ID does not exist', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get("/jackpot/999")
                 .set('Authorization', `Bearer ${token}`);
       
@@ -84,7 +85,7 @@ describe('Jackpot Routes', () => {
         });
       
         it('should return a 400 if ID is not a valid number', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get('/jackpot/invalid_id')
                 .set('Authorization', `Bearer ${token}`);
       
@@ -94,7 +95,7 @@ describe('Jackpot Routes', () => {
 
         it('should not get a jackpot by ID (without token)', async () => {
             const jackpotId = 'votre-id-de-jackpot-factice';
-            const res = await chai.request(app).get(`/jackpot/${jackpotId}`);
+            const res = await chai.request(server).get(`/jackpot/${jackpotId}`);
 
             expect(res).to.have.status(403);
             expect(res.body.error).to.be.true;
@@ -103,7 +104,7 @@ describe('Jackpot Routes', () => {
         it('should not get a jackpot by ID (with valid token but not employee role)', async () => {
             const invalidToken = 'autre-token-factice';
             const jackpotId = 'votre-id-de-jackpot-factice';
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .get(`/jackpot/${jackpotId}`)
                 .set('Authorization', `Bearer ${invalidToken}`);
 
@@ -117,7 +118,7 @@ describe('Jackpot Routes', () => {
         const existingJackpotId = 'votre-id-de-jackpot-existant';
     
         it('should delete a jackpot by ID (with valid token and employee role)', async () => {
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .delete(`/jackpot/${existingJackpotId}`)
                 .set('Authorization', `Bearer ${token}`);
     
@@ -128,7 +129,7 @@ describe('Jackpot Routes', () => {
     
         it('should return a 404 if jackpot ID does not exist (with valid token and employee role)', async () => {
             const nonExistentJackpotId = 'id-inexistant';
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .delete(`/jackpot/${nonExistentJackpotId}`)
                 .set('Authorization', `Bearer ${token}`);
     
@@ -139,7 +140,7 @@ describe('Jackpot Routes', () => {
     
         it('should return a 400 if ID is not a valid number (with valid token and employee role)', async () => {
             const invalidJackpotId = 'id-invalide';
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .delete(`/jackpot/${invalidJackpotId}`)
                 .set('Authorization', `Bearer ${token}`);
     
@@ -149,14 +150,14 @@ describe('Jackpot Routes', () => {
         });
     
         it('should not delete a jackpot by ID (without token)', async () => {
-            const res = await chai.request(app).delete(`/jackpot/${existingJackpotId}`);
+            const res = await chai.request(server).delete(`/jackpot/${existingJackpotId}`);
     
             expect(res).to.have.status(403);
         });
     
         it('should not delete a jackpot by ID (with valid token but not employee role)', async () => {
             const invalidToken = 'autre-token-factice';
-            const res = await chai.request(app)
+            const res = await chai.request(server)
                 .delete(`/jackpot/${existingJackpotId}`)
                 .set('Authorization', `Bearer ${invalidToken}`);
         
@@ -173,7 +174,7 @@ describe('Jackpot Routes', () => {
                     userId: 'Nouvel Utilisateur'
                 };
         
-                const res = await chai.request(app)
+                const res = await chai.request(server)
                     .put(`/jackpot/${existingJackpotId}`)
                     .set('Authorization', `Bearer ${token}`)
                     .send(updatedJackpotData);
@@ -190,7 +191,7 @@ describe('Jackpot Routes', () => {
                     userId: 'Nouvel Utilisateur'
                 };
         
-                const res = await chai.request(app)
+                const res = await chai.request(server)
                     .put(`/jackpot/${nonExistentJackpotId}`)
                     .set('Authorization', `Bearer ${token}`)
                     .send(updatedJackpotData);
@@ -207,7 +208,7 @@ describe('Jackpot Routes', () => {
                     userId: 'Nouvel Utilisateur'
                 };
         
-                const res = await chai.request(app)
+                const res = await chai.request(server)
                     .put(`/jackpot/${invalidJackpotId}`)
                     .set('Authorization', `Bearer ${token}`)
                     .send(updatedJackpotData);
@@ -223,7 +224,7 @@ describe('Jackpot Routes', () => {
                     userId: 'Nouvel Utilisateur'
                 };
         
-                const res = await chai.request(app)
+                const res = await chai.request(server)
                     .put(`/jackpot/${existingJackpotId}`)
                     .set('Authorization', `Bearer ${token}`)
                     .send(invalidJackpotData);
@@ -239,7 +240,7 @@ describe('Jackpot Routes', () => {
                     userId: 'Nouvel Utilisateur'
                 };
         
-                const res = await chai.request(app)
+                const res = await chai.request(server)
                     .put(`/jackpot/${existingJackpotId}`)
                     .send(updatedJackpotData);
         
@@ -253,7 +254,7 @@ describe('Jackpot Routes', () => {
                     userId: 'Nouvel Utilisateur'
                 };
         
-                const res = await chai.request(app)
+                const res = await chai.request(server)
                     .put(`/jackpot/${existingJackpotId}`)
                     .set('Authorization', `Bearer ${invalidToken}`)
                     .send(updatedJackpotData);
@@ -269,7 +270,7 @@ describe('Jackpot Routes', () => {
                     userId: 'Nouvel Utilisateur'
                 };
     
-                const res = await chai.request(app)
+                const res = await chai.request(server)
                     .post('/jackpot')
                     .send(newJackpot);
     
@@ -284,7 +285,7 @@ describe('Jackpot Routes', () => {
                     userId: 'Nouvel Utilisateur'
                 };
     
-                const res = await chai.request(app)
+                const res = await chai.request(server)
                     .post('/jackpot')
                     .set('Authorization', `Bearer ${token}`)
                     .send(newJackpot);
@@ -300,7 +301,7 @@ describe('Jackpot Routes', () => {
                     userId: 'Nouvel Utilisateur'
                 };
     
-                const res = await chai.request(app)
+                const res = await chai.request(server)
                     .post('/jackpot')
                     .send(invalidJackpotData);
     
@@ -315,7 +316,7 @@ describe('Jackpot Routes', () => {
                     userId: 'Nouvel Utilisateur'
                 };
     
-                const res = await chai.request(app)
+                const res = await chai.request(server)
                     .post('/jackpot')
                     .send(newJackpot);
     
@@ -330,7 +331,7 @@ describe('Jackpot Routes', () => {
     
                 const invalidToken = 'autre-token-factice';
     
-                const res = await chai.request(app)
+                const res = await chai.request(server)
                     .post('/jackpot')
                     .set('Authorization', `Bearer ${invalidToken}`)
                     .send(newJackpot);
@@ -344,7 +345,7 @@ describe('Jackpot Routes', () => {
                     userId: 'Nouvel Utilisateur'
                 };
     
-                const res = await chai.request(app)
+                const res = await chai.request(server)
                     .post('/jackpot')
                     .set('Authorization', 'Bearer token_invalide')
                     .send(newJackpot);
@@ -353,4 +354,4 @@ describe('Jackpot Routes', () => {
             });
         });
     });
-})
+});

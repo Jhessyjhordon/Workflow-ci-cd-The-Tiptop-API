@@ -288,6 +288,9 @@ const updateUserById = async (req, res) => {
         userToUpdate.lastname = body.lastname;
         userToUpdate.email = body.email;
         userToUpdate.phone = body.phone;
+        userToUpdate.address = body.address;
+        userToUpdate.birthDate = body.birthDate;
+        userToUpdate.password = body.password;
 
         // Enregistrer les modifications dans la base de données
         await userToUpdate.save();

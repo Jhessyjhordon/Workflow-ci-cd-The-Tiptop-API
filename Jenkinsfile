@@ -44,7 +44,7 @@ pipeline {
             steps {
                 echo "Lancement des tests avec Mocha & Chai"
                 dir("${WORKSPACE}/the-tiptop-api-dev") {
-                    echo "Do something..."
+                    sh "npm test" // Exécution des tests mocha pour l'API dans le workdir
                 }
             }
         }

@@ -4,7 +4,7 @@
   "description": "Cette Api a été mis en place, par un groupe d'étudiant, dans le cadre d'un projet de fin d'année pour validation du Diplome de Master 2 Architecte Web, il offre des points de terminaison pour le siteweb Jeux Concours Thé Tiptop ",
   "main": "index.js",
   "scripts": {
-    "test": "mocha './tests/**/*.test.js'",
+    "test": "cross-env NODE_ENV=test mocha './tests/**/*.test.js'",
     "init-db": "node init-db.js",
     "start": "node server.js",
     "seed": "node seed.js",
@@ -62,6 +62,7 @@
     "chai": "^4.3.10",
     "chai-http": "^4.4.0",
     "concurrently": "^8.2.1",
+    "cross-env": "^7.0.3",
     "mocha": "^10.2.0",
     "nodemon": "^3.0.1",
     "supertest": "^6.3.3"

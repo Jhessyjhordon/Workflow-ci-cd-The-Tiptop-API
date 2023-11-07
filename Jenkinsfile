@@ -21,7 +21,7 @@ pipeline {
                                     doGenerateSubmoduleConfigurations: false,
                                     extensions: [[$class: 'CleanCheckout']],
                                     submoduleCfg: [],
-                                    userRemoteConfigs: [[credentialsId: 'the-tiptop-api-repo-token', url: 'http://gitlab.dsp-archiwebo22b-ji-rw-ah.fr/dev/the-tiptop-api']]])
+                                    userRemoteConfigs: [[credentialsId: 'the-tiptop-api-repo-token', url: 'https://gitlab.dsp-archiwebo22b-ji-rw-ah.fr/dev/the-tiptop-api']]])
                             }
                         } else {
                             echo "Le dossier 'the-tiptop-api-dev' existe déjà."
@@ -31,7 +31,7 @@ pipeline {
                                     doGenerateSubmoduleConfigurations: false,
                                     extensions: [[$class: 'CleanCheckout']],
                                     submoduleCfg: [],
-                                    userRemoteConfigs: [[credentialsId: 'the-tiptop-api-repo-token', url: 'http://gitlab.dsp-archiwebo22b-ji-rw-ah.fr/dev/the-tiptop-api']]])
+                                    userRemoteConfigs: [[credentialsId: 'the-tiptop-api-repo-token', url: 'https://gitlab.dsp-archiwebo22b-ji-rw-ah.fr/dev/the-tiptop-api']]])
                             }
                         }
                     }

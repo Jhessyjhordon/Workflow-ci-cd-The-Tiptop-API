@@ -22,7 +22,7 @@ const getAllJackpots = async (req, res) => {
         return res.status(200).json({
             error: false,
             message: ['Liste des jackpots'],
-            jackpots: results
+            jackpots: Jackpots
         });
 
     } catch (error) {

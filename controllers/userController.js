@@ -84,6 +84,7 @@ const UserCreation = async (req, res) => {
             phone: body.phone,
             password: hash,
             birthDate: body.birthDate,
+            address: body.address,
             CreatedAt: new Date(),
             UpdatedAt: new Date(),
             isVerify: true,

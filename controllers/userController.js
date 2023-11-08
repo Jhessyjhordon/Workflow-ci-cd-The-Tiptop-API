@@ -44,7 +44,7 @@ const UserRegister = async (req, res) => {
             expiresAt: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
         });
 
-        mailService.sendConfirmationEmail(newUser.email, token);
+        mailService.sendConfirmationEmail(newUser.email, newUser.token);
 
         return res.status(200).json({
             error: false,
@@ -77,20 +77,24 @@ const UserCreation = async (req, res) => {
         // const hash = await argon2.hash(body.password);
         saltRounds = 10
         const hash = bcrypt.hashSync(body.password, saltRounds);
+        const token = accountCofirmationService.generateConfirmationToken()
         const newUser = await User.create({
             firstname: body.firstname,
             lastname: body.lastname,
             email: body.email,
             phone: body.phone,
             password: hash,
+            token:token,
             birthDate: body.birthDate,
             address: body.address,
             CreatedAt: new Date(),
             UpdatedAt: new Date(),
-            isVerify: true,
+            isVerify: false,
             role: body.role,
             confirmAt: new Date()
         });
+
+        mailService.sendConfirmationEmail(newUser.email, newUser.token);
 
         return res.status(200).json({
             error: false,

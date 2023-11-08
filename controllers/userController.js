@@ -524,5 +524,82 @@ const UserConfirme = async (req, res) => {
     }
 };
 
+const partialUpdateUserById = async (req, res) => {
+    const token = req.headers.authorization;
+    const userId = req.params.id;
+    const body = req.body;
+
+    try {
+        if (!token) {
+            return res.status(401).json({
+                error: true,
+                message: ["Accès non autorisé"] // Token manquant
+            });
+        }
+
+        const userToUpdate = await User.findByPk(userId);
+
+        if (!userToUpdate) {
+            return res.status(404).json({
+                error: true,
+                message: ["Utilisateur non trouvé"]
+            });
+        }
+
+        // Vous pouvez décommenter et modifier les parties de code ci-dessous en fonction de vos besoins de mise à jour partielle des champs d'utilisateur
+        if (body.firstname) {
+            userToUpdate.firstname = body.firstname;
+        }
+        if (body.lastname) {
+            userToUpdate.lastname = body.lastname;
+        }
+        if (body.email) {
+            userToUpdate.email = body.email;
+        }
+        if (body.phone) {
+            userToUpdate.phone = body.phone;
+        }
+        if (body.address) {
+            userToUpdate.address = body.address;
+        }
+        if (body.birthDate) {
+            userToUpdate.birthDate = body.birthDate;
+        }
+        if (body.newPassword) {
+            // Ajoutez le code pour mettre à jour le mot de passe si nécessaire
+            // Assurez-vous de gérer les hashs des mots de passe correctement
+            // Par exemple, vous pouvez utiliser bcrypt pour le hashage
+            const saltRounds = 10;
+            const hash = bcrypt.hashSync(body.newPassword, saltRounds);
+            userToUpdate.password = hash;
+        }
+
+        await userToUpdate.save();
+
+        return res.status(200).json({
+            error: false,
+            message: ['Utilisateur partiellement mis à jour avec succès']
+        });
+
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour partielle de l\'utilisateur avec Sequelize :', error);
+        return res.status(500).json({
+            error: true,
+            message: ["Une erreur est survenue lors de la mise à jour partielle de l'utilisateur"]
+        });
+    }
+};
+
   
-module.exports = { UserLogin, UserRegister, getUserById, deleteUserById, updateUserById, getAllUsers, getAllUsersByRoleClient, UserCreation, GoogleAuth, uploadPhoto, UserConfirme };
+module.exports = { UserLogin, 
+    UserRegister, 
+    getUserById, 
+    deleteUserById, 
+    updateUserById, 
+    getAllUsers, 
+    getAllUsersByRoleClient, 
+    UserCreation, 
+    GoogleAuth, 
+    uploadPhoto, 
+    UserConfirme,
+    partialUpdateUserById };

@@ -181,6 +181,38 @@ router.post('/', userMiddleware.validateUserCreation(Validator.userSchema), user
 
 /**
  * @swagger
+ * /user/{id}:
+ *   patch:
+ *     summary: Met à jour partiellement un utilisateur par son ID
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID de l'utilisateur à mettre à jour
+ *       - in: body
+ *         name: user
+ *         description: Nouvelles informations partielles de l'utilisateur
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/User'  // Référence au schéma utilisateur pour la mise à jour partielle
+ *     responses:
+ *       200:
+ *         description: Utilisateur mis à jour avec succès
+ *       400:
+ *         description: Données de mise à jour partielles invalides
+ *       404:
+ *         description: Utilisateur non trouvé
+ *       500:
+ *         description: Erreur lors de la mise à jour de l'utilisateur
+ */
+router.patch('/:id', userMiddleware.checkIfUserToken, userMiddleware.validateUserId(Validator.userIdSchema), userController.partialUpdateUserById)
+
+
+/**
+ * @swagger
  * /user/register:
  *   post:
  *     summary: Enregistre un nouvel utilisateur

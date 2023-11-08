@@ -3,12 +3,73 @@ const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const Ticket = require('../models/ticketModel');
+const User = require('../models/userModel');
+const Batch = require('../models/batchModel');
 
-const today = new Date();
-const year = today.getFullYear();
-const month = today.getMonth() + 1;
-const day = today.getDate();
-const formattedToday = `${day}/${month}/${year}`;
+const verifyTicket = async (req, res) => {
+  const numTicket = req.body.numTicket;
+  try {
+    const ticket = await Ticket.findOne({ where: { numTicket: numTicket } });
+
+    if (!ticket) {
+      return res.status(404).json({
+        error: true,
+        message: ["Ticket non trouvé"]
+      });
+    }
+
+    const user = await User.findByPk(ticket.user_id);
+
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        message: ["Ce Ticket n'appartient à aucun Client"]
+      });
+    }
+
+    const batch = await Batch.findByPk(ticket.batchId);
+
+    if (!batch) {
+      return res.status(404).json({
+        error: true,
+        message: ["Lot non trouvé"]
+      });
+    }
+
+    const data = {
+      "ticket": {
+        "id": ticket.id,
+        "numTicket": ticket.numTicket,
+        "montantAchat": ticket.montantAchat,
+        "dateAchat": ticket.dateAchat,
+        "user": {
+          "lastname": user.lastname,
+          "firstname": user.firstname
+        },
+        "batch": {
+          "id": batch.id,
+          "type_lot": batch.type_lot,
+          "valeur": batch.valeur,
+          "description": batch.description
+        }
+      }
+    };
+
+    return res.status(201).json({
+      error: false,
+      message: ['Détail du ticket trouvé'],
+      data: data
+    });
+
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails du ticket', error);
+    return res.status(500).json({
+      error: true,
+      message: ["Erreur lors de la récupération des détails du ticket"]
+    });
+  }
+};
+
 
 const createTicket = async (req, res) => {
     const body = req.body;
@@ -207,4 +268,4 @@ const createTicket = async (req, res) => {
     }
   };
 
-module.exports = { createTicket, updateTicketById, deleteTicketById, getAllTickets, getTicketById, partialUpdateTicketById};
+module.exports = { createTicket, updateTicketById, deleteTicketById, getAllTickets, getTicketById, partialUpdateTicketById, verifyTicket};

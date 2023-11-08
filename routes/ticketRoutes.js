@@ -36,6 +36,24 @@ const ticketController = require('../controllers/ticketController');
  *               $ref: '#/components/schemas/Ticket'
  *       500:
  *         description: Une erreur de serveur s'est produite
+ *   post:
+ *     summary: Vérifier le ticket 
+ *     tags: [Tickets]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TicketVerification'
+ *     responses:
+ *       201:
+ *         description: Le ticket a été créé avec succès.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Ticket'
+ *       500:
+ *         description: Une erreur de serveur s'est produite
  * 
  * /ticket/{id}:
  *   get:
@@ -96,9 +114,44 @@ const ticketController = require('../controllers/ticketController');
  *         description: Ticket non trouvé
  *       500:
  *         description: Erreur lors de la mise à jour du ticket
+ *   patch:
+ *     summary: Met à jour partielement un ticket par son ID
+ *     tags: [Tickets]
+ *     parameters:
+ *       - in: path
+ *         name: numTicket
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID du ticket à mettre à jour
+ *       - in: body
+ *         name: ticket
+ *         description: Nouvelles informations du ticket
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/Ticket'
+ *     responses:
+ *       200:
+ *         description: Ticket mis à jour avec succès
+ *       400:
+ *         description: Données de mise à jour invalides
+ *       404:
+ *         description: Ticket non trouvé
+ *       500:
+ *         description: Erreur lors de la mise à jour du ticket
  * 
  * components:
  *   schemas:
+ *     TicketVerification:
+ *       type: object
+ *       required
+ *          - numTicket
+ *       properties:
+ *         numTicket:
+ *           type: string
+ *           description: Numéro du ticket
+ *       example:
+ *         numTicket: 3456
  *     Ticket:
  *       type: object
  *       required:
@@ -147,7 +200,8 @@ router.get('/', ticketController.getAllTickets)
 router.get('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema), ticketController.getTicketById)
 router.delete('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema), ticketController.deleteTicketById)
 router.put('/:id', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.updateTicketById)
-// router.patch('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.partialUpdateTicketById)
+router.patch('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.partialUpdateTicketById)
 router.post('/', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.createTicket)
+router.post('/', ticketMiddleware.validateTicketIdInPost(Validator.ticketIdSchema), ticketController.verifyTicket)
 
 module.exports = router

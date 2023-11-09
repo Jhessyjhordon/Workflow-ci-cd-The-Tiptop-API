@@ -197,7 +197,7 @@ router.post('/', userMiddleware.validateUserCreation(Validator.userSchema), user
  *         description: Nouvelles informations partielles de l'utilisateur
  *         required: true
  *         schema:
- *           $ref: '#/components/schemas/User'  // Référence au schéma utilisateur pour la mise à jour partielle
+ *           $ref: '#/components/schemas/User'
  *     responses:
  *       200:
  *         description: Utilisateur mis à jour avec succès

@@ -27,7 +27,7 @@ const verifyTicket = async (req, res) => {
       });
     }
 
-    const batch = await Batch.findByPk(ticket.batchId);
+    const batch = await Batch.findByPk(ticket.batch_id);
 
     if (!batch) {
       return res.status(404).json({

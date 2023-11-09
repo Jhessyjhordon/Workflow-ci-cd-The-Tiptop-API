@@ -124,8 +124,7 @@ const ticketController = require('../controllers/ticketController');
  *         name: numTicket
  *         schema:
  *           type: string
- *         required:
- *           - numTicket
+ *         required: true
  *         description: ID du ticket à mettre à jour
  *       - in: body
  *         name: ticket
@@ -147,7 +146,7 @@ const ticketController = require('../controllers/ticketController');
  *   schemas:
  *     TicketVerification:
  *       type: object
- *       required
+ *       required:
  *          - numTicket
  *       properties:
  *         numTicket:
@@ -205,6 +204,6 @@ router.delete('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema
 router.put('/:id', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.updateTicketById)
 router.patch('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.partialUpdateTicketById)
 router.post('/', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.createTicket)
-router.post('/verify', ticketMiddleware.validateTicketIdInPost(Validator.ticketIdSchema), ticketController.verifyTicket)
+router.post('/', ticketMiddleware.validateTicketIdInPost(Validator.ticketIdSchema), ticketController.verifyTicket)
 
 module.exports = router

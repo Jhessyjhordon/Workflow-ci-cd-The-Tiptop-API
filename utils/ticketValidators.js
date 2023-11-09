@@ -22,7 +22,10 @@ const ticketPatchSchema = Yup.object({
 });
 
 const ticketIdSchema = Yup.object({
+    id: Yup.number().required().positive().integer()
+});
+const ticketNumTicketSchema = Yup.object({
     numTicket: Yup.number().required().positive().integer()
 });
 
-module.exports = { ticketSchema, ticketIdSchema, ticketPatchSchema};
+module.exports = { ticketSchema, ticketIdSchema, ticketPatchSchema, ticketNumTicketSchema};

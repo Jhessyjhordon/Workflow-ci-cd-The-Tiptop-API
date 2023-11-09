@@ -36,6 +36,8 @@ const ticketController = require('../controllers/ticketController');
  *               $ref: '#/components/schemas/Ticket'
  *       500:
  *         description: Une erreur de serveur s'est produite
+ * 
+ * /ticket/verify:
  *   post:
  *     summary: Vérifier le ticket 
  *     tags: [Tickets]

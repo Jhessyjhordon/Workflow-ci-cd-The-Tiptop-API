@@ -124,7 +124,8 @@ const ticketController = require('../controllers/ticketController');
  *         name: numTicket
  *         schema:
  *           type: string
- *         required: true
+ *         required:
+ *           - numTicket
  *         description: ID du ticket à mettre à jour
  *       - in: body
  *         name: ticket

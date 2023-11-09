@@ -53,7 +53,13 @@ const ticketController = require('../controllers/ticketController');
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Ticket'
+ *               $ref: '#/components/schemas/TicketDetails'
+ *       404:
+ *        description: Ticket non trouvé ou détails introuvables
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/TicketDetailsError'
  *       500:
  *         description: Une erreur de serveur s'est produite
  * 
@@ -154,6 +160,71 @@ const ticketController = require('../controllers/ticketController');
  *           description: Numéro du ticket
  *       example:
  *         numTicket: 3456
+ *     TicketDetails:
+ *       type: object
+ *       properties:
+ *         error:
+ *           type: boolean
+ *           example: false
+ *         message:
+ *           type: array
+ *           items:
+ *             type: string
+ *           example: ["Détail du ticket trouvé"]
+ *         data:
+ *           type: object
+ *           properties:
+ *             ticket:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 numTicket:
+ *                   type: string
+ *                   example: "A12345"
+ *                 montantAchat:
+ *                   type: number
+ *                   example: 50.0
+ *                 dateAchat:
+ *                   type: string
+ *                   format: date-time
+ *                   example: "2023-11-08T12:00:00Z"
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     lastname:
+ *                       type: string
+ *                       example: "Doe"
+ *                     firstname:
+ *                       type: string
+ *                       example: "John"
+ *                 batch:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 10
+ *                     type_lot:
+ *                       type: string
+ *                       example: "Type A"
+ *                     valeur:
+ *                       type: number
+ *                       example: 100.0
+ *                     description:
+ *                       type: string
+ *                       example: "Description du lot A"
+ *     TicketDetailsError:
+ *       type: object
+ *       properties:
+ *         error:
+ *           type: boolean
+ *           example: true
+ *         message:
+ *           type: array
+ *           items:
+ *             type: string
+ *           example: ["Ticket non trouvé"]
  *     Ticket:
  *       type: object
  *       required:
@@ -204,6 +275,6 @@ router.delete('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema
 router.put('/:id', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.updateTicketById)
 router.patch('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.partialUpdateTicketById)
 router.post('/', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.createTicket)
-router.post('/', ticketMiddleware.validateTicketIdInPost(Validator.ticketIdSchema), ticketController.verifyTicket)
+router.post('/verify', ticketMiddleware.validateTicketIdInPost(Validator.ticketIdSchema), ticketController.verifyTicket)
 
 module.exports = router

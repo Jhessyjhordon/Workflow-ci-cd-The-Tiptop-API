@@ -6,9 +6,9 @@ const sequelizeTest = new Sequelize(
   process.env.MYSQL_TEST_USER,
   process.env.MYSQL_TEST_PASSWORD,
   {
-    host: process.env.DB_TEST_HOST,
+    host: process.env.DB_TEST_HOST || 'localhost',
     dialect: 'mysql',
-    // Autres options si nécessaires
+    logging: false, // Désactive les logs SQL lors des tests
   }
 );
 

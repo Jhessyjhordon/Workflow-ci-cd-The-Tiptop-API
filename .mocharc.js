@@ -5,6 +5,6 @@ module.exports = {
     reporter: 'spec',
     timeout: 10000,
     exit: true,
-    file: ['./test/setup.js', './test/*.test.js'], // Exécutez le script de configuration avant les tests
+    file: ['./tests/setup.js', './tests/*.test.js'], // Exécutez le script de configuration avant les tests
   };
   

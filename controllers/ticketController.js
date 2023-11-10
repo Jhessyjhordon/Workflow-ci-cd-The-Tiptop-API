@@ -1,5 +1,4 @@
 const db = require('../db');
-const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const Ticket = require('../models/ticketModel');

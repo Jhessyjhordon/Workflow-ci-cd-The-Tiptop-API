@@ -1,5 +1,4 @@
 const db = require('../db');
-const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 const Shop = require('../models/shopModel');
 require('dotenv').config();

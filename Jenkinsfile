@@ -48,6 +48,9 @@ pipeline {
                 }
                 echo "Lancement des tests avec Mocha & Chai"
                 dir("${WORKSPACE}/the-tiptop-api-dev") {
+                    echo "Vérification du répertoire de travail"
+                    sh 'pwd' // Imprime le répertoire de travail actuel
+                    sh 'ls -la' // Liste tous les fichiers et dossiers dans le répertoire courant
                     sh "npm test" // Exécution des tests mocha pour l'API dans le workdir
                 }
             }

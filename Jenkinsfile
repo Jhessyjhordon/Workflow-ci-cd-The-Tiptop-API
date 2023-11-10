@@ -17,7 +17,7 @@ pipeline {
                             echo "Workspace : ${WORKSPACE}/the-tiptop-api-dev"
                             dir("${WORKSPACE}/the-tiptop-api-dev") {
                                 checkout([$class: 'GitSCM',
-                                    branches: [[name: '*/test-mocha']],
+                                    branches: [[name: '*/dev']],
                                     doGenerateSubmoduleConfigurations: false,
                                     extensions: [[$class: 'CleanCheckout']],
                                     submoduleCfg: [],
@@ -27,7 +27,7 @@ pipeline {
                             echo "Le dossier 'the-tiptop-api-dev' existe déjà."
                             dir("${WORKSPACE}/the-tiptop-api-dev") {
                                 checkout([$class: 'GitSCM',
-                                    branches: [[name: '*/test-mocha']],
+                                    branches: [[name: '*/dev']],
                                     doGenerateSubmoduleConfigurations: false,
                                     extensions: [[$class: 'CleanCheckout']],
                                     submoduleCfg: [],

@@ -4,7 +4,7 @@
   "description": "Cette Api a été mis en place, par un groupe d'étudiant, dans le cadre d'un projet de fin d'année pour validation du Diplome de Master 2 Architecte Web, il offre des points de terminaison pour le siteweb Jeux Concours Thé Tiptop ",
   "main": "server.js",
   "scripts": {
-    "test": "mocha tests/**/*.test.js --timeout 10000 --exit",
+    "test": "mocha --config ./.mocharc.js --timeout 10000 --exit",
     "init-db": "node init-db.js",
     "start": "node server.js",
     "seed": "node seed.js",

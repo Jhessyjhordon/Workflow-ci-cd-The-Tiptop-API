@@ -34,7 +34,7 @@ describe('User Routes', () => {
     .send({ email: 'admin@example.com', password: 'admin_password' });
     token_admin = response_admin.body.jwt;
   });
-  });
+});
 
   describe('GET /user', () => {
     it('should get list of all users when token is provided and user is an employee', async () => {
@@ -134,12 +134,13 @@ describe('User Routes', () => {
       .post('/user/login')
       .send({ email: 'customer@example.com', password: 'customer_password' });
     token_customer = response_customer.body.jwt;
+
+    const response_admin = await chai
+    .request(server)
+    .post('/user/login')
+    .send({ email: 'admin@example.com', password: 'admin_password' });
+    token_admin = response_admin.body.jwt;
   });
-    const response_customer = await chai
-      .request(server)
-      .post('/user/login')
-      .send({ email: 'admin@example.com', password: 'admin_password' });
-      token_admin = response_customer.body.jwt;
   });
 
   describe('GET /user', () => {

@@ -3,7 +3,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const { sequelizeTest } = require('../db.test');
 const UserModel = require('../models/userModel');
-const BatchModel = require('../models/batchModel');
+const Jackpot = require('../models/jackpotModel');
 // Importez les autres modèles nécessaires
 
 chai.use(chaiHttp);

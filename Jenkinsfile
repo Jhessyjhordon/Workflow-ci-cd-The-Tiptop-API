@@ -51,6 +51,7 @@ pipeline {
                     echo "Vérification du répertoire de travail"
                     sh 'pwd' // Imprime le répertoire de travail actuel
                     sh 'ls -la' // Liste tous les fichiers et dossiers dans le répertoire courant
+                    sh 'ls -la tests'
                     sh "npm test" // Exécution des tests mocha pour l'API dans le workdir
                 }
             }

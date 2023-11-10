@@ -45,7 +45,6 @@ describe('User Routes', () => {
       expect(res).to.have.status(200);
       expect(res.body).to.be.an('object');
       expect(res.body.users).to.be.an('array');
-    });
 
     it('should not get list of all users when token is missing', async () => {
       const res = await chai.request(server).get('/user');

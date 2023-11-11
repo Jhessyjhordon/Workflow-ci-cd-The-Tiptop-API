@@ -16,6 +16,7 @@ describe('User Routes', () => {
 
     // Avant les tests, obtenir un token valide pour les routes qui en ont besoin
   before(async () => {
+    console.log('Début du bloc before');
     // Utilisez les informations d'identification appropriées pour les tests
     const response_employee = await chai
       .request(server)
@@ -36,6 +37,7 @@ describe('User Routes', () => {
     .send({ email: 'admin@example.com', password: 'admin_password' });
     token_admin = response_admin.body.jwt;
     console.log("Réponse de customer : ", response_admin)
+    console.log('Fin du bloc before');
   });
   });
 

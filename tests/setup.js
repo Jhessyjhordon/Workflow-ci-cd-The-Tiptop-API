@@ -14,47 +14,73 @@ before(async () => {
   await sequelizeTest.sync({ force: true });
 });
 
+const usersData = [
+  {
+    firstname: 'AdminFirst',
+    lastname: 'AdminLast',
+    email: 'admin@example.com',
+    password: 'admin_password',
+    role: 'admin',
+  },
+  {
+    firstname: 'EmployeeFirst',
+    lastname: 'EmployeeLast',
+    email: 'employee@example.com',
+    password: 'employee_password',
+    role: 'employee',
+  },
+  {
+    firstname: 'CustomerFirst',
+    lastname: 'CustomerLast',
+    email: 'customer@example.com',
+    password: 'customer_password',
+    role: 'customer',
+  },
+  {
+    firstname: 'toto',
+    lastname: 'tata',
+    email: 'toto@example.com',
+    password: 'toto',
+    role: 'customer',
+  },
+  {
+    firstname: 'tomi',
+    lastname: 'taty',
+    email: 'taty@example.com',
+    password: 'toto',
+    role: 'customer',
+  },
+  {
+    firstname: 'tony',
+    lastname: 'taty',
+    email: 'tony@example.com',
+    password: 'toto',
+    role: 'customer',
+  },
+  {
+    firstname: 'fony',
+    lastname: 'faty',
+    email: 'tony@example.com',
+    password: 'toto',
+    role: 'customer',
+  },
+];
+
+jackpot_data = [
+  {
+  date_tirage: "2023-08-18",
+  valeur: 360, // Un de thé d'une Valeur de 360
+  user_id : 6,
+},
+
+]
+
+
 // Insertion de données de test
 const insertTestData = async () => {
   try {
     // Exemple : Insertion d'un utilisateur de test
-    const usersData = [
-      {
-        firstname: 'AdminFirst',
-        lastname: 'AdminLast',
-        email: 'admin@example.com',
-        password: 'admin_password',
-        role: 'admin',
-      },
-      {
-        firstname: 'EmployeeFirst',
-        lastname: 'EmployeeLast',
-        email: 'employee@example.com',
-        password: 'employee_password',
-        role: 'employee',
-      },
-      {
-        firstname: 'CustomerFirst',
-        lastname: 'CustomerLast',
-        email: 'customer@example.com',
-        password: 'customer_password',
-        role: 'customer',
-      },
-      {
-        firstname: 'toto',
-        lastname: 'tata',
-        email: 'toto@example.com',
-        password: 'toto',
-        role: 'customer',
-      },
-      {
-        firstname: 'tomi',
-        lastname: 'taty',
-        email: 'taty@example.com',
-        password: 'toto',
-        role: 'customer',
-      },
-    ];
+   
 
     // Boucle pour créer les utilisateurs
     for (const userData of usersData) {
@@ -64,7 +90,7 @@ const insertTestData = async () => {
     // Vous pouvez effectuer des insertions similaires pour d'autres modèles
     // const batch = await BatchModel.create({ /* ... */ });
     // const shop = await ShopModel.create({ /* ... */ });
-    // const jackpot = await JackpotModel.create({ /* ... */ });
+    await JackpotModel.create( jackpot_data);
     // const ticket = await TicketModel.create({ /* ... */ });
 
     console.log('Données de test insérées avec succès.');
@@ -92,7 +118,11 @@ after(async () => {
     // Vous pouvez effectuer des suppressions similaires pour d'autres modèles
     // await BatchModel.destroy({ /* ... */ });
     // await ShopModel.destroy({ /* ... */ });
-    // await JackpotModel.destroy({ /* ... */ });
+    await JackpotModel.destroy({ 
+      where: {
+        valeur: 360
+      },
+    });
     // await TicketModel.destroy({ /* ... */ });
 
     console.log('Données de test supprimées avec succès.');

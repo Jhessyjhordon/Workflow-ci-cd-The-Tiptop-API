@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 // const app = require('../index'); // Votre fichier d'application Express
 const server = require('../server'); 
+const supertest = require('supertest');
 
 
 const expect = chai.expect;
@@ -43,15 +44,15 @@ describe('User Routes', () => {
         .get('/user')
         .set('Authorization', `Bearer ${token_employee}`);
 
-      expect(res).to.have.status(200);
+      expect(res.status).to.equal(200);
       expect(res.body).to.be.an('object');
       expect(res.body.users).to.be.an('array');
     });
 
     it('should not get list of all users when token is missing', async () => {
-      const res = await chai.request(server).get('/user');
+      const res = await supertest(server).get('/user');
 
-      expect(res).to.have.status(401);
+      expect(res.status).to.equal(401);
       expect(res.body).to.be.an('object');
       expect(res.body.error).to.equal(true);
       expect(res.body.message).to.include('Accès non autorisé');
@@ -69,7 +70,7 @@ describe('User Routes', () => {
         .get('/user')
         .set('Authorization', `Bearer ${expiredToken}`);
 
-      expect(res).to.have.status(401);
+      expect(res.status).to.equal(401);
       expect(res.body).to.be.an('object');
       expect(res.body.error).to.equal(true);
       expect(res.body.message).to.include('Veillez vous reconnecter');
@@ -81,7 +82,7 @@ describe('User Routes', () => {
         .get('/user')
         .set('Authorization', `Bearer ${token_customer}`);
 
-      expect(res).to.have.status(403);
+      expect(res.status).to.equal(403);
       expect(res.body).to.be.an('object');
       expect(res.body.error).to.equal(server);
       expect(res.body.message).to.include('Accès refusé');
@@ -95,7 +96,7 @@ describe('User Routes', () => {
         .get('/user/2')
         .set('Authorization', `Bearer ${token_employee}`);
 
-      expect(res).to.have.status(200);
+      expect(res.status).to.equal(200);
       expect(res.body.error).to.be.false;
       expect(res.body).to.be.an('object');
       // Assurez-vous d'ajuster cela en fonction de la structure de votre réponse
@@ -108,7 +109,7 @@ describe('User Routes', () => {
         .get('/user/999')
         .set('Authorization', `Bearer ${token_employee}`);
 
-      expect(res).to.have.status(404);
+      expect(res.status).to.equal(404);
       expect(res.body.error).to.be.true;
     });
 
@@ -118,15 +119,15 @@ describe('User Routes', () => {
         .get('/user/invalid_id')
         .set('Authorization', `Bearer ${token_employee}`);
 
-      expect(res).to.have.status(400);
+      expect(res.status).to.equal(400);
       expect(res.body.error).to.be.true;
     });
 
     it('should not get a user by ID (without token)', async () => {
       const userId = '5';
-      const res = await chai.request(server).get(`/user/${userId}`);
+      const res = await supertest(server).get(`/user/${userId}`);
 
-      expect(res).to.have.status(403);
+      expect(res.status).to.equal(403);
       expect(res.body.error).to.be.true;
     });
 
@@ -138,7 +139,7 @@ describe('User Routes', () => {
         .get(`/user/${userId}`)
         .set('Authorization', `Bearer ${invalidToken}`);
 
-      expect(res).to.have.status(403);
+      expect(res.status).to.equal(403);
       expect(res.body.error).to.be.true;
     });
   });
@@ -153,7 +154,7 @@ describe('User Routes', () => {
         .delete('/user/5')
         .set('Authorization', `Bearer ${token_admin}`);
 
-      expect(res).to.have.status(200);
+      expect(res.status).to.equal(200);
       expect(res.body.error).to.be.false;
       expect(res.body.message).to.deep.equal([
         'Utilisateur supprimé avec succès',
@@ -167,7 +168,7 @@ describe('User Routes', () => {
         .delete(`/user/${nonExistentUserId}`)
         .set('Authorization', `Bearer ${token_employee}`);
 
-      expect(res).to.have.status(404);
+      expect(res.status).to.equal(404);
       expect(res.body.error).to.be.true;
       expect(res.body.message).to.deep.equal(['Utilisateur non trouvé']);
     });
@@ -179,7 +180,7 @@ describe('User Routes', () => {
         .delete(`/user/${invalidUserId}`)
         .set('Authorization', `Bearer ${token_employee}`);
 
-      expect(res).to.have.status(400);
+      expect(res.status).to.equal(400);
       expect(res.body.error).to.be.true;
       expect(res.body.message).to.include('ID de l\'utilisateur invalide');
     });
@@ -202,7 +203,7 @@ describe('User Routes', () => {
             .set('Authorization', `Bearer ${token_customer}`)
             .send(updatedUserData);
     
-          expect(res).to.have.status(200);
+          expect(res.status).to.equal(200);
           expect(res.body.error).to.be.false;
           expect(res.body.message).to.deep.equal([
             'Utilisateur mis à jour avec succès',
@@ -224,7 +225,7 @@ describe('User Routes', () => {
             .set('Authorization', `Bearer ${token_employee}`)
             .send(updatedUserData);
     
-          expect(res).to.have.status(404);
+          expect(res.status).to.equal(404);
           expect(res.body.error).to.be.true;
           expect(res.body.message).to.deep.equal(['Utilisateur non trouvé']);
         });
@@ -244,7 +245,7 @@ describe('User Routes', () => {
             .set('Authorization', `Bearer ${token_employee}`)
             .send(updatedUserData);
     
-          expect(res).to.have.status(400);
+          expect(res.status).to.equal(400);
           expect(res.body.error).to.be.true;
           expect(res.body.message).to.include('ID de l\'utilisateur invalide');
         });
@@ -263,7 +264,7 @@ describe('User Routes', () => {
             .set('Authorization', `Bearer ${token_employee}`)
             .send(invalidUserData);
     
-          expect(res).to.have.status(400);
+          expect(res.status).to.equal(400);
           expect(res.body.error).to.be.true;
           expect(res.body.message).to.include('Données de mise à jour invalides');
         });
@@ -281,7 +282,7 @@ describe('User Routes', () => {
             .put('/user/6')
             .send(updatedUserData);
     
-          expect(res).to.have.status(403);
+          expect(res.status).to.equal(403);
         });
     
     });
@@ -296,9 +297,9 @@ describe('User Routes', () => {
             password: 'motdepasse',
           };
     
-          const res = await chai.request(server).post('/user').send(newUser);
+          const res = await supertest(server).post('/user').send(newUser);
     
-          expect(res).to.have.status(200);
+          expect(res.status).to.equal(200);
           expect(res.body.error).to.be.false;
           expect(res.body.message).to.deep.equal(['Utilisateur inscrit avec succès']);
         });
@@ -318,7 +319,7 @@ describe('User Routes', () => {
             .set('Authorization', `Bearer ${token_employee}`)
             .send(newUser);
     
-          expect(res).to.have.status(200);
+          expect(res.status).to.equal(200);
           expect(res.body.error).to.be.false;
           expect(res.body.message).to.deep.equal(['Utilisateur inscrit avec succès']);
         });
@@ -332,9 +333,9 @@ describe('User Routes', () => {
             password: 'motdepasse',
           };
     
-          const res = await chai.request(server).post('/user').send(invalidUserData);
+          const res = await supertest(server).post('/user').send(invalidUserData);
     
-          expect(res).to.have.status(400);
+          expect(res.status).to.equal(400);
           expect(res.body.error).to.be.true;
           expect(res.body.message).to.include('Données d\'enregistrement invalides');
         });
@@ -348,9 +349,9 @@ describe('User Routes', () => {
             password: 'motdepasse',
           };
     
-          const res = await chai.request(server).post('/user').send(newUser);
+          const res = await supertest(server).post('/user').send(newUser);
     
-          expect(res).to.have.status(403);
+          expect(res.status).to.equal(403);
         });
     
         it('should not create a new user with valid token but not employee role', async () => {
@@ -369,7 +370,7 @@ describe('User Routes', () => {
         .set('Authorization', `Bearer ${invalidToken}`)
         .send(newUser);
 
-      expect(res).to.have.status(403);
+      expect(res.status).to.equal(403);
     });    
 
     it('should return a 401 if registration is attempted with an invalid token', async () => {
@@ -387,7 +388,7 @@ describe('User Routes', () => {
           .set('Authorization', 'Bearer token_invalide')
           .send(newUser);
   
-        expect(res).to.have.status(401);
+        expect(res.status).to.equal(401);
       });
     
       describe('PATCH /user/:id', () => {
@@ -405,7 +406,7 @@ describe('User Routes', () => {
             .set('Authorization', `Bearer ${token}`)
             .send(updatedUserData);
       
-          expect(res).to.have.status(200);
+          expect(res.status).to.equal(200);
           expect(res.body.error).to.be.false;
           expect(res.body.message).to.deep.equal(['Utilisateur mis à jour avec succès']);
         });
@@ -422,7 +423,7 @@ describe('User Routes', () => {
             .set('Authorization', `Bearer ${token}`)
             .send(updatedUserData);
       
-          expect(res).to.have.status(404);
+          expect(res.status).to.equal(404);
           expect(res.body.error).to.be.true;
           expect(res.body.message).to.deep.equal(['Utilisateur non trouvé']);
         });
@@ -439,7 +440,7 @@ describe('User Routes', () => {
             .set('Authorization', `Bearer ${token}`)
             .send(updatedUserData);
       
-          expect(res).to.have.status(400);
+          expect(res.status).to.equal(400);
           expect(res.body.error).to.be.true;
           expect(res.body.message).to.include('ID de l\'utilisateur invalide');
         });
@@ -455,7 +456,7 @@ describe('User Routes', () => {
             .set('Authorization', `Bearer ${token}`)
             .send(invalidUserData);
       
-          expect(res).to.have.status(400);
+          expect(res.status).to.equal(400);
           expect(res.body.error).to.be.true;
           expect(res.body.message).to.include('Données de mise à jour invalides');
         });
@@ -465,9 +466,9 @@ describe('User Routes', () => {
             firstname: 'Nouveau Prénom',
           };
       
-          const res = await chai.request(server).patch('/user/6').send(updatedUserData);
+          const res = await supertest(server).patch('/user/6').send(updatedUserData);
       
-          expect(res).to.have.status(403);
+          expect(res.status).to.equal(403);
         });
       
         it('should not update a user partially by ID (with valid token but not employee role)', async () => {
@@ -482,7 +483,7 @@ describe('User Routes', () => {
             .set('Authorization', `Bearer ${token}`)
             .send(updatedUserData);
       
-          expect(res).to.have.status(403);
+          expect(res.status).to.equal(403);
         });
       });
     

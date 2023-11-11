@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 // const app = require('../index'); // Votre fichier d'application Express
 const server = require('../server'); 
+const supertest = require('supertest');
 
 
 const expect = chai.expect;
@@ -49,7 +50,7 @@ describe('User Routes', () => {
     });
 
     it('should not get list of all users when token is missing', async () => {
-      const res = await chai.request(server).get('/user');
+      const res = await supertest(server).get('/user');
 
       expect(res).to.have.status(401);
       expect(res.body).to.be.an('object');
@@ -124,7 +125,7 @@ describe('User Routes', () => {
 
     it('should not get a user by ID (without token)', async () => {
       const userId = '5';
-      const res = await chai.request(server).get(`/user/${userId}`);
+      const res = await supertest(server).get(`/user/${userId}`);
 
       expect(res).to.have.status(403);
       expect(res.body.error).to.be.true;
@@ -296,7 +297,7 @@ describe('User Routes', () => {
             password: 'motdepasse',
           };
     
-          const res = await chai.request(server).post('/user').send(newUser);
+          const res = await supertest(server).post('/user').send(newUser);
     
           expect(res).to.have.status(200);
           expect(res.body.error).to.be.false;
@@ -332,7 +333,7 @@ describe('User Routes', () => {
             password: 'motdepasse',
           };
     
-          const res = await chai.request(server).post('/user').send(invalidUserData);
+          const res = await supertest(server).post('/user').send(invalidUserData);
     
           expect(res).to.have.status(400);
           expect(res.body.error).to.be.true;
@@ -348,7 +349,7 @@ describe('User Routes', () => {
             password: 'motdepasse',
           };
     
-          const res = await chai.request(server).post('/user').send(newUser);
+          const res = await supertest(server).post('/user').send(newUser);
     
           expect(res).to.have.status(403);
         });
@@ -465,7 +466,7 @@ describe('User Routes', () => {
             firstname: 'Nouveau Prénom',
           };
       
-          const res = await chai.request(server).patch('/user/6').send(updatedUserData);
+          const res = await supertest(server).patch('/user/6').send(updatedUserData);
       
           expect(res).to.have.status(403);
         });

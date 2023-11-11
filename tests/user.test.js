@@ -21,20 +21,20 @@ describe('User Routes', () => {
       .request(server)
       .post('/user/login')
       .send({ email: 'employee@example.com', password: 'employee_password' });
-    token_employee = response_employee.body.jwt;
+    this.token_employee = response_employee.body.jwt;
     console.log("Réponse de customer : ", response_employee)
 
     const response_customer = await chai
       .request(server)
       .post('/user/login')
       .send({ email: 'customer@example.com', password: 'customer_password' });
-    token_customer = response_customer.body.jwt;
+    this.token_customer = response_customer.body.jwt;
     console.log("Réponse de customer : ", response_customer)
     const response_admin = await chai
     .request(server)
     .post('/user/login')
     .send({ email: 'admin@example.com', password: 'admin_password' });
-    token_admin = response_admin.body.jwt;
+    this.token_admin = response_admin.body.jwt;
     console.log("Réponse de customer : ", response_admin)
   });
   });
@@ -44,7 +44,7 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .get('/user')
-        .set('Authorization', `Bearer ${token_employee}`);
+        .set('Authorization', `Bearer ${this.token_employee}`);
 
       expect(res.status).to.equal(200);
       expect(res.body).to.be.an('object');
@@ -82,7 +82,7 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .get('/user')
-        .set('Authorization', `Bearer ${token_customer}`);
+        .set('Authorization', `Bearer ${this.token_customer}`);
 
       expect(res.status).to.equal(403);
       expect(res.body).to.be.an('object');
@@ -96,7 +96,7 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .get('/user/2')
-        .set('Authorization', `Bearer ${token_employee}`);
+        .set('Authorization', `Bearer ${this.token_employee}`);
 
       expect(res.status).to.equal(200);
       expect(res.body.error).to.be.false;
@@ -109,7 +109,7 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .get('/user/999')
-        .set('Authorization', `Bearer ${token_employee}`);
+        .set('Authorization', `Bearer ${this.token_employee}`);
 
       expect(res.status).to.equal(404);
       expect(res.body.error).to.be.true;
@@ -119,7 +119,7 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .get('/user/invalid_id')
-        .set('Authorization', `Bearer ${token_employee}`);
+        .set('Authorization', `Bearer ${this.token_employee}`);
 
       expect(res.status).to.equal(400);
       expect(res.body.error).to.be.true;
@@ -168,7 +168,7 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .delete(`/user/${nonExistentUserId}`)
-        .set('Authorization', `Bearer ${token_employee}`);
+        .set('Authorization', `Bearer ${this.token_employee}`);
 
       expect(res.status).to.equal(404);
       expect(res.body.error).to.be.true;
@@ -180,7 +180,7 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .delete(`/user/${invalidUserId}`)
-        .set('Authorization', `Bearer ${token_employee}`);
+        .set('Authorization', `Bearer ${this.token_employee}`);
 
       expect(res.status).to.equal(400);
       expect(res.body.error).to.be.true;
@@ -202,7 +202,7 @@ describe('User Routes', () => {
           const res = await chai
             .request(server)
             .put('/user/3')
-            .set('Authorization', `Bearer ${token_customer}`)
+            .set('Authorization', `Bearer ${this.token_customer}`)
             .send(updatedUserData);
     
           expect(res.status).to.equal(200);
@@ -224,7 +224,7 @@ describe('User Routes', () => {
           const res = await chai
             .request(server)
             .put(`/user/${nonExistentUserId}`)
-            .set('Authorization', `Bearer ${token_employee}`)
+            .set('Authorization', `Bearer ${this.token_employee}`)
             .send(updatedUserData);
     
           expect(res.status).to.equal(404);
@@ -244,7 +244,7 @@ describe('User Routes', () => {
           const res = await chai
             .request(server)
             .put(`/user/${invalidUserId}`)
-            .set('Authorization', `Bearer ${token_employee}`)
+            .set('Authorization', `Bearer ${this.token_employee}`)
             .send(updatedUserData);
     
           expect(res.status).to.equal(400);
@@ -263,7 +263,7 @@ describe('User Routes', () => {
           const res = await chai
             .request(server)
             .put('/user/4')
-            .set('Authorization', `Bearer ${token_employee}`)
+            .set('Authorization', `Bearer ${this.token_employee}`)
             .send(invalidUserData);
     
           expect(res.status).to.equal(400);
@@ -318,7 +318,7 @@ describe('User Routes', () => {
           const res = await chai
             .request(server)
             .post('/user')
-            .set('Authorization', `Bearer ${token_employee}`)
+            .set('Authorization', `Bearer ${this.token_employee}`)
             .send(newUser);
     
           expect(res.status).to.equal(200);

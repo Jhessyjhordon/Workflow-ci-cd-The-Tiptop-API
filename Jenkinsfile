@@ -52,6 +52,8 @@ pipeline {
                     sh 'pwd' // Imprime le répertoire de travail actuel
                     sh 'ls -la' // Liste tous les fichiers et dossiers dans le répertoire courant
                     sh 'ls -la tests'
+                    // Test connexion à la DB
+                    sh 'mysql -h dbtests -P ${ACCESS_TEST_DB_PORT} -u${MYSQL_TEST_USER} -p${MYSQL_TEST_PASSWORD} -e "SHOW DATABASES;"'
                     sh "npm test" // Exécution des tests mocha pour l'API dans le workdir
                 }
             }

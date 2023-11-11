@@ -3,17 +3,17 @@ const chaiHttp = require('chai-http');
 // const app = require('../index'); // Votre fichier d'application Express
 const server = require('../server'); 
 const supertest = require('supertest');
-const jwt = require('jsonwebtoken');
 
 
 const expect = chai.expect;
 chai.use(chaiHttp);
 
-describe('User Routes', () => {
-  let token_employee;
-  let token_customer;
-  let token_admin;
+let token_employee;
+let token_customer;
+let token_admin;
 
+describe('User Routes', () => {
+  
     // Avant les tests, obtenir un token valide pour les routes qui en ont besoin
   before(async () => {
     console.log('Début du bloc before');
@@ -43,14 +43,10 @@ describe('User Routes', () => {
 
   describe('GET /user', () => {
     it('should get list of all users when token is provided and user is an employee', async () => {
-      console.log("Token de l'employee : ", token_employee)
       const res = await chai
         .request(server)
         .get('/user')
-        .set('Authorization', 'Bearer ' + token_employee);
-
-      console.log("Response Status:", res.status);
-      console.log("Response Body:", res.body);
+        .set('Authorization', `Bearer ${token_employee}`);
 
       expect(res.status).to.equal(200);
       expect(res.body).to.be.an('object');
@@ -102,7 +98,7 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .get('/user/2')
-        .set('Authorization', 'Bearer ' + token_employee);
+        .set('Authorization', `Bearer ${token_employee}`);
 
       expect(res.status).to.equal(200);
       expect(res.body.error).to.be.false;
@@ -115,7 +111,7 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .get('/user/999')
-        .set('Authorization', 'Bearer ' + token_employee);
+        .set('Authorization', `Bearer ${token_employee}`);
 
       expect(res.status).to.equal(404);
       expect(res.body.error).to.be.true;
@@ -125,7 +121,7 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .get('/user/invalid_id')
-        .set('Authorization', 'Bearer ' + token_employee);
+        .set('Authorization', `Bearer ${token_employee}`);
 
       expect(res.status).to.equal(400);
       expect(res.body.error).to.be.true;
@@ -174,7 +170,7 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .delete(`/user/${nonExistentUserId}`)
-        .set('Authorization', 'Bearer ' + token_employee);
+        .set('Authorization', `Bearer ${token_employee}`);
 
       expect(res.status).to.equal(404);
       expect(res.body.error).to.be.true;
@@ -186,7 +182,7 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .delete(`/user/${invalidUserId}`)
-        .set('Authorization', 'Bearer ' + token_employee);
+        .set('Authorization', `Bearer ${token_employee}`);
 
       expect(res.status).to.equal(400);
       expect(res.body.error).to.be.true;
@@ -230,7 +226,7 @@ describe('User Routes', () => {
           const res = await chai
             .request(server)
             .put(`/user/${nonExistentUserId}`)
-            .set('Authorization', 'Bearer ' + token_employee)
+            .set('Authorization', `Bearer ${token_employee}`)
             .send(updatedUserData);
     
           expect(res.status).to.equal(404);
@@ -250,7 +246,7 @@ describe('User Routes', () => {
           const res = await chai
             .request(server)
             .put(`/user/${invalidUserId}`)
-            .set('Authorization', 'Bearer ' + token_employee)
+            .set('Authorization', `Bearer ${token_employee}`)
             .send(updatedUserData);
     
           expect(res.status).to.equal(400);
@@ -269,7 +265,7 @@ describe('User Routes', () => {
           const res = await chai
             .request(server)
             .put('/user/4')
-            .set('Authorization', 'Bearer ' + token_employee)
+            .set('Authorization', `Bearer ${token_employee}`)
             .send(invalidUserData);
     
           expect(res.status).to.equal(400);
@@ -324,7 +320,7 @@ describe('User Routes', () => {
           const res = await chai
             .request(server)
             .post('/user')
-            .set('Authorization', 'Bearer ' + token_employee)
+            .set('Authorization', `Bearer ${token_employee}`)
             .send(newUser);
     
           expect(res.status).to.equal(200);

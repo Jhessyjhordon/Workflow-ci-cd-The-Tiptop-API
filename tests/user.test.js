@@ -3,6 +3,7 @@ const chaiHttp = require('chai-http');
 // const app = require('../index'); // Votre fichier d'application Express
 const server = require('../server'); 
 const supertest = require('supertest');
+const jwt = require('jsonwebtoken');
 
 
 const expect = chai.expect;
@@ -41,10 +42,14 @@ describe('User Routes', () => {
 
   describe('GET /user', () => {
     it('should get list of all users when token is provided and user is an employee', async () => {
+      console.log("Token de l'employee : ", this.token_employee)
       const res = await chai
         .request(server)
         .get('/user')
         .set('Authorization', `Bearer ${this.token_employee}`);
+
+      console.log("Response Status:", res.status);
+      console.log("Response Body:", res.body);
 
       expect(res.status).to.equal(200);
       expect(res.body).to.be.an('object');

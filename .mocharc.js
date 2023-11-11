@@ -3,6 +3,9 @@ module.exports = {
     require: 'dotenv/config', // Pour charger les variables d'environnement avec dotenv
     recursive: true,
     reporter: 'mocha-junit-reporter',
+    reporterOptions: {
+      mochaFile: './reports/test-results.xml'
+    },
     timeout: 10000,
     exit: true,
     file: ['./tests/setup.js'], // Exécutez le script de configuration avant les tests

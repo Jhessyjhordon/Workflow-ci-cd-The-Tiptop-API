@@ -55,6 +55,12 @@ pipeline {
                     sh "npm test" // Exécution des tests mocha pour l'API dans le workdir
                 }
             }
+
+            post {
+                always {
+                    junit 'reports/test-results.xml' // Assurez-vous que ce chemin est correct
+                }
+            }
         }
 
 

@@ -23,20 +23,20 @@ services:
     depends_on:
       - db
     command: sh -c 'while ! nc -z db 3306; do sleep 1; done; npm run dev'
-  # test:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.dev
-  #     command: ["pytest","test", "-v"] à modifier
-  #   networks:
-  #     - public
-  #   environment:
-  #   volumes:
-  #     - .:/api
-  #   stdin_open: true
-  #   tty:true
-  #   depends_on:
-  #     - db
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: sh -c 'while ! nc -z dbtests 3306; do sleep 1; done; npm test'
+    networks:
+      - public
+    environment:
+      stdin_open: true
+      tty: true
+    volumes:
+      - .:/apitest
+    depends_on:
+      - dbtests
   db:
     container_name: TheTiptop_Db
     image: mysql:latest

@@ -7,7 +7,7 @@ const sequelizeTest = new Sequelize(
   process.env.MYSQL_TEST_ROOT_PASSWORD,
   {
     host: 'dbtests',
-    port: process.env.ACCESS_TEST_DB_PORT || 3308, //On indique le port à utiliser pour se connecter à la DB
+    port: process.env.ACCESS_TEST_DB_PORT || 3306, //On indique le port à utiliser pour se connecter à la DB
     dialect: 'mysql',
     logging: false, // Désactive les logs SQL lors des tests
   }

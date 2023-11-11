@@ -5,7 +5,7 @@ const { sequelizeTest } = require('../db.test');
 const UserModel = require('../models/userModel');
 const { Op } = require("sequelize");
 // Utilisez Op pour les opérations de requête
-const Jackpot = require('../models/jackpotModel');
+const jackpotModel = require('../models/jackpotModel');
 // Importez les autres modèles nécessaires
 
 chai.use(chaiHttp);
@@ -118,7 +118,7 @@ after(async () => {
     // Vous pouvez effectuer des suppressions similaires pour d'autres modèles
     // await BatchModel.destroy({ /* ... */ });
     // await ShopModel.destroy({ /* ... */ });
-    await JackpotModel.destroy({ 
+    await jackpotModel.destroy({ 
       where: {
         valeur: 360
       },

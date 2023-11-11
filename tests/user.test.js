@@ -22,18 +22,20 @@ describe('User Routes', () => {
       .post('/user/login')
       .send({ email: 'employee@example.com', password: 'employee_password' });
     token_employee = response_employee.body.jwt;
+    console.log("Réponse de customer : ", response_employee)
 
     const response_customer = await chai
       .request(server)
       .post('/user/login')
       .send({ email: 'customer@example.com', password: 'customer_password' });
     token_customer = response_customer.body.jwt;
-
+    console.log("Réponse de customer : ", response_customer)
     const response_admin = await chai
     .request(server)
     .post('/user/login')
     .send({ email: 'admin@example.com', password: 'admin_password' });
     token_admin = response_admin.body.jwt;
+    console.log("Réponse de customer : ", response_admin)
   });
   });
 

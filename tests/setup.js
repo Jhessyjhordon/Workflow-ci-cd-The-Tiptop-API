@@ -90,7 +90,7 @@ const insertTestData = async () => {
     // Vous pouvez effectuer des insertions similaires pour d'autres modèles
     // const batch = await BatchModel.create({ /* ... */ });
     // const shop = await ShopModel.create({ /* ... */ });
-    await JackpotModel.create( jackpot_data);
+    //await JackpotModel.create( jackpot_data);
     // const ticket = await TicketModel.create({ /* ... */ });
 
     console.log('Données de test insérées avec succès.');

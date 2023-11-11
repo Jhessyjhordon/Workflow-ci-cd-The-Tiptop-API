@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const app = require('../index'); // Votre fichier d'application Express
-const server = require('../server'); 
+const app = require('./index'); // Votre fichier d'application Express
+const server = require('./server'); 
 const expect = chai.expect;
 
 chai.use(chaiHttp);

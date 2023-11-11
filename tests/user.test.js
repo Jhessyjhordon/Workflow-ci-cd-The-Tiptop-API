@@ -23,7 +23,7 @@ describe('User Routes', () => {
       .send({ email: 'employee@example.com', password: 'employee_password' });
     token_employee = response_employee.body.jwt;
     console.log("Réponse de customer : ", response_employee)
-
+    console.log('Début du bloc before');
     const response_customer = await chai
       .request(server)
       .post('/user/login')

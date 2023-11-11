@@ -8,11 +8,11 @@ const supertest = require('supertest');
 const expect = chai.expect;
 chai.use(chaiHttp);
 
+let token_employee;
+let token_customer;
+let token_admin;
 
 describe('User Routes', () => {
-    let token_employee;
-    let token_customer;
-    let token_admin;
   
     // Avant les tests, obtenir un token valide pour les routes qui en ont besoin
   before(async () => {

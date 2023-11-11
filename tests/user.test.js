@@ -9,12 +9,11 @@ const jwt = require('jsonwebtoken');
 const expect = chai.expect;
 chai.use(chaiHttp);
 
-
 describe('User Routes', () => {
-    let token_employee;
-    let token_customer;
-    let token_admin;
-  
+  let token_employee;
+  let token_customer;
+  let token_admin;
+
     // Avant les tests, obtenir un token valide pour les routes qui en ont besoin
   before(async () => {
     // Utilisez les informations d'identification appropriées pour les tests

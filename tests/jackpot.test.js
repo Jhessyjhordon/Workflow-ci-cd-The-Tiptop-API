@@ -12,10 +12,15 @@ describe('Jackpot Routes', () => {
   
     // Avant les tests, obtenir un token valide pour les routes qui en ont besoin
     before(async () => {
-      const response = await chai.request(server)
-        .post('/user/login')
-        .send({ email: 'fidele.antipas@gmail.com', password: 'password' }); // Utilisez des données appropriées pour les tests
-      token = response.body.jwt;
+        try{
+          const response = await chai.request(server)
+            .post('/user/login')
+            .send({ email: 'fidele.antipas@gmail.com', password: 'password' }); // Utilisez des données appropriées pour les tests
+          token = response.body.jwt;     
+        } 
+        catch(error){
+            console.error('Erreur lors de la requête :', error);
+        }
     });
   
     describe('GET /jackpot', () => {

@@ -21,20 +21,20 @@ describe('User Routes', () => {
     const response_employee = await chai
       .request(server)
       .post('/user/login')
-      .send({ email: 'employee@example.com', password: 'employee_password' });
+      .send({ email: 'toto123456@gmail.com', password: 'password' });
     token_employee = response_employee.body.jwt;
     console.log("Réponse de customer : ", response_employee)
     console.log('Début du bloc before');
     const response_customer = await chai
       .request(server)
       .post('/user/login')
-      .send({ email: 'customer@example.com', password: 'customer_password' });
+      .send({ email: 'toto12345@gmail.com', password: 'password' });
     token_customer = response_customer.body.jwt;
     console.log("Réponse de customer : ", response_customer)
     const response_admin = await chai
     .request(server)
     .post('/user/login')
-    .send({ email: 'admin@example.com', password: 'admin_password' });
+    .send({ email: 'fidele.antipas@gmail.com', password: 'password' });
     token_admin = response_admin.body.jwt;
     console.log("Réponse de customer : ", response_admin)
   });
@@ -42,7 +42,7 @@ describe('User Routes', () => {
 //   afterAll(() =>{
 //     server.close();
 //   })
-  });
+});
 
   describe('GET /user', () => {
     it('should get list of all users when token is provided and user is an employee', async () => {

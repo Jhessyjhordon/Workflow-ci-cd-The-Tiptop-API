@@ -276,6 +276,13 @@ const updateUserById = async (req, res) => {
     // console.log("==================>",currentPassword, newPassword);
     console.log("==================>",body.currentPassword, body.newPassword);
 
+    if (isNaN(userId)) {
+        return res.status(400).json({
+            error: true,
+            message: ["ID utilisateur invalide"]
+        });
+    }
+
     try {
         // Rechercher l'utilisateur par ID
         const userToUpdate = await User.findByPk(userId);

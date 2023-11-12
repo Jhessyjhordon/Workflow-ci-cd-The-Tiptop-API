@@ -58,7 +58,7 @@ pipeline {
 
             post {
                 always {
-                    junit './test-results.xml' // Assurez-vous que ce chemin est correct
+                    junit 'test-results.xml' // Assurez-vous que ce chemin est correct
                 }
             }
         }

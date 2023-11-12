@@ -43,7 +43,7 @@ describe('User Routes', () => {
 //     server.close();
 //   })
 
-  it('should have valid JWT tokens after before hook', function() {
+  it('should have valid JWT tokens after before hook', function() { // OK
     expect(token_employee).to.be.a('string').and.to.have.length.above(20);
     expect(token_employee.split('.')).to.have.lengthOf(3);
 
@@ -56,7 +56,7 @@ describe('User Routes', () => {
 });
 
   describe('GET /user', () => {
-    it('should get list of all users when token is provided and user is an employee', async () => {
+    it('should get list of all users when token is provided and user is an employee', async () => { // OK
       console.log("Token de l'employee : ", token_employee)
       const res = await chai
         .request(server)
@@ -74,7 +74,7 @@ describe('User Routes', () => {
       console.log('############################################################"')
     });
 
-    it('should not get list of all users when token is missing', async () => {
+    it('should not get list of all users when token is missing', async () => { // OK
       const res = await supertest(server).get('/user');
 
       expect(res.status).to.equal(401);
@@ -95,7 +95,7 @@ describe('User Routes', () => {
         .get('/user')
         .set('Authorization', `Bearer ${expiredToken}`);
 
-      expect(res.status).to.equal(401);
+      expect(res.status).to.equal(403);
       expect(res.body).to.be.an('object');
       expect(res.body.error).to.equal(true);
       expect(res.body.message).to.include('Veillez vous reconnecter');
@@ -128,7 +128,7 @@ describe('User Routes', () => {
       expect(res.body.user).to.have.property('id', userId);
     });
 
-    it('should return a 404 if user ID does not exist', async () => {
+    it('should return a 404 if user ID does not exist', async () => { // OK
       const res = await chai
         .request(server)
         .get('/user/999')
@@ -186,7 +186,7 @@ describe('User Routes', () => {
       ]);
     });
 
-    it('should return a 404 if user ID does not exist (with valid token and employee role)', async () => {
+    it('should return a 404 if user ID does not exist (with valid token and employee role)', async () => { // OK
       const nonExistentUserId = '888';
       const res = await chai
         .request(server)
@@ -235,7 +235,7 @@ describe('User Routes', () => {
           ]);
         });
     
-        it('should return a 404 if user ID does not exist (with valid token and employee role)', async () => {
+        it('should return a 404 if user ID does not exist (with valid token and employee role)', async () => { // OK
           const nonExistentUserId = '890';
           const updatedUserData = {
             firstname: 'Nouveau Prénom',

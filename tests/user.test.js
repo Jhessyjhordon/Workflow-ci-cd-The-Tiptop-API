@@ -223,7 +223,8 @@ describe('User Routes', () => {
             phone: '1234567890',
             adress: "2 Avenue de Paris, 75000 Paris",
             birthDate: "1992-02-24",
-            role: "customer"
+            role: "customer",
+            password: "password"
           };
     
           const res = await chai

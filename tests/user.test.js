@@ -285,7 +285,7 @@ describe('User Routes', () => {
     
           expect(res.status).to.equal(400);
           expect(res.body.error).to.be.true;
-          expect(res.body.message).to.include('ID de l\'utilisateur invalide');
+          expect(res.body.message).to.include('ID utilisateur invalide');
         });
     
         it('should return a 400 if update data is invalid (with valid token and employee role)', async () => {

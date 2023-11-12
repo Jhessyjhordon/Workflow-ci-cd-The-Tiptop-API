@@ -56,12 +56,12 @@ describe('User Routes', () => {
 });
 
   describe('GET /user', () => {
-    it('should get list of all users when token is provided and user is an employee', async () => {
-      console.log("Token de l'employee : ", token_employee)
+    it('should get list of all users when token is provided and user is an admin', async () => {
+      console.log("Token de l'employee : ", token_admin)
       const res = await chai
         .request(server)
         .get('/user')
-        .set('Authorization', 'Bearer ' + token_employee);
+        .set('Authorization', 'Bearer ' + token_admin);
 
       console.log("Response Status:", res.status);
       console.log("Response Body:", res.body);

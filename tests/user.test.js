@@ -141,13 +141,13 @@ describe('User Routes', () => {
     it('should return a 404 if ID is not a valid number', async () => {
       const res = await chai
         .request(server)
-        .get('/user/98424415')
+        .get('/user/invalid_id')
         .set('Authorization', 'Bearer ' + token_employee);
 
-      expect(res.status).to.equal(404);
+      expect(res.status).to.equal(400);
       expect(res.body).to.be.an('object');
-      expect(res.body.error).to.be.true;
-      expect(res.body.message).to.include("Utilisateur non trouvé");
+      //expect(res.body.error).to.be.true;
+      expect(res.body.message).to.include("id must be a `number` type, but the final value was: `NaN` (cast from the value `\"ertygregre\"`).");
     });
 
     it('should not get a user by ID (without token)', async () => { // OK

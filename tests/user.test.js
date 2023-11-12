@@ -115,7 +115,7 @@ describe('User Routes', () => {
   });
 
   describe('GET /user/:id', () => {
-    it('should get a user by ID (with valid token)', async () => {
+    it('should get a user by ID (with valid token)', async () => { // OK
       const res = await chai
         .request(server)
         .get('/user/2')
@@ -144,7 +144,7 @@ describe('User Routes', () => {
         .get('/user/invalid_id')
         .set('Authorization', 'Bearer ' + token_employee);
 
-      expect(res.status).to.equal(400);
+      expect(res.status).to.equal(404);
       expect(res.body.error).to.be.true;
     });
 

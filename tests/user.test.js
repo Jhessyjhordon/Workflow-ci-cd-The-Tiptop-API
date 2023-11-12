@@ -83,7 +83,7 @@ describe('User Routes', () => {
       expect(res.body.message).to.include('Accès non autorisé');
     });
 
-    it('should not get list of all users when token is expired', async () => {
+    it('should not get list of all users when token is expired', async () => { // OK
       const expiredToken = jwt.sign(
         { role: 'employee' },
         process.env.JWT_SECRET_KEY,
@@ -110,7 +110,7 @@ describe('User Routes', () => {
       expect(res.status).to.equal(403);
       expect(res.body).to.be.an('object');
       expect(res.body.error).to.equal(server);
-      expect(res.body.message).to.include('Accès refusé');
+      expect(res.body.message).to.include("Accès refusé : vous n'êtes pas autorisé à effectuer cette action.");
     });
   });
 
@@ -148,7 +148,7 @@ describe('User Routes', () => {
       expect(res.body.error).to.be.true;
     });
 
-    it('should not get a user by ID (without token)', async () => {
+    it('should not get a user by ID (without token)', async () => { // OK
       const userId = '5';
       const res = await supertest(server).get(`/user/${userId}`);
 
@@ -156,7 +156,7 @@ describe('User Routes', () => {
       expect(res.body.error).to.be.true;
     });
 
-    it('should not get a user by ID (with valid token but not employee role)', async () => {
+    it('should not get a user by ID (with valid token but not employee role)', async () => { // OK
       const invalidToken = 'autre-token-factice';
       const userId = '4';
       const res = await chai

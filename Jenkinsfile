@@ -55,12 +55,6 @@ pipeline {
                     sh "npm test" // Exécution des tests mocha pour l'API dans le workdir
                 }
             }
-
-            post {
-                always {
-                    junit '**/test-results.xml' // Cherche le fichier test dans tous les sous-dossiers à partir de la racine
-                }
-            }
         }
 
 

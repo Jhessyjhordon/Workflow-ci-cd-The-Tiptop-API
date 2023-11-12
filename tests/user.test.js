@@ -174,7 +174,7 @@ describe('User Routes', () => {
     // Utilisez un ID existant dans votre base de données pour les tests positifs
     const existingUserId = '5';
 
-    it('should not delete a user by ID (with valid token and employee or customer role)', async () => {
+    it('should not delete a user by ID (with valid token and employee or customer role)', async () => { // OK
       const res = await chai
         .request(server)
         .delete('/user/5')

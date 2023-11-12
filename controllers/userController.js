@@ -385,6 +385,14 @@ const deleteUserById = async (req, res) => {
         // Décoder le token pour obtenir les informations utilisateur
         const decodedToken = authService.decodeToken(token)
 
+        // Vérifier si l'ID est un nombre - Reddy doit repasser dessus
+        if (isNaN(userId)) {
+            return res.status(400).json({
+                error: true,
+                message: ['ID de l\'utilisateur invalide']
+            });
+        }
+
         if (!userToDelete) {
             return res.status(404).json({
                 error: true,

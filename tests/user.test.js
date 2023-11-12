@@ -101,7 +101,7 @@ describe('User Routes', () => {
       expect(res.body.message).to.include('Accès refusé : Token invalide ou expiré.');
     });
 
-    it('should not get list of all users when user is not an employee', async () => {
+    it('should not get list of all users when user is not an employee', async () => { // OK
       const res = await chai
         .request(server)
         .get('/user')
@@ -125,7 +125,7 @@ describe('User Routes', () => {
       expect(res.body.error).to.be.false;
       expect(res.body).to.be.an('object');
       // Assurez-vous d'ajuster cela en fonction de la structure de votre réponse
-      expect(res.body.user).to.have.property('id', userId);
+      expect(res.body.user).to.have.property('id', id);
     });
 
     it('should return a 404 if user ID does not exist', async () => { // OK

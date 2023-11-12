@@ -109,7 +109,7 @@ describe('User Routes', () => {
 
       expect(res.status).to.equal(403);
       expect(res.body).to.be.an('object');
-      expect(res.body.error).to.equal(server);
+      expect(res.body.error).to.equal(true);
       expect(res.body.message).to.include("Accès refusé : vous n'êtes pas autorisé à effectuer cette action.");
     });
   });

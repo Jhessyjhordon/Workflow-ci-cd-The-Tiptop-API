@@ -4,7 +4,7 @@ module.exports = {
     recursive: true,
     reporter: 'mocha-junit-reporter',
     reporterOptions: {
-      mochaFile: './reports/test-results.xml'
+      mochaFile: './test-results.xml'
     },
     timeout: 10000,
     exit: true,

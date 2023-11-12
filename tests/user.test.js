@@ -215,7 +215,7 @@ describe('User Routes', () => {
         // Utilisez un ID existant dans votre base de données pour les tests positifs
         const existingUserId = '3';
     
-        it('should update a user by ID (with valid token and any role)', async () => {
+        it('should update a user by ID (with valid token and any role)', async () => { // OK
           const updatedUserData = {
             address: "2 Avenue de Paris, 75000 Paris",
             birthDate: "1992-02-24",
@@ -255,7 +255,7 @@ describe('User Routes', () => {
     
           const res = await chai
             .request(server)
-            .put(`/user/${nonExistentUserId}`)
+            .put(`/user/890`)
             .set('Authorization', 'Bearer ' + token_employee)
             .send(updatedUserData);
     

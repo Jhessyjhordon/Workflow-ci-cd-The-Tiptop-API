@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const {Sequelize, DataTypes}  = require("sequelize");
 require('dotenv').config(); // Assurez-vous d'avoir un fichier .env.test pour les variables spécifiques aux tests
 
 const sequelizeTest = new Sequelize(
@@ -14,13 +14,13 @@ const sequelizeTest = new Sequelize(
 );
 
 // Testons la connexion pour s'assurer qu'elle fonctionne correctement
-sequelizeTest
-  .authenticate()
-  .then(() => {
-    console.log('Connexion à la base de données de test établie avec succès.');
-  })
-  .catch(err => {
-    console.error('Impossible de se connecter à la base de données de test:', err);
-  });
+// sequelizeTest
+//   .authenticate()
+//   .then(() => {
+//     console.log('Connexion à la base de données de test établie avec succès.');
+//   })
+//   .catch(err => {
+//     console.error('Impossible de se connecter à la base de données de test:', err);
+//   });
 
-module.exports = { sequelizeTest };
+module.exports = { sequelizeTest, DataTypes };

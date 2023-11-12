@@ -57,11 +57,11 @@ describe('User Routes', () => {
 
   describe('GET /user', () => {
     it('should get list of all users when token is provided and user is an admin', async () => {
-      console.log("Token de l'employee : ", token_admin)
+      console.log("Token de l'employee : ", token_employee)
       const res = await chai
         .request(server)
         .get('/user')
-        .set('Authorization', 'Bearer ' + token_admin);
+        .set('Authorization', 'Bearer ' + token_employee);
 
       console.log("Response Status:", res.status);
       console.log("Response Body:", res.body);

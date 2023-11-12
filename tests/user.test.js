@@ -42,6 +42,13 @@ describe('User Routes', () => {
 //   afterAll(() =>{
 //     server.close();
 //   })
+
+  // Test pour vérifier la présence des tokens
+  it('should have valid tokens after before hook', function() {
+    expect(token_employee).to.be.a('string');
+    expect(token_customer).to.be.a('string');
+    expect(token_admin).to.be.a('string');
+  });
 });
 
   describe('GET /user', () => {

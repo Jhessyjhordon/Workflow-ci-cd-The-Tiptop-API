@@ -23,20 +23,20 @@ describe('User Routes', () => {
       .post('/user/login')
       .send({ email: 'toto123456@gmail.com', password: 'password' });
     token_employee = response_employee.body.jwt;
-    console.log("Réponse de customer : ", response_employee)
-    console.log('Début du bloc before');
+    //console.log("Réponse de customer : ", response_employee)
+    // console.log('Début du bloc before');
     const response_customer = await chai
       .request(server)
       .post('/user/login')
       .send({ email: 'toto12345@gmail.com', password: 'password' });
     token_customer = response_customer.body.jwt;
-    console.log("Réponse de customer : ", response_customer)
+    // console.log("Réponse de customer : ", response_customer)
     const response_admin = await chai
     .request(server)
     .post('/user/login')
     .send({ email: 'fidele.antipas@gmail.com', password: 'password' });
     token_admin = response_admin.body.jwt;
-    console.log("Réponse de customer : ", response_admin)
+    // console.log("Réponse de customer : ", response_admin)
   });
 
 //   afterAll(() =>{
@@ -56,7 +56,7 @@ describe('User Routes', () => {
 });
 
   describe('GET /user', () => {
-    it('should get list of all users when token is provided and user is an admin', async () => {
+    it('should get list of all users when token is provided and user is an employee', async () => {
       console.log("Token de l'employee : ", token_employee)
       const res = await chai
         .request(server)

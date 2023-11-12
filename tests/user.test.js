@@ -98,7 +98,7 @@ describe('User Routes', () => {
       expect(res.status).to.equal(403);
       expect(res.body).to.be.an('object');
       expect(res.body.error).to.equal(true);
-      expect(res.body.message).to.include('Veillez vous reconnecter');
+      expect(res.body.message).to.include('Accès refusé : Token invalide ou expiré.');
     });
 
     it('should not get list of all users when user is not an employee', async () => {
@@ -152,7 +152,7 @@ describe('User Routes', () => {
       const userId = '5';
       const res = await supertest(server).get(`/user/${userId}`);
 
-      expect(res.status).to.equal(403);
+      expect(res.status).to.equal(401);
       expect(res.body.error).to.be.true;
     });
 

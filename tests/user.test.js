@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-// const app = require('../index'); // Votre fichier d'application Express
-const server = require('../server'); 
+const server = require('../server'); // Votre fichier d'application Express
+
 const supertest = require('supertest');
 
 
@@ -16,6 +16,7 @@ describe('User Routes', () => {
   
     // Avant les tests, obtenir un token valide pour les routes qui en ont besoin
   before(async () => {
+    // const server = require('../server');
     // Utilisez les informations d'identification appropriées pour les tests
     const response_employee = await chai
       .request(server)
@@ -35,6 +36,10 @@ describe('User Routes', () => {
     .send({ email: 'admin@example.com', password: 'admin_password' });
     token_admin = response_admin.body.jwt;
   });
+
+//   afterAll(() =>{
+//     server.close();
+//   })
   });
 
   describe('GET /user', () => {
@@ -47,6 +52,9 @@ describe('User Routes', () => {
       expect(res.status).to.equal(200);
       expect(res.body).to.be.an('object');
       expect(res.body.users).to.be.an('array');
+      console.log("token de l'utilisateur : ", token_admin)
+      console.log('############################################################"')
+      console.log('############################################################"')
     });
 
     it('should not get list of all users when token is missing', async () => {

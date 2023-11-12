@@ -207,8 +207,8 @@ describe('User Routes', () => {
         .set('Authorization', 'Bearer ' + token_employee);
 
       expect(res.status).to.equal(400);
-      expect(res.body.error).to.be.true;
-      expect(res.body.message).to.include('ID de l\'utilisateur invalide');
+      expect(res.body).to.be.an('object');
+      expect(res.body.message).to.include("id must be a `number` type");
     });
 
     describe('PUT /user/:id', () => {

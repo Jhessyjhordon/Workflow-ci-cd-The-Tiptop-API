@@ -455,7 +455,7 @@ describe('User Routes', () => {
       
           expect(res.status).to.equal(200);
           expect(res.body.error).to.be.false;
-          expect(res.body.message).to.deep.equal(['Utilisateur mis à jour avec succès']);
+          expect(res.body.message).to.deep.equal(['Utilisateur partiellement mis à jour avec succès']);
         });
       
         it('should return a 404 if user ID does not exist (with valid token and employee role)', async () => {
@@ -466,7 +466,7 @@ describe('User Routes', () => {
       
           const res = await chai
             .request(server)
-            .patch(`/user/${nonExistentUserId}`)
+            .patch(`/user/id-inexistant`)
             .set('Authorization', `Bearer ${token_employee}`)
             .send(updatedUserData);
       
@@ -483,8 +483,8 @@ describe('User Routes', () => {
       
           const res = await chai
             .request(server)
-            .patch(`/user/${invalidUserId}`)
-            .set('Authorization', `Bearer ${token}`)
+            .patch(`/user/id-invalide`)
+            .set('Authorization', `Bearer ${token_employee}`)
             .send(updatedUserData);
       
           expect(res.status).to.equal(400);

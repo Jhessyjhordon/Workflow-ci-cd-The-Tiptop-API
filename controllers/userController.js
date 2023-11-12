@@ -277,15 +277,14 @@ const updateUserById = async (req, res) => {
     console.log("==================>",body.currentPassword, body.newPassword);
 
     try {
+        // Rechercher l'utilisateur par ID
+        const userToUpdate = await User.findByPk(userId);
         if (!token) {
             return res.status(401).json({
                 error: true,
                 message: ["Accès non autorisé"] // Token manquant
             });
         }
-        // Rechercher l'utilisateur par ID
-        const userToUpdate = await User.findByPk(userId);
-
         if (!userToUpdate) {
             return res.status(404).json({
                 error: true,

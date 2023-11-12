@@ -217,14 +217,14 @@ describe('User Routes', () => {
     
         it('should update a user by ID (with valid token and any role)', async () => {
           const updatedUserData = {
-            firstname: 'Nouveau Prénom',
-            lastname: 'Nouveau Nom',
-            email: 'nouveau@email.com',
-            phone: '1234567890',
-            adress: "2 Avenue de Paris, 75000 Paris",
+            address: "2 Avenue de Paris, 75000 Paris",
             birthDate: "1992-02-24",
-            role: "customer",
-            password: "password"
+            role: "role",
+            password: "password",
+            phone: "0102030405",
+            email: "tototototo@gmail.com",
+            firstname: "First Name",
+            lastname: "Last Name"
           };
     
           const res = await chai

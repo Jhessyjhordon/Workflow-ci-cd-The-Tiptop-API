@@ -138,7 +138,7 @@ describe('User Routes', () => {
       expect(res.body.error).to.be.true;
     });
 
-    it('should return a 404 if ID is not a valid number', async () => {
+    it('should return a 400 if ID is not a valid number', async () => {
       const res = await chai
         .request(server)
         .get('/user/invalid_id')
@@ -146,8 +146,7 @@ describe('User Routes', () => {
 
       expect(res.status).to.equal(400);
       expect(res.body).to.be.an('object');
-      //expect(res.body.error).to.be.true;
-      expect(res.body.message).to.include("id must be a `number` type, but the final value was: `NaN` (cast from the value `\"ertygregre\"`).");
+      expect(res.body.message).to.include("id must be a `number` type");
     });
 
     it('should not get a user by ID (without token)', async () => { // OK

@@ -240,13 +240,17 @@ describe('User Routes', () => {
           ]);
         });
     
-        it('should return a 404 if user ID does not exist (with valid token and employee role)', async () => { // OK
+        it('should return a 404 if user ID does not exist (with valid token and employee role)', async () => {
           const nonExistentUserId = '890';
           const updatedUserData = {
-            firstname: 'Nouveau Prénom',
-            lastname: 'Nouveau Nom',
-            email: 'nouveau@email.com',
-            phone: '1234567890',
+            address: "6 Avenue de Paris, 75000 Paris",
+            birthDate: "1992-02-24",
+            role: "role",
+            password: "password",
+            phone: "0102030405",
+            email: "tototototo@gmail.com",
+            firstname: "First Name",
+            lastname: "Last Name"
           };
     
           const res = await chai

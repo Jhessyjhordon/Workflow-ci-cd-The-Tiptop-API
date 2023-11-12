@@ -141,7 +141,7 @@ describe('User Routes', () => {
     it('should return a 404 if ID is not a valid number', async () => {
       const res = await chai
         .request(server)
-        .get('/user/invalid_id')
+        .get('/user/98424415')
         .set('Authorization', 'Bearer ' + token_employee);
 
       expect(res.status).to.equal(404);

@@ -199,7 +199,7 @@ describe('User Routes', () => {
       expect(res.body.message).to.deep.equal(['Utilisateur non trouvé']);
     });
 
-    it('should return a 400 if ID is not a valid number (with valid token and employee role)', async () => {
+    it('should return a 400 if ID is not a valid number (with valid token and employee role)', async () => { // OK
       const invalidUserId = 'id-invalide';
       const res = await chai
         .request(server)
@@ -215,12 +215,15 @@ describe('User Routes', () => {
         // Utilisez un ID existant dans votre base de données pour les tests positifs
         const existingUserId = '3';
     
-        it('should update a user by ID (with valid token and employee role)', async () => {
+        it('should update a user by ID (with valid token and any role)', async () => {
           const updatedUserData = {
             firstname: 'Nouveau Prénom',
             lastname: 'Nouveau Nom',
             email: 'nouveau@email.com',
             phone: '1234567890',
+            adress: "2 Avenue de Paris, 75000 Paris",
+            birthDate: "1992-02-24",
+            role: "customer"
           };
     
           const res = await chai

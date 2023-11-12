@@ -9,11 +9,11 @@ const jwt = require('jsonwebtoken');
 const expect = chai.expect;
 chai.use(chaiHttp);
 
-describe('User Routes', () => {
-  let token_employee;
-  let token_customer;
-  let token_admin;
+let token_employee;
+let token_customer;
+let token_admin;
 
+describe('User Routes', () => {
     // Avant les tests, obtenir un token valide pour les routes qui en ont besoin
   before(async () => {
     // const server = require('../server');
@@ -43,11 +43,15 @@ describe('User Routes', () => {
 //     server.close();
 //   })
 
-  // Test pour vérifier la présence des tokens
-  it('should have valid tokens after before hook', function() {
-    expect(token_employee).to.be.a('string');
-    expect(token_customer).to.be.a('string');
-    expect(token_admin).to.be.a('string');
+  it('should have valid JWT tokens after before hook', function() {
+    expect(token_employee).to.be.a('string').and.to.have.length.above(20);
+    expect(token_employee.split('.')).to.have.lengthOf(3);
+
+    expect(token_customer).to.be.a('string').and.to.have.length.above(20);
+    expect(token_customer.split('.')).to.have.lengthOf(3);
+
+    expect(token_admin).to.be.a('string').and.to.have.length.above(20);
+    expect(token_admin.split('.')).to.have.lengthOf(3);
   });
 });
 

@@ -181,7 +181,7 @@ describe('User Routes', () => {
         .set('Authorization', `Bearer ${token_employee}`);
 
       expect(res.status).to.equal(403);
-      expect(res.body.error).to.be.false;
+      expect(res.body.error).to.be.true;
       expect(res.body.message).to.deep.equal([
         'Accès refusé',
       ]);

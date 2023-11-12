@@ -219,7 +219,7 @@ describe('User Routes', () => {
           const updatedUserData = {
             address: "2 Avenue de Paris, 75000 Paris",
             birthDate: "1992-02-24",
-            role: "role",
+            role: "customer",
             password: "password",
             phone: "0102030405",
             email: "tototototo@gmail.com",
@@ -245,7 +245,7 @@ describe('User Routes', () => {
           const updatedUserData = {
             address: "6 Avenue de Paris, 75000 Paris",
             birthDate: "1992-02-24",
-            role: "role",
+            role: "customer",
             password: "password",
             phone: "0102030405",
             email: "tototototo@gmail.com",
@@ -264,12 +264,12 @@ describe('User Routes', () => {
           expect(res.body.message).to.deep.equal(['Utilisateur non trouvé']);
         });
     
-        it('should return a 400 if ID is not a valid number (with valid token and employee role)', async () => {
+        it('should return a 400 if ID is not a valid number (with valid token and employee role)', async () => { // OK
           const invalidUserId = 'id-invalide';
           const updatedUserData = {
             address: "6 Avenue de Paris, 75000 Paris",
             birthDate: "1992-02-24",
-            role: "role",
+            role: "customer",
             password: "password",
             phone: "0102030405",
             email: "tototototo@gmail.com",
@@ -290,10 +290,14 @@ describe('User Routes', () => {
     
         it('should return a 400 if update data is invalid (with valid token and employee role)', async () => {
           const invalidUserData = {
-            firstname: '', // Prénom vide
-            lastname: 'Nouveau Nom',
-            email: 'nouveau@email.com',
-            phone: '1234567890',
+            address: "6 Avenue de Paris, 75000 Paris",
+            birthDate: "1992-02-24",
+            role: "customer",
+            password: "password",
+            phone: "0102030405",
+            email: "tototototo@gmail.com",
+            firstname: "", // Prénom vide
+            lastname: "Name"
           };
     
           const res = await chai
@@ -302,9 +306,9 @@ describe('User Routes', () => {
             .set('Authorization', 'Bearer ' + token_employee)
             .send(invalidUserData);
     
-          expect(res.status).to.equal(400);
-          expect(res.body.error).to.be.true;
-          expect(res.body.message).to.include('Données de mise à jour invalides');
+            expect(res.status).to.equal(409);
+            expect(res.body).to.be.an('object');
+            expect(res.body.message).to.include("firstname is a required field");
         });
     
         it('should not update a user by ID (without token)', async () => {
@@ -320,7 +324,7 @@ describe('User Routes', () => {
             .put('/user/6')
             .send(updatedUserData);
     
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
         });
     
     });

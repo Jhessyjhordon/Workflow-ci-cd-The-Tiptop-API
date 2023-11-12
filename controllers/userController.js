@@ -178,7 +178,7 @@ const getAllUsers = async (req, res) => {
         const decodedToken = authService.decodeToken(token)
 
         // Vérifier le rôle de l'utilisateur (assumons que le rôle est stocké dans decodedToken.role)
-        if (decodedToken.role !== 'admin') {
+        if (decodedToken.role !== 'admin' && decodedToken.role !== 'employee') {
             return res.status(403).json({
                 error: true,
                 message: ["Accès refusé"]

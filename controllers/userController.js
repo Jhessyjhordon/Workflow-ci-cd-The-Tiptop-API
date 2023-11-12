@@ -378,15 +378,24 @@ const getUserById = async (req, res) => {
 
 const deleteUserById = async (req, res) => {
     const userId = req.params.id;
-
+    const token =  req.headers.authorization; // Récupérer le token de l'en-tête
     try {
         // Rechercher l'utilisateur par ID
         const userToDelete = await User.findByPk(userId);
+        // Décoder le token pour obtenir les informations utilisateur
+        const decodedToken = authService.decodeToken(token)
 
         if (!userToDelete) {
             return res.status(404).json({
                 error: true,
                 message: ["Utilisateur non trouvé"]
+            });
+        }
+
+        if (decodedToken.role !== 'admin') {
+            return res.status(403).json({
+                error: true,
+                message: ["Accès refusé"]
             });
         }
 

@@ -138,7 +138,7 @@ describe('User Routes', () => {
       expect(res.body.error).to.be.true;
     });
 
-    it('should return a 400 if ID is not a valid number', async () => {
+    it('should return a 400 if ID is not a valid number', async () => { // OK
       const res = await chai
         .request(server)
         .get('/user/invalid_id')

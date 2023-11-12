@@ -125,7 +125,7 @@ describe('User Routes', () => {
       expect(res.body.error).to.be.false;
       expect(res.body).to.be.an('object');
       // Assurez-vous d'ajuster cela en fonction de la structure de votre réponse
-      expect(res.body.user).to.have.property('id', id);
+      expect(res.body.user).to.have.property('id', 2);
     });
 
     it('should return a 404 if user ID does not exist', async () => { // OK

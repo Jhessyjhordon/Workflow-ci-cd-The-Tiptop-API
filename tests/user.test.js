@@ -174,16 +174,16 @@ describe('User Routes', () => {
     // Utilisez un ID existant dans votre base de données pour les tests positifs
     const existingUserId = '5';
 
-    it('should delete a user by ID (with valid token and employee role)', async () => {
+    it('should not delete a user by ID (with valid token and employee or customer role)', async () => {
       const res = await chai
         .request(server)
         .delete('/user/5')
-        .set('Authorization', `Bearer ${token_admin}`);
+        .set('Authorization', `Bearer ${token_employee}`);
 
-      expect(res.status).to.equal(200);
+      expect(res.status).to.equal(403);
       expect(res.body.error).to.be.false;
       expect(res.body.message).to.deep.equal([
-        'Utilisateur supprimé avec succès',
+        'Accès refusé',
       ]);
     });
 

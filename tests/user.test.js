@@ -183,15 +183,14 @@ describe('User Routes', () => {
       expect(res.status).to.equal(403);
       expect(res.body.error).to.be.true;
       expect(res.body.message).to.deep.equal([
-        'Accès refusé',
+        'Accès refusé : vous n\'êtes pas autorisé à effectuer cette action.',
       ]);
     });
 
     it('should return a 404 if user ID does not exist (with valid token and employee role)', async () => { // OK
-      const nonExistentUserId = '888';
       const res = await chai
         .request(server)
-        .delete(`/user/${nonExistentUserId}`)
+        .delete('/user/888')
         .set('Authorization', 'Bearer ' + token_employee);
 
       expect(res.status).to.equal(404);
@@ -200,10 +199,10 @@ describe('User Routes', () => {
     });
 
     it('should return a 400 if ID is not a valid number (with valid token and employee role)', async () => { // OK
-      const invalidUserId = 'id-invalide';
+      
       const res = await chai
         .request(server)
-        .delete(`/user/${invalidUserId}`)
+        .delete('/user/invalidUserId')
         .set('Authorization', 'Bearer ' + token_employee);
 
       expect(res.status).to.equal(400);
@@ -502,7 +501,7 @@ describe('User Routes', () => {
       
           expect(res.status).to.equal(400);
           expect(res.body.error).to.be.true;
-          expect(res.body.message).to.include('Données de mise à jour invalides');
+          expect(res.body.message).to.include('Le firstname est vide dans le corps de la requete');
         });
       
         it('should not update a user partially by ID (without token)', async () => {

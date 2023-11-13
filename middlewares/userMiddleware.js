@@ -39,6 +39,36 @@ const validateUserId = (schema) => async (req, res, next) => {
       return res.status(400).json({ type: err.name, message: err.message });
   }
 };
+const validatePatchUser = (schema) => async (req, res, next) => {
+  try {
+    // Valider le corps de la requête (req.body)
+    // await schema.validate(req.body);
+    keys =  ['firstname', 'lastname', 'email', 'phone', 'address', 'birthDate', 'password' ];
+    body = req.body
+
+    if (Object.keys(body).length === 0) {
+      throw new Error('Le corps de la requête (req.body) ne peut pas être vide.');
+    }
+    
+    for (const key of keys) {
+      if (body[key] === undefined || body[key] === null || body[key].trim() === '' ) {
+        throw new Error(`Le'${key}' est vide dans le corps de la requete`);
+      }
+    }
+
+    if ('email' in body && body.email !== req.user.email) {
+      throw new Error('La modification de l\'email n\'est pas autorisée.');
+    }
+
+
+    // Valider les paramètres de la requête (req.params)
+    await schema.validate(req.params);
+
+      return next();
+  } catch (err) {
+      return res.status(400).json({ type: err.name, message: err.message });
+  }
+};
 
 const checkIfUserIsEmployee = (req, res, next) => {
   const token = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET_KEY);
@@ -107,5 +137,6 @@ module.exports = {
   checkIfUserIsAdmin,
   checkIfUserIsEmployeeOrAdmin,
   checkIfUserToken,
-  validateUserCreation
+  validateUserCreation,
+  validatePatchUser
 } 

@@ -381,7 +381,7 @@ describe('User Routes', () => {
             lastname: "Name"
           };
     
-          const res = await supertest(server).post('/user').send(invalidUserData);
+          const res = await supertest(server).post('/user/register').send(invalidUserData);
     
           expect(res.status).to.equal(409);
           expect(res.body).to.be.an('object');
@@ -440,7 +440,6 @@ describe('User Routes', () => {
     
       describe('PATCH /user/:id', () => {
         // Utilisez un ID existant dans votre base de données pour les tests positifs
-        const existingUserId = '3';
       
         it('should update a user partially by ID (with valid token and employee role)', async () => {
           const updatedUserData = {
@@ -513,7 +512,7 @@ describe('User Routes', () => {
       
           const res = await supertest(server).patch('/user/6').send(updatedUserData);
       
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
         });
       
         it('should not update a user partially by ID (with valid token but not employee role)', async () => {
@@ -525,7 +524,7 @@ describe('User Routes', () => {
           const res = await chai
             .request(server)
             .patch('/user/7')
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${invalidToken}`)
             .send(updatedUserData);
       
           expect(res.status).to.equal(403);

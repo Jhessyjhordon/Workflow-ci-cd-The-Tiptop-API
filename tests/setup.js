@@ -5,7 +5,7 @@ const { sequelizeTest } = require('../db.test');
 const User = require('../models/userModel');
 const { Op } = require("sequelize");
 // Utilisez Op pour les opérations de requête
-const jackpotModel = require('../models/jackpotModel');
+const Jackpot = require('../models/jackpotModel');
 // Importez les autres modèles nécessaires
 
 chai.use(chaiHttp);

@@ -88,7 +88,7 @@ const checkIfUserIsAdmin = (req, res, next) => {
   if (token.role !== 'admin') {
       return res.status(403).json({
           error: true,
-          message: ["Accès refusé : vous n'êtes pas autorisé à effectuer cette action."]
+          message: "Accès refusé : vous n'êtes pas autorisé à effectuer cette action."
       });
   }
   next();
@@ -100,7 +100,7 @@ const checkIfUserIsEmployeeOrAdmin = (req, res, next) => {
   if (token.role !== 'employee' && token.role !== 'admin') {
       return res.status(403).json({
           error: true,
-          message: ["Accès refusé : vous n'êtes pas autorisé à effectuer cette action."]
+          message: "Accès refusé : vous n'êtes pas autorisé à effectuer cette action."
       });
   }
   next();

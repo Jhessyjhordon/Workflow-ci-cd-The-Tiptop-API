@@ -191,11 +191,11 @@ describe('User Routes', () => {
       const res = await chai
         .request(server)
         .delete('/user/888')
-        .set('Authorization', 'Bearer ' + token_employee);
+        .set('Authorization', 'Bearer ' + token_admin);
 
-      expect(res.status).to.equal(403);
+      expect(res.status).to.equal(404);
       expect(res.body.error).to.be.true;
-      expect(res.body.message).to.deep.equal(["Accès refusé : vous n\'êtes pas autorisé à effectuer cette action."]);
+      expect(res.body.message).to.deep.equal(["Utilisateur non trouvé"]);
     });
 
     it('should return a 400 if ID is not a valid number (with valid token and employee role)', async () => { // OK

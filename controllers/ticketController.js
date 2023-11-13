@@ -41,9 +41,13 @@ const verifyTicket = async (req, res) => {
         "numTicket": ticket.numTicket,
         "montantAchat": ticket.montantAchat,
         "dateAchat": ticket.dateAchat,
+        "statusGain": ticket.statusGain,
         "user": {
+          "id": user.id,
           "lastname": user.lastname,
-          "firstname": user.firstname
+          "firstname": user.firstname,
+          "email": user.email,
+          "address": user.address,
         },
         "batch": {
           "id": batch.id,

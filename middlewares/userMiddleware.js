@@ -43,7 +43,19 @@ const validateUserId = (schema) => async (req, res, next) => {
 const checkIfUserIsEmployee = (req, res, next) => {
   const token = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET_KEY);
   // const user = req.user; // L'objet utilisateur décodé à partir du token
-  if (token.role !== 'customer') {
+  if (token.role !== 'employee') {
+      return res.status(403).json({
+          error: true,
+          message: 'Accès refusé : vous n\'êtes pas autorisé à effectuer cette action.'
+      });
+  }
+  next();
+};
+
+const checkIfUserIsAdmin = (req, res, next) => {
+  const token = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET_KEY);
+  // const user = req.user; // L'objet utilisateur décodé à partir du token
+  if (token.role !== 'admin') {
       return res.status(403).json({
           error: true,
           message: 'Accès refusé : vous n\'êtes pas autorisé à effectuer cette action.'
@@ -65,14 +77,25 @@ const checkIfUserIsEmployeeOrAdmin = (req, res, next) => {
 };
 
 const checkIfUserToken = (req, res, next) => {
-  const token = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET_KEY);
-  if (!token) {
-      return res.status(403).json({
-          error: true,
-          message: 'Accès refusé : vous n\'êtes pas autorisé à effectuer cette action.'
-      });
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({
+      error: true,
+      message: 'Accès non autorisé : Token manquant.'
+    });
   }
-  next();
+  try {
+    // Vérifier la validité du token et l'assigner à la variable token
+    const token = jwt.verify(authHeader.split(' ')[1], process.env.JWT_SECRET_KEY);
+    // Par exemple, pour stocker des informations de l'utilisateur dans req
+    req.user = token; // ou une propriété spécifique du token   
+    next();
+  } catch (error) {
+    return res.status(403).json({
+      error: true,
+      message: 'Accès refusé : Token invalide ou expiré.'
+    });
+  }
 };
 
 
@@ -81,6 +104,7 @@ module.exports = {
   validateLogin,
   validateUserId,
   checkIfUserIsEmployee,
+  checkIfUserIsAdmin,
   checkIfUserIsEmployeeOrAdmin,
   checkIfUserToken,
   validateUserCreation

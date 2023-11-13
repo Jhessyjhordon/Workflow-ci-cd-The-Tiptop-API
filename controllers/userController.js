@@ -178,7 +178,7 @@ const getAllUsers = async (req, res) => {
         const decodedToken = authService.decodeToken(token)
 
         // Vérifier le rôle de l'utilisateur (assumons que le rôle est stocké dans decodedToken.role)
-        if (decodedToken.role !== 'admin') {
+        if (decodedToken.role !== 'admin' && decodedToken.role !== 'employee') {
             return res.status(403).json({
                 error: true,
                 message: ["Accès refusé"]
@@ -276,16 +276,22 @@ const updateUserById = async (req, res) => {
     // console.log("==================>",currentPassword, newPassword);
     console.log("==================>",body.currentPassword, body.newPassword);
 
+    if (isNaN(userId)) {
+        return res.status(400).json({
+            error: true,
+            message: ["ID utilisateur invalide"]
+        });
+    }
+
     try {
+        // Rechercher l'utilisateur par ID
+        const userToUpdate = await User.findByPk(userId);
         if (!token) {
             return res.status(401).json({
                 error: true,
                 message: ["Accès non autorisé"] // Token manquant
             });
         }
-        // Rechercher l'utilisateur par ID
-        const userToUpdate = await User.findByPk(userId);
-
         if (!userToUpdate) {
             return res.status(404).json({
                 error: true,
@@ -378,15 +384,24 @@ const getUserById = async (req, res) => {
 
 const deleteUserById = async (req, res) => {
     const userId = req.params.id;
-
+    const token =  req.headers.authorization; // Récupérer le token de l'en-tête
     try {
         // Rechercher l'utilisateur par ID
         const userToDelete = await User.findByPk(userId);
+        // Décoder le token pour obtenir les informations utilisateur
+        const decodedToken = authService.decodeToken(token)
 
         if (!userToDelete) {
             return res.status(404).json({
                 error: true,
                 message: ["Utilisateur non trouvé"]
+            });
+        }
+
+        if (decodedToken.role !== 'admin') {
+            return res.status(403).json({
+                error: true,
+                message: ["Accès refusé"]
             });
         }
 

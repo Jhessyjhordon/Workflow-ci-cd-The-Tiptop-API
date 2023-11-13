@@ -183,7 +183,7 @@ describe('User Routes', () => {
       expect(res.status).to.equal(403);
       expect(res.body.error).to.be.true;
       expect(res.body.message).to.deep.equal([
-        "Accès refusé : vous n\'êtes pas autorisé à effectuer cette action.",
+        "Accès refusé : vous n\'êtes pas autorisé à effectuer cette action."
       ]);
     });
 

@@ -49,9 +49,9 @@ const validatePatchUser = (schema) => async (req, res, next) => {
     if (Object.keys(body).length === 0) {
       throw new Error('Le corps de la requête (req.body) ne peut pas être vide.');
     }
-    
+
     for (const key of keys) {
-      if (body[key] === undefined || body[key] === null || body[key].trim() === '' ) {
+      if ( key in body && (body[key] === undefined || body[key] === null || body[key].trim() === '' )) {
         throw new Error(`Le'${key}' est vide dans le corps de la requete`);
       }
     }

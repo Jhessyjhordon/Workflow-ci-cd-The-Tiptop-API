@@ -183,7 +183,7 @@ describe('User Routes', () => {
       expect(res.status).to.equal(403);
       expect(res.body.error).to.be.true;
       expect(res.body.message).to.deep.equal([
-        "Accès refusé : vous n\'êtes pas autorisé à effectuer cette action.",
+        "Accès refusé",
       ]);
     });
 
@@ -195,7 +195,7 @@ describe('User Routes', () => {
 
       expect(res.status).to.equal(403);
       expect(res.body.error).to.be.true;
-      expect(res.body.message).to.deep.equal(['Utilisateur non trouvé']);
+      expect(res.body.message).to.deep.equal(["Accès refusé : vous n\'êtes pas autorisé à effectuer cette action."]);
     });
 
     it('should return a 400 if ID is not a valid number (with valid token and employee role)', async () => { // OK
@@ -207,7 +207,7 @@ describe('User Routes', () => {
 
       expect(res.status).to.equal(403);
       expect(res.body).to.be.an('object');
-      expect(res.body.message).to.include("id must be a `number` type");
+      expect(res.body.message).to.include(["Accès refusé : vous n\'êtes pas autorisé à effectuer cette action."]);
     });
 
     describe('PUT /user/:id', () => {

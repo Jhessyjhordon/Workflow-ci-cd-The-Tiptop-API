@@ -21,14 +21,14 @@ describe('User Routes', () => {
     const response_employee = await chai
       .request(server)
       .post('/user/login')
-      .send({ email: 'toto123456@gmail.com', password: 'password' });
+      .send({ email: 'toto123456@gmail.com', password: 'Password123' });
     token_employee = response_employee.body.jwt;
     //console.log("Réponse de customer : ", response_employee)
     // console.log('Début du bloc before');
     const response_customer = await chai
       .request(server)
       .post('/user/login')
-      .send({ email: 'toto12345@gmail.com', password: 'password' });
+      .send({ email: 'toto12345@gmail.com', password: 'Password123' });
     token_customer = response_customer.body.jwt;
     // console.log("Réponse de customer : ", response_customer)
     const response_admin = await chai

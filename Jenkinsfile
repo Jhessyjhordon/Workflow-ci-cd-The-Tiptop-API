@@ -111,7 +111,7 @@ pipeline {
             }
         }
 
-        stage('Create Docker Image') {
+        /*stage('Create Docker Image') {
             steps {
                 script {
                     def buildNumber = env.BUILD_NUMBER
@@ -152,7 +152,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 
         stage('Succès') {
             steps {

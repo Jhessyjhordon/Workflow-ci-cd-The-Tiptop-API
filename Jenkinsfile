@@ -112,7 +112,7 @@ pipeline {
             }
         }
 
-        stage('Backup Docker Image to Docker Hub') {
+        /*stage('Backup Docker Image to Docker Hub') {
             steps {
                 script {
                     // Récupère la date et l'heure
@@ -140,7 +140,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 
         stage('Succès') {
             steps {

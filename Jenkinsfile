@@ -89,15 +89,15 @@ pipeline {
             steps {
                 script {
                     // Supprimer l'ancien conteneur, s'il existe
-                    def TheTiptopApiDevContainerExists = sh(script: "docker ps -a | grep -w TheTiptop_Api-dev", returnStatus: true) == 0
+                    def TheTiptopApiDevContainerExists = sh(script: "docker ps -a | grep -w thetiptop_api-dev", returnStatus: true) == 0
                     if (TheTiptopApiDevContainerExists) {
-                        sh "docker stop TheTiptop_Api-dev"
-                        sh "docker rm TheTiptop_Api-dev"
+                        sh "docker stop thetiptop_api-dev"
+                        sh "docker rm thetiptop_api-dev"
                     }
 
                     // Récupérer l'ID de l'image actuellement utilisée par le conteneur
                     echo "----==>>> Récupérer l'ID de l'image actuellement utilisée par le conteneur"
-                    def currentImageId = sh(script: "docker ps -a --filter 'name=TheTiptop_Api-dev' --format '{{.Image}}'", returnStdout: true).trim()
+                    def currentImageId = sh(script: "docker ps -a --filter 'name=thetiptop_api-dev' --format '{{.Image}}'", returnStdout: true).trim()
 
                     if (currentImageId) {
                         // Supprimer l'image
@@ -127,7 +127,7 @@ pipeline {
                         def dockerRepoName = 'backup-api'
 
                         // Nom de l'image originale basée sur le numéro de build
-                        def apiImageName = "TheTiptop_Api-dev:${env.BUILD_NUMBER}"
+                        def apiImageName = "thetiptop_api-dev:${env.BUILD_NUMBER}"
                         
                         // Nom de l'image pour Docker Hub basé sur la date
                         def dockerHubImageName = "${dockerHubUsername}/${dockerRepoName}:${currentDate}"

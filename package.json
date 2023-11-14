@@ -4,8 +4,13 @@
   "description": "Cette Api a été mis en place, par un groupe d'étudiant, dans le cadre d'un projet de fin d'année pour validation du Diplome de Master 2 Architecte Web, il offre des points de terminaison pour le siteweb Jeux Concours Thé Tiptop ",
   "main": "server.js",
   "nyc": {
-    "reporter": ["lcov", "text"],
-    "exclude": ["**/*.test.js"]
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "exclude": [
+      "**/*.test.js"
+    ]
   },
   "scripts": {
     "test": "cross-env NODE_ENV=test nyc mocha --config ./.mocharc.js --timeout 10000 --exit",
@@ -50,6 +55,7 @@
     "faker": "^4.1.0",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.1",
+    "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.6.2",
     "node-cron": "^3.0.2",

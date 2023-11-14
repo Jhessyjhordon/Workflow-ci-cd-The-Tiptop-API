@@ -127,7 +127,7 @@ pipeline {
                         def dockerRepoName = 'backup-api'
 
                         // Nom de l'image originale basée sur le numéro de build
-                        def apiImageName = "thetiptop_api-dev:${env.BUILD_NUMBER}"
+                        def apiImageName = "the-tiptop-api-dev:${env.BUILD_NUMBER}"
                         
                         // Nom de l'image pour Docker Hub basé sur la date
                         def dockerHubImageName = "${dockerHubUsername}/${dockerRepoName}:${currentDate}"

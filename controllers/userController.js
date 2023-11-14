@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel'); // Assurez-vous que le chemin est correct
 const uploadService = require('../services/uploadService');
+const generateConfirmationEmailTemplate = require('../services/accountCofirmationService');
 const authService = require('../services/authService');
 const mailService = require('../services/mailService')
 const accountCofirmationService = require('../services/accountCofirmationService');
@@ -44,7 +45,7 @@ const UserRegister = async (req, res) => {
             expiresAt: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
         });
 
-        mailService.sendConfirmationEmail(newUser.email, newUser.token);
+        mailService.sendConfirmationEmail(newUser.email, token);
 
         return res.status(200).json({
             error: false,
@@ -522,7 +523,9 @@ const UserConfirme = async (req, res) => {
             // Envoyer un nouvel email de confirmation
             mailService.sendConfirmationEmail(user.email, newToken); // Utilisez le service mail approprié
 
-            return res.status(200).json({ message: 'Nouveau lien de confirmation envoyés' });
+            const htmlContent = generateConfirmationHTML('Nouveau lien de confirmation envoyé');
+
+            return res.status(200).send(htmlContent);
         }
 
         user.isVerify = true
@@ -530,9 +533,8 @@ const UserConfirme = async (req, res) => {
         user.token = null
         user.save()
     
-        // await user.destroy({ where: { token } });
-
-        return res.status(200).json({ message: "Utilisateur confirmé avec succès" });
+        const htmlContent = generateConfirmationHTML("Félicitation, votre compte a été confirmé");
+        return res.status(200).send(htmlContent);
     } catch (error) {
         console.error('Erreur lors de la confirmation de l\'utilisateur :', error);
         return res.status(500).json({ message: "Erreur lors de la confirmation de l'utilisateur" });

@@ -16,7 +16,6 @@ let token_admin;
 describe('User Routes', () => {
     // Avant les tests, obtenir un token valide pour les routes qui en ont besoin
   before(async () => {
-    // const server = require('../server');
     // Utilisez les informations d'identification appropriées pour les tests
     const response_employee = await chai
       .request(server)
@@ -36,12 +35,7 @@ describe('User Routes', () => {
     .post('/user/login')
     .send({ email: 'fidele.antipas@gmail.com', password: 'password' });
     token_admin = response_admin.body.jwt;
-    // console.log("Réponse de customer : ", response_admin)
   });
-
-//   afterAll(() =>{
-//     server.close();
-//   })
 
   it('should have valid JWT tokens after before hook', function() { // OK
     expect(token_employee).to.be.a('string').and.to.have.length.above(20);
@@ -69,9 +63,6 @@ describe('User Routes', () => {
       expect(res.status).to.equal(200);
       expect(res.body).to.be.an('object');
       expect(res.body.users).to.be.an('array');
-      console.log("token de l'utilisateur : ", token_admin)
-      console.log('############################################################"')
-      console.log('############################################################"')
     });
 
     it('should not get list of all users when token is missing', async () => { // OK
@@ -182,7 +173,12 @@ describe('User Routes', () => {
 
       expect(res.status).to.equal(403);
       expect(res.body.error).to.be.true;
+<<<<<<< HEAD
       expect(res.body.message).to.include("Accès refusé : vous n'êtes pas autorisé à effectuer cette action.");
+=======
+      expect(res.body.message).to.deep.equal(["Accès refusé : vous n'êtes pas autorisé à effectuer cette action."
+      ]);
+>>>>>>> add confirmation template
     });
 
     it('should return a 404 if user ID does not exist (with valid token and employee role)', async () => { // OK

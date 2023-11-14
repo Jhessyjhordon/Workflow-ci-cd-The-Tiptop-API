@@ -2,7 +2,7 @@
 module.exports = {
     require: 'dotenv/config', // Pour charger les variables d'environnement avec dotenv
     recursive: true,
-    reporter: 'mocha-sonarqube-reporter', // Reporter compatible pour Sonarqube
+    reporter: 'spec', // Reporter compatible pour Sonarqube - mocha-sonarqube-reporter
     quiet: true,
     timeout: 10000,
     exit: true,

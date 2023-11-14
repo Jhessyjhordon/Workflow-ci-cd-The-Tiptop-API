@@ -173,12 +173,8 @@ describe('User Routes', () => {
 
       expect(res.status).to.equal(403);
       expect(res.body.error).to.be.true;
-<<<<<<< HEAD
-      expect(res.body.message).to.include("Accès refusé : vous n'êtes pas autorisé à effectuer cette action.");
-=======
       expect(res.body.message).to.deep.equal(["Accès refusé : vous n'êtes pas autorisé à effectuer cette action."
       ]);
->>>>>>> add confirmation template
     });
 
     it('should return a 404 if user ID does not exist (with valid token and employee role)', async () => { // OK

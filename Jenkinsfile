@@ -84,20 +84,6 @@ pipeline {
             }
         }
 
-        stage('Create Docker Image') {
-            steps {
-                script {
-                    def buildNumber = env.BUILD_NUMBER
-                    // Créer une image Docker pour l'API
-                    def apiImageName = "the-tiptop-api-dev:${buildNumber}"
-                    dir("${WORKSPACE}/the-tiptop-api-dev") {
-                        sh "docker build -t ${apiImageName} ."
-                    }
-                }
-            }
-        }
-
-
         stage('Build and Deploy') {
             steps {
                 script {
@@ -121,6 +107,19 @@ pipeline {
                     // Construire et démarrer le conteneur avec docker-compose tout en créant une nouvelle image
                     echo "----==>>> Démarrage du container avec le chemin '/usr/local/bin/docker-compose' tout en créant une nouvelle image"
                     sh 'WORKSPACE_PATH=${WORKSPACE} /usr/local/bin/docker-compose -f /home/debian/docker-compose.yml up -d api-dev --build'
+                }
+            }
+        }
+
+        stage('Create Docker Image') {
+            steps {
+                script {
+                    def buildNumber = env.BUILD_NUMBER
+                    // Créer une image Docker pour l'API
+                    def apiImageName = "the-tiptop-api-dev:${buildNumber}"
+                    dir("${WORKSPACE}/the-tiptop-api-dev") {
+                        sh "docker build -t ${apiImageName} ."
+                    }
                 }
             }
         }

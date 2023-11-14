@@ -89,7 +89,7 @@ pipeline {
                 script {
                     def buildNumber = env.BUILD_NUMBER
                     // Créer une image Docker pour l'API
-                    def apiImageName = "the-tiptop-api:${buildNumber}"
+                    def apiImageName = "the-tiptop-api-dev:${buildNumber}"
                     dir("${WORKSPACE}/the-tiptop-api-dev") {
                         sh "docker build -t ${apiImageName} ."
                     }

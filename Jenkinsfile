@@ -112,6 +112,36 @@ pipeline {
             }
         }
 
+        stage('Backup Docker Image to Docker Hub') {
+            steps {
+                script {
+                    // Récupère la date et l'heure
+                    def currentDate = sh(script: "date '+%d-%m-%Y-%Hh%M'", returnStdout: true).trim()
+
+                    // Authentification à Docker Hub
+                    def dockerHubCredentialsId = 'fducks196' 
+                    withDockerRegistry([credentialsId: dockerHubCredentialsId, url: 'https://index.docker.io/v1/']) {
+
+                        // Nom d'utilisateur Docker Hub et nom du repo
+                        def dockerHubUsername = 'fducks196'
+                        def dockerRepoName = 'backup-api'
+
+                        // Nom de l'image originale basée sur le numéro de build
+                        def apiImageName = "TheTiptop_Api-dev:${env.BUILD_NUMBER}"
+                        
+                        // Nom de l'image pour Docker Hub basé sur la date
+                        def dockerHubImageName = "${dockerHubUsername}/${dockerRepoName}:${currentDate}"
+                        
+                        // Tagger l'image originale avec le nom destiné à Docker Hub
+                        sh "docker tag ${apiImageName} ${dockerHubImageName}"
+
+                        // Pousser (push) l'image vers Docker Hub avec le tag basé sur la date
+                        sh "docker push ${dockerHubImageName}"
+                    }
+                }
+            }
+        }
+
         stage('Succès') {
             steps {
                 echo "Réussi"

@@ -127,7 +127,7 @@ pipeline {
                         def dockerRepoName = 'backup-api'
 
                         // Nom de l'image originale basée sur le numéro de build
-                        def apiImageName = "the-tiptop-api-dev:${env.BUILD_NUMBER}"
+                        def apiImageName = "debian-api-dev:${env.BUILD_NUMBER}"
 
                         sh "docker images"
                         

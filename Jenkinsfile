@@ -128,8 +128,6 @@ pipeline {
 
                         // Nom de l'image originale basée sur le numéro de build
                         def apiImageName = "debian-api-dev:${env.BUILD_NUMBER}"
-
-                        sh "docker images"
                         
                         // Nom de l'image pour Docker Hub basé sur la date
                         def dockerHubImageName = "${dockerHubUsername}/${dockerRepoName}:${currentDate}"
@@ -149,8 +147,6 @@ pipeline {
                 echo "Réussi"
             }
         }
-        // ... autres stages, comme le déploiement, l'optimisation des assets, le backup, etc.
     }
 }
 
-// test 9

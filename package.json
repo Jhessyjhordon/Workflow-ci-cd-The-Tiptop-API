@@ -47,7 +47,7 @@
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.1",
     "multer": "^1.4.5-lts.1",
-    "mysql2": "^3.6.2",
+    "mysql2": "^3.6.3",
     "node-cron": "^3.0.2",
     "nodemailer": "^6.9.7",
     "passport": "^0.6.0",

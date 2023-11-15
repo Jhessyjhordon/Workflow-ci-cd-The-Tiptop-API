@@ -4,7 +4,12 @@ WORKDIR /api
 
 COPY package*.json ./
 
-RUN npm install
+# Installer les dépendances, y compris les outils de compilation
+# nécessaires pour les modules natifs
+RUN apk add --no-cache python3 make g++ && \
+    npm install && \
+    npm uninstall bcrypt && \
+    npm install bcrypt
 
 COPY . .
 

@@ -121,7 +121,7 @@ router.get('/:id',userMiddleware.checkIfUserToken, userMiddleware.validateUserId
  *       500:
  *         description: Erreur lors de la suppression de l'utilisateur
  */
-router.delete('/:id', userMiddleware.checkIfUserToken, userMiddleware.checkIfUserIsEmployee,userMiddleware.validateUserId(Validator.userIdSchema), userController.deleteUserById)
+router.delete('/:id', userMiddleware.checkIfUserToken, userMiddleware.checkIfUserIsAdmin, userMiddleware.validateUserId(Validator.userIdSchema), userController.deleteUserById)
 
 /**
  * @swagger
@@ -208,7 +208,7 @@ router.post('/', userMiddleware.validateUserCreation(Validator.userSchema), user
  *       500:
  *         description: Erreur lors de la mise à jour de l'utilisateur
  */
-router.patch('/:id', userMiddleware.checkIfUserToken, userMiddleware.validateUserId(Validator.userIdSchema), userController.partialUpdateUserById)
+router.patch('/:id', userMiddleware.checkIfUserToken, userMiddleware.validatePatchUser(Validator.userIdSchema), userController.partialUpdateUserById)
 
 
 /**

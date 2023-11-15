@@ -104,8 +104,8 @@ before(async () => {
     const users = await User.bulkCreate(user_data);
     console.log(`${users.length} utilisateurs ont été insérés.`);
 
-    const jackpot = await Jackpot.bulkCreate(jackpot_data);
-    console.log(`${jackpot.length} jackpot ont / a été inséré(s).`);
+    // const jackpot = await Jackpot.bulkCreate(jackpot_data);
+    // console.log(`${jackpot.length} jackpot ont / a été inséré(s).`);
   } catch (error) {
     console.error('Erreur lors de l\'insertion :', error);
   }

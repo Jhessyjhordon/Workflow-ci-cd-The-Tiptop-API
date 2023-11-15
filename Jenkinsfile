@@ -41,9 +41,9 @@ pipeline {
         }
 
         stage('Run tests with Mocha & Chai') {
-            steps {
-                echo "Installation des dépendances"
-                dir("${WORKSPACE}/the-tiptop-api-dev") {
+             steps {
+                 echo "Installation des dépendances"
+                 dir("${WORKSPACE}/the-tiptop-api-dev") {
                     sh "npm install" // Installation des dépendances npm
                 }
                 echo "Lancement des tests avec Mocha & Chai"
@@ -84,20 +84,19 @@ pipeline {
             }
         }
 
-
         stage('Build and Deploy') {
             steps {
                 script {
                     // Supprimer l'ancien conteneur, s'il existe
-                    def TheTiptopApiDevContainerExists = sh(script: "docker ps -a | grep -w TheTiptop_Api-dev", returnStatus: true) == 0
+                    def TheTiptopApiDevContainerExists = sh(script: "docker ps -a | grep -w thetiptop_api-dev", returnStatus: true) == 0
                     if (TheTiptopApiDevContainerExists) {
-                        sh "docker stop TheTiptop_Api-dev"
-                        sh "docker rm TheTiptop_Api-dev"
+                        sh "docker stop thetiptop_api-dev"
+                        sh "docker rm thetiptop_api-dev"
                     }
 
                     // Récupérer l'ID de l'image actuellement utilisée par le conteneur
                     echo "----==>>> Récupérer l'ID de l'image actuellement utilisée par le conteneur"
-                    def currentImageId = sh(script: "docker ps -a --filter 'name=TheTiptop_Api-dev' --format '{{.Image}}'", returnStdout: true).trim()
+                    def currentImageId = sh(script: "docker ps -a --filter 'name=thetiptop_api-dev' --format '{{.Image}}'", returnStdout: true).trim()
 
                     if (currentImageId) {
                         // Supprimer l'image
@@ -112,13 +111,54 @@ pipeline {
             }
         }
 
+        stage('Create Docker Image') {
+            steps {
+                script {
+                    def buildNumber = env.BUILD_NUMBER
+                    // Créer une image Docker pour l'API
+                    def apiImageName = "the-tiptop-api-dev:${buildNumber}"
+                    dir("${WORKSPACE}/the-tiptop-api-dev") {
+                        sh "docker build -t ${apiImageName} ."
+                    }
+                }
+            }
+        }
+
+        stage('Backup Docker Image to Docker Hub') {
+            steps {
+                script {
+                    // Récupère la date et l'heure
+                    def currentDate = sh(script: "date '+%d-%m-%Y-%Hh%M'", returnStdout: true).trim()
+
+                    // Authentification à Docker Hub
+                    def dockerHubCredentialsId = 'fducks196' 
+                    withDockerRegistry([credentialsId: dockerHubCredentialsId, url: 'https://index.docker.io/v1/']) {
+
+                        // Nom d'utilisateur Docker Hub et nom du repo
+                        def dockerHubUsername = 'fducks196'
+                        def dockerRepoName = 'backup-api'
+
+                        // Nom de l'image originale basée sur le numéro de build
+                        def apiImageName = "the-tiptop-api-dev:${env.BUILD_NUMBER}"
+                        
+                        // Nom de l'image pour Docker Hub basé sur la date
+                        def dockerHubImageName = "${dockerHubUsername}/${dockerRepoName}:${currentDate}"
+                        
+                        // Tagger l'image originale avec le nom destiné à Docker Hub
+                        sh "docker tag ${apiImageName} ${dockerHubImageName}"
+
+                        // Pousser (push) l'image vers Docker Hub avec le tag basé sur la date
+                        sh "docker push ${dockerHubImageName}"
+                    }
+                }
+            }
+        }
+
         stage('Succès') {
             steps {
                 echo "Réussi"
             }
         }
-        // ... autres stages, comme le déploiement, l'optimisation des assets, le backup, etc.
     }
 }
 
-// test 9

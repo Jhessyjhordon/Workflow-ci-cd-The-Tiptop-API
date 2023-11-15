@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel'); // Assurez-vous que le chemin est correct
 const uploadService = require('../services/uploadService');
+const generateConfirmationEmailTemplate = require('../services/accountCofirmationService');
 const authService = require('../services/authService');
 const mailService = require('../services/mailService')
 const accountCofirmationService = require('../services/accountCofirmationService');
@@ -44,7 +45,7 @@ const UserRegister = async (req, res) => {
             expiresAt: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
         });
 
-        mailService.sendConfirmationEmail(newUser.email, newUser.token);
+        mailService.sendConfirmationEmail(newUser.email, token);
 
         return res.status(200).json({
             error: false,
@@ -178,7 +179,7 @@ const getAllUsers = async (req, res) => {
         const decodedToken = authService.decodeToken(token)
 
         // Vérifier le rôle de l'utilisateur (assumons que le rôle est stocké dans decodedToken.role)
-        if (decodedToken.role !== 'admin') {
+        if (decodedToken.role !== 'admin' && decodedToken.role !== 'employee') {
             return res.status(403).json({
                 error: true,
                 message: ["Accès refusé"]
@@ -276,16 +277,22 @@ const updateUserById = async (req, res) => {
     // console.log("==================>",currentPassword, newPassword);
     console.log("==================>",body.currentPassword, body.newPassword);
 
+    if (isNaN(userId)) {
+        return res.status(400).json({
+            error: true,
+            message: ["ID utilisateur invalide"]
+        });
+    }
+
     try {
+        // Rechercher l'utilisateur par ID
+        const userToUpdate = await User.findByPk(userId);
         if (!token) {
             return res.status(401).json({
                 error: true,
                 message: ["Accès non autorisé"] // Token manquant
             });
         }
-        // Rechercher l'utilisateur par ID
-        const userToUpdate = await User.findByPk(userId);
-
         if (!userToUpdate) {
             return res.status(404).json({
                 error: true,
@@ -378,15 +385,24 @@ const getUserById = async (req, res) => {
 
 const deleteUserById = async (req, res) => {
     const userId = req.params.id;
-
+    const token =  req.headers.authorization; // Récupérer le token de l'en-tête
     try {
         // Rechercher l'utilisateur par ID
         const userToDelete = await User.findByPk(userId);
+        // Décoder le token pour obtenir les informations utilisateur
+        const decodedToken = authService.decodeToken(token)
 
         if (!userToDelete) {
             return res.status(404).json({
                 error: true,
                 message: ["Utilisateur non trouvé"]
+            });
+        }
+
+        if (decodedToken.role !== 'admin') {
+            return res.status(403).json({
+                error: true,
+                message: ["Accès refusé"]
             });
         }
 
@@ -507,7 +523,9 @@ const UserConfirme = async (req, res) => {
             // Envoyer un nouvel email de confirmation
             mailService.sendConfirmationEmail(user.email, newToken); // Utilisez le service mail approprié
 
-            return res.status(200).json({ message: 'Nouveau lien de confirmation envoyés' });
+            const htmlContent = generateConfirmationHTML('Nouveau lien de confirmation envoyé');
+
+            return res.status(200).send(htmlContent);
         }
 
         user.isVerify = true
@@ -515,9 +533,8 @@ const UserConfirme = async (req, res) => {
         user.token = null
         user.save()
     
-        // await user.destroy({ where: { token } });
-
-        return res.status(200).json({ message: "Utilisateur confirmé avec succès" });
+        const htmlContent = generateConfirmationHTML("Félicitation, votre compte a été confirmé");
+        return res.status(200).send(htmlContent);
     } catch (error) {
         console.error('Erreur lors de la confirmation de l\'utilisateur :', error);
         return res.status(500).json({ message: "Erreur lors de la confirmation de l'utilisateur" });

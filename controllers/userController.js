@@ -3,10 +3,10 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel'); // Assurez-vous que le chemin est correct
 const uploadService = require('../services/uploadService');
-const generateConfirmationEmailTemplate = require('../services/accountCofirmationService');
-const authService = require('../services/authService');
-const mailService = require('../services/mailService')
 const accountCofirmationService = require('../services/accountCofirmationService');
+const authService = require('../services/authService');
+const mailService = require('../services/mailService');
+const templateGeneratorService = require('../services/templateGeneratorService')
 
 
 // Contrôleur d'inscription d'utilisateur
@@ -45,7 +45,7 @@ const UserRegister = async (req, res) => {
             expiresAt: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
         });
 
-        mailService.sendConfirmationEmail(newUser.email, token);
+        mailService.sendConfirmationEmail(newUser.email,newUser.lastname , newUser.firstname, token);
 
         return res.status(200).json({
             error: false,
@@ -95,7 +95,7 @@ const UserCreation = async (req, res) => {
             confirmAt: new Date()
         });
 
-        mailService.sendConfirmationEmail(newUser.email, newUser.token);
+        mailService.sendConfirmationEmail(newUser.email, newUser.lastname , newUser.firstname, token);
 
         return res.status(200).json({
             error: false,
@@ -521,9 +521,9 @@ const UserConfirme = async (req, res) => {
             await user.save();
 
             // Envoyer un nouvel email de confirmation
-            mailService.sendConfirmationEmail(user.email, newToken); // Utilisez le service mail approprié
+            mailService.sendConfirmationEmail(user.email,user.lastname , user.firstname, newToken); // Utilisez le service mail approprié
 
-            const htmlContent = generateConfirmationHTML('Nouveau lien de confirmation envoyé');
+            const htmlContent =  templateGeneratorService.generateTemplate(`Lien invalide, \n un nouveau lien de confirmation envoyé !`)
 
             return res.status(200).send(htmlContent);
         }
@@ -533,7 +533,7 @@ const UserConfirme = async (req, res) => {
         user.token = null
         user.save()
     
-        const htmlContent = generateConfirmationHTML("Félicitation, votre compte a été confirmé");
+        const htmlContent = templateGeneratorService.generateTemplate("Félicitation, votre compte a été confirmé");
         return res.status(200).send(htmlContent);
     } catch (error) {
         console.error('Erreur lors de la confirmation de l\'utilisateur :', error);

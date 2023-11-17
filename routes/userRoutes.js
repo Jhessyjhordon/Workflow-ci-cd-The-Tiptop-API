@@ -158,7 +158,7 @@ router.put('/:id', userMiddleware.checkIfUserToken, userMiddleware.validateRegis
  * @swagger
  * /user:
  *   post:
- *     summary: Create a new user
+ *     summary: création de son compte par l'utilisateur
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -233,7 +233,7 @@ router.patch('/:id', userMiddleware.checkIfUserToken, userMiddleware.validatePat
  *       500:
  *         description: Erreur lors de l'enregistrement de l'utilisateur
  */
-router.post('/register', userMiddleware.validateRegister(Validator.userRegisterSchema), userController.UserRegister)
+router.post('/register', userMiddleware.checkIfUserToken,userMiddleware.validateRegister(Validator.userRegisterSchema), userController.UserRegister)
 
 /**
  * @swagger

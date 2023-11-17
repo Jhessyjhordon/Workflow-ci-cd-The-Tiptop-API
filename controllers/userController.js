@@ -92,7 +92,7 @@ const UserCreation = async (req, res) => {
             UpdatedAt: new Date(),
             isVerify: false,
             role: body.role,
-            confirmAt: new Date()
+            expiresAt: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
         });
 
         mailService.sendConfirmationEmail(newUser.email, newUser.lastname , newUser.firstname, token);
@@ -273,10 +273,6 @@ const updateUserById = async (req, res) => {
     const body = req.body;
     // const { currentPassword, newPassword } = req.body;
 
-    // console.log("------------------>",req.body);
-    // console.log("==================>",currentPassword, newPassword);
-    console.log("==================>",body.currentPassword, body.newPassword);
-
     if (isNaN(userId)) {
         return res.status(400).json({
             error: true,
@@ -448,7 +444,7 @@ const GoogleAuth = async (req, res) => {
 
         user = newUser;
       }
-      const token = generateToken(user)
+      const token = authService.generateToken(user)
       return res.status(200).json({
         error: false,
         message: ['Connexion réussie'],
@@ -508,7 +504,10 @@ const UserConfirme = async (req, res) => {
         const user = await User.findOne({ where: { token } });
 
         if (!user) {
-            return res.status(404).json({ message: "Lien de confirmation invalide" });
+            // return res.status(404).json({ message: "Lien de confirmation invalide" });
+            const htmlContent =  templateGeneratorService.generateTemplate(`Lien de confirmation invalide`)
+
+            return res.status(200).send(htmlContent);
         }
 
         if (new Date() > user.expiresAt) {
@@ -523,7 +522,7 @@ const UserConfirme = async (req, res) => {
             // Envoyer un nouvel email de confirmation
             mailService.sendConfirmationEmail(user.email,user.lastname , user.firstname, newToken); // Utilisez le service mail approprié
 
-            const htmlContent =  templateGeneratorService.generateTemplate(`Lien invalide, \n un nouveau lien de confirmation envoyé !`)
+            const htmlContent =  templateGeneratorService.generateTemplate(`Lien invalide, un nouveau lien de confirmation envoyé !`)
 
             return res.status(200).send(htmlContent);
         }

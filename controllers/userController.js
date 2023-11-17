@@ -224,10 +224,10 @@ const getAllUsersByRoleClient = async (req, res) => {
         }
 
         // Décoder le token pour obtenir les informations utilisateur
-        const decodedToken = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET_KEY);
+        const decodedToken = authService.decodeToken(token)
 
         // Vérifier le rôle de l'utilisateur (assumons que le rôle est stocké dans decodedToken.role)
-        if (decodedToken.role !== 'admin' && decodedToken.role !== 'employee') {
+        if (decodedToken.role !== 'admin' || decodedToken.role !== 'employee') {
             return res.status(403).json({
                 error: true,
                 message: ["Accès refusé"]
@@ -242,6 +242,56 @@ const getAllUsersByRoleClient = async (req, res) => {
         return res.status(200).json({
             error: false,
             message: ['Liste des utilisateurs ayant le rôle client'],
+            users
+        });
+
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                error: true,
+                message: ["Veillez vous reconnecter"] // Token expiré
+            });
+        }
+        console.error('Erreur lors de la récupération des utilisateurs avec Sequelize :', error);
+        return res.status(500).json({
+            error: true,
+            message: ["Une erreur est survenue lors de la récupération des utilisateurs"]
+        });
+    }
+};
+
+// Contrôleur pour la route GET '/' pour les USERS selon le rôle client
+const getAllUsersByRoleEmployee = async (req, res) => {
+    const token = req.headers.authorization; // Récupérer le token de l'en-tête
+
+    try {
+        // Vérifier la présence du token
+        if (!token) {
+            return res.status(401).json({
+                error: true,
+                message: ["Accès non autorisé"] // Token manquant
+            });
+        }
+
+        // Décoder le token pour obtenir les informations utilisateur
+        const decodedToken = authService.decodeToken(token)
+
+        // Vérifier le rôle de l'utilisateur (assumons que le rôle est stocké dans decodedToken.role)
+        if (decodedToken.role !== 'admin' || decodedToken.role !== 'employee') {
+            return res.status(403).json({
+                error: true,
+                message: ["Accès refusé"]
+            });
+        }
+
+        // Récupérer la liste des utilisateurs ayant le rôle client
+        const users = await User.findAll({
+            where: { role: 'employee' } // On filtre pour ne retourner que les utilisateurs qui ont le rôle CUSTOMER  
+        });
+
+        return res.status(200).json({
+            error: false,
+            message: ['Liste des utilisateurs ayant le rôle employé'],
             users
         });
 
@@ -618,4 +668,5 @@ module.exports = { UserLogin,
     GoogleAuth, 
     uploadPhoto, 
     UserConfirme,
-    partialUpdateUserById };
+    partialUpdateUserById,
+    getAllUsersByRoleEmployee };

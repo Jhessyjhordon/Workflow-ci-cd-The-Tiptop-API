@@ -8,7 +8,7 @@ COPY package*.json ./
 # nécessaires pour les modules natifs
 RUN apk add --no-cache python3 make g++ && \
     npm install && \
-    # npm uninstall bcrypt && \
+    npm uninstall bcrypt && \
     npm install bcrypt
 
 COPY . .

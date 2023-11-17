@@ -1,0 +1,5 @@
+# Identifie le langage ou la technologie principale du projet.
+language: NodeJS
+
+# Test for Jenkins pipeline build on push or merge on GitLab
+# Test 2 for Jenkins webhook

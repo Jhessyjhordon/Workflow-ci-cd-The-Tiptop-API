@@ -7,6 +7,15 @@ const validateBatchId = (schema) => async (req, res, next) => {
         return res.status(400).json({ type: err.name, message: err.message });
     }
   };
+const validateUserIdGettingBatch = (schema) => async (req, res, next) => {
+    try {
+        await schema.validate(req.params);
+  
+        return next();
+    } catch (err) {
+        return res.status(400).json({ type: err.name, message: err.message });
+    }
+  };
 
 const validateBatch = (schema) => async (req, res, next) => {
   
@@ -31,5 +40,5 @@ const validateBatchPatch = (schema) => async (req, res, next) => {
 
 
   module.exports = { 
-    validateBatchId,validateBatch, validateBatchPatch
+    validateBatchId,validateBatch, validateBatchPatch, validateUserIdGettingBatch
   } 

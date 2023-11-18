@@ -39,6 +39,10 @@ const User = db.sequelize.define('User', {
         type: db.DataTypes.DATE,
         allowNull: true
     },
+    newsletter: {
+      type: db.DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     isVerify:{
         type: db.DataTypes.BOOLEAN,
         defaultValue: false

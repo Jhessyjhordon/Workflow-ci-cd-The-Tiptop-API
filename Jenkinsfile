@@ -96,7 +96,7 @@ pipeline {
             }
         }
 
-        /*stage('SonarQube Analysis') {
+        stage('SonarQube Analysis') {
             steps {
                 echo "Analyse SonarQube pour API"
                 dir("${WORKSPACE}/${env.folderName}") {

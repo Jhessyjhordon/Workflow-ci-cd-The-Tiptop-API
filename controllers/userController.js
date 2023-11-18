@@ -656,6 +656,22 @@ const partialUpdateUserById = async (req, res) => {
     }
 };
 
+const getUserEmailsByNewsletter = async (req, res) => {
+    try {
+        const { newsletter } = req.query;
+        const users = await User.findAll({
+            attributes: ['email'],
+            where: { newsletter },
+        });
+
+        const userEmails = users.map(user => user.email);
+        return res.status(200).json(userEmails);
+    } catch (error) {
+        console.error('Error fetching user emails:', error);
+        return res.status(500).json({ error: true, message: 'Internal server error' });
+    }
+};
+
   
 module.exports = { UserLogin, 
     UserRegister, 
@@ -669,4 +685,5 @@ module.exports = { UserLogin,
     uploadPhoto, 
     UserConfirme,
     partialUpdateUserById,
-    getAllUsersByRoleEmployee };
+    getAllUsersByRoleEmployee,
+    getUserEmailsByNewsletter };

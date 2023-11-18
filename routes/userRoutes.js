@@ -32,7 +32,25 @@ const userController = require('../controllers/userController');
  *       500:
  *         description: Erreur serveur lors du téléchargement
  */
-router.post('/upload', userController.uploadPhoto); 
+router.post('/upload', userController.uploadPhoto);
+
+/**
+ * @swagger
+ * /user/email/newsletter:
+ *   get:
+ *     summary: Get user emails by newsletter status
+ *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: newsletter
+ *         schema:
+ *           type: boolean
+ *         description: Filter users by newsletter status (true/false)
+ *     responses:
+ *       200:
+ *         description: List of user emails
+ */
+router.get('/email/newsletter', userController.getUserEmailsByNewsletter);
 
 /**
  * @swagger

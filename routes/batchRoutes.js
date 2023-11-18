@@ -123,7 +123,7 @@ const batchController = require('../controllers/batchController');
  *         description: Données de mise à jour invalides
  *       404:
  *         description: Lot non trouvé
- * /batch/retrieve/{userid}:
+ * /batch/retrieve/:
  *   get:
  *     summary: Récupère la liste des lots par ID d'utilisateur
  *     tags: [Batches]
@@ -214,7 +214,7 @@ const batchController = require('../controllers/batchController');
 
 router.get('/', batchController.getAllBatches)
 router.get('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.getBatchById)
-router.get('/retrieve/:userid', batchMiddleware.validateUserIdGettingBatch(Validator.batchByUserIdSchema), batchController.getBatchByUserId)
+router.get('/retrieve', batchMiddleware.validateUserIdGettingBatch(Validator.batchByUserIdSchema), batchController.getBatchByUserId)
 router.delete('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.deleteBatchById)
 router.put('/:id', batchMiddleware.validateBatch(Validator.batchSchema), batchController.updateBatchById)
 router.patch('/:id', batchMiddleware.validateBatchPatch(Validator.batchPatchSchema), batchController.partialUpdateBatchById);

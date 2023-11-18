@@ -1,6 +1,6 @@
 FROM node:14-alpine
 
-WORKDIR /api
+WORKDIR /var/jenkins_home/workspace/the-tiptop-api/
 
 COPY package*.json ./
 

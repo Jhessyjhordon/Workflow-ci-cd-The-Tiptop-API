@@ -32,7 +32,25 @@ const userController = require('../controllers/userController');
  *       500:
  *         description: Erreur serveur lors du téléchargement
  */
-router.post('/upload', userController.uploadPhoto); 
+router.post('/upload', userController.uploadPhoto);
+
+/**
+ * @swagger
+ * /user/email/newsletter:
+ *   get:
+ *     summary: Get user emails by newsletter status
+ *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: newsletter
+ *         schema:
+ *           type: boolean
+ *         description: Filter users by newsletter status (true/false)
+ *     responses:
+ *       200:
+ *         description: List of user emails
+ */
+router.get('/email/newsletter', userController.getUserEmailsByNewsletter);
 
 /**
  * @swagger
@@ -69,7 +87,7 @@ router.get('/', userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsEmp
  * tags:
  *   name: Users
  *   description: API pour la gestion des utilisateurs
- * /user/role/client:
+ * /user/role/customer:
  *   get:
  *     summary: Récupère la liste de tous les utilisateurs ayant le rôle CLIENT
  *     tags: [Users]
@@ -77,7 +95,22 @@ router.get('/', userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsEmp
  *       200:
  *         description: Liste des utilisateurs récupérée avec succès
  */
-router.get('/role/client', userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsEmployeeOrAdmin,userController.getAllUsersByRoleClient)
+router.get('/role/customer', userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsEmployeeOrAdmin,userController.getAllUsersByRoleClient)
+
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: API pour la gestion des utilisateurs
+ * /user/role/employee:
+ *   get:
+ *     summary: Récupère la liste de tous les utilisateurs ayant le rôle EMPLOYEE
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Liste des utilisateurs récupérée avec succès
+ */
+router.get('/role/employee', userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsEmployeeOrAdmin,userController.getAllUsersByRoleEmployee)
 
 /**
  * @swagger
@@ -158,7 +191,7 @@ router.put('/:id', userMiddleware.checkIfUserToken, userMiddleware.validateRegis
  * @swagger
  * /user:
  *   post:
- *     summary: Create a new user
+ *     summary: création de son compte par l'utilisateur
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -233,7 +266,7 @@ router.patch('/:id', userMiddleware.checkIfUserToken, userMiddleware.validatePat
  *       500:
  *         description: Erreur lors de l'enregistrement de l'utilisateur
  */
-router.post('/register', userMiddleware.validateRegister(Validator.userRegisterSchema), userController.UserRegister)
+router.post('/register', userMiddleware.checkIfUserToken,userMiddleware.validateRegister(Validator.userRegisterSchema), userController.UserRegister)
 
 /**
  * @swagger

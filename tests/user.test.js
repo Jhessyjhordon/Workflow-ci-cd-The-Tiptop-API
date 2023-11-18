@@ -370,7 +370,10 @@ describe('User Routes', () => {
             lastname: "Name"
           };
     
-          const res = await supertest(server).post('/user/register').send(invalidUserData);
+          const res = await supertest(server)
+          .post('/user/register')
+          .set('Authorization', 'Bearer ' + token_employee)
+          .send(invalidUserData);
     
           expect(res.status).to.equal(409);
           expect(res.body).to.be.an('object');

@@ -1,0 +1,97 @@
+<testExecutions version="1">
+<file path="tests\user.test.js">
+<testCase name="User Routes: should have valid JWT tokens after before hook" duration="2">
+<failure message="expected undefined to be a string"><![CDATA[AssertionError: expected undefined to be a string
+    at Context.<anonymous> (tests\user.test.js:47:34)
+    at process.processImmediate (node:internal/timers:476:21)]]></failure>
+</testCase>
+<testCase name="GET /user: should get list of all users when token is provided and user is an employee" duration="4">
+<failure message="expected 403 to equal 200"><![CDATA[AssertionError: expected 403 to equal 200
+    at Context.<anonymous> (tests\user.test.js:69:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="GET /user: should not get list of all users when token is missing" duration="4"/>
+<testCase name="GET /user: should not get list of all users when token is expired" duration="8"/>
+<testCase name="GET /user: should not get list of all users when user is not an employee" duration="4">
+<failure message="expected &apos;Accès refusé : Token invalide ou expi…&apos; to include &apos;Accès refusé : vous n\&apos;êtes pas autor…&apos;"><![CDATA[AssertionError: expected 'Accès refusé : Token invalide ou expi…' to include 'Accès refusé : vous n\'êtes pas autor…'
+    at Context.<anonymous> (tests\user.test.js:113:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="GET /user/:id: should get a user by ID (with valid token)" duration="3">
+<failure message="expected 403 to equal 200"><![CDATA[AssertionError: expected 403 to equal 200
+    at Context.<anonymous> (tests\user.test.js:124:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="GET /user/:id: should return a 404 if user ID does not exist" duration="3">
+<failure message="expected 403 to equal 404"><![CDATA[AssertionError: expected 403 to equal 404
+    at Context.<anonymous> (tests\user.test.js:137:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="GET /user/:id: should return a 400 if ID is not a valid number" duration="4">
+<failure message="expected 403 to equal 400"><![CDATA[AssertionError: expected 403 to equal 400
+    at Context.<anonymous> (tests\user.test.js:147:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="GET /user/:id: should not get a user by ID (without token)" duration="2"/>
+<testCase name="GET /user/:id: should not get a user by ID (with valid token but not employee role)" duration="2"/>
+<testCase name="DELETE /user/:id: should not delete a user by ID (with valid token and employee or customer role)" duration="2">
+<failure message="expected &apos;Accès refusé : Token invalide ou expi…&apos; to include &apos;Accès refusé : vous n\&apos;êtes pas autor…&apos;"><![CDATA[AssertionError: expected 'Accès refusé : Token invalide ou expi…' to include 'Accès refusé : vous n\'êtes pas autor…'
+    at Context.<anonymous> (tests\user.test.js:185:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="DELETE /user/:id: should return a 404 if user ID does not exist (with valid token and employee role)" duration="2">
+<failure message="expected 403 to equal 404"><![CDATA[AssertionError: expected 403 to equal 404
+    at Context.<anonymous> (tests\user.test.js:194:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="DELETE /user/:id: should return a 400 if ID is not a valid number (with valid token and employee role)" duration="3">
+<failure message="expected &apos;Accès refusé : Token invalide ou expi…&apos; to include [ &apos;Accès refusé : vous n\&apos;êtes pas a…&apos; ]"><![CDATA[AssertionError: expected 'Accès refusé : Token invalide ou expi…' to include [ 'Accès refusé : vous n\'êtes pas a…' ]
+    at Context.<anonymous> (tests\user.test.js:208:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="PUT /user/:id: should update a user by ID (with valid token and any role)" duration="2">
+<failure message="expected 403 to equal 200"><![CDATA[AssertionError: expected 403 to equal 200
+    at Context.<anonymous> (tests\user.test.js:233:33)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="PUT /user/:id: should return a 404 if user ID does not exist (with valid token and employee role)" duration="3">
+<failure message="expected 403 to equal 404"><![CDATA[AssertionError: expected 403 to equal 404
+    at Context.<anonymous> (tests\user.test.js:259:33)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="PUT /user/:id: should return a 400 if ID is not a valid number (with valid token and employee role)" duration="3">
+<failure message="expected 403 to equal 400"><![CDATA[AssertionError: expected 403 to equal 400
+    at Context.<anonymous> (tests\user.test.js:283:33)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="PUT /user/:id: should return a 400 if update data is invalid (with valid token and employee role)" duration="2">
+<failure message="expected 403 to equal 409"><![CDATA[AssertionError: expected 403 to equal 409
+    at Context.<anonymous> (tests\user.test.js:306:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="PUT /user/:id: should not update a user by ID (without token)" duration="3"/>
+<testCase name="POST /user: should return a 400 if registration data is invalid" duration="3"/>
+<testCase name="PATCH /user/:id: should update a user partially by ID (with valid token and employee role)" duration="2">
+<failure message="expected 403 to equal 200"><![CDATA[AssertionError: expected 403 to equal 200
+    at Context.<anonymous> (tests\user.test.js:452:33)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="PATCH /user/:id: should return a 404 if user ID does not exist (with valid token and employee role)" duration="2">
+<failure message="expected 403 to equal 400"><![CDATA[AssertionError: expected 403 to equal 400
+    at Context.<anonymous> (tests\user.test.js:469:33)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="PATCH /user/:id: should return a 400 if ID is not a valid number (with valid token and employee role)" duration="2">
+<failure message="expected 403 to equal 400"><![CDATA[AssertionError: expected 403 to equal 400
+    at Context.<anonymous> (tests\user.test.js:485:33)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="PATCH /user/:id: should return a 400 if update data is invalid (with valid token and employee role)" duration="2">
+<failure message="expected 403 to equal 400"><![CDATA[AssertionError: expected 403 to equal 400
+    at Context.<anonymous> (tests\user.test.js:500:33)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]]></failure>
+</testCase>
+<testCase name="PATCH /user/:id: should not update a user partially by ID (without token)" duration="2"/>
+<testCase name="PATCH /user/:id: should not update a user partially by ID (with valid token but not employee role)" duration="2"/>
+</file>
+</testExecutions>

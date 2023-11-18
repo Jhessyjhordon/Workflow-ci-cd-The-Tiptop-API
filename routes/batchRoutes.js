@@ -30,7 +30,7 @@ const batchController = require('../controllers/batchController');
  *     responses:
  *       201:
  *         description: Lot créé avec succès.
- * /batch/varify:
+ * /batch/verify:
  *   post:
  *     summary: Verifier un lot
  *     tags: [Batches]
@@ -123,6 +123,30 @@ const batchController = require('../controllers/batchController');
  *         description: Données de mise à jour invalides
  *       404:
  *         description: Lot non trouvé
+ * /batch/retrieve/:
+ *   get:
+ *     summary: Récupère la liste des lots par ID d'utilisateur
+ *     tags: [Batches]
+ *     parameters:
+ *       - in: path
+ *         name: userid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID de l'utilisateur pour récupérer les lots
+ *     responses:
+ *       200:
+ *         description: Lots récupérés avec succès
+ *         content:
+ *           application/json:
+ *             example:
+ *               - valeur: 100
+ *                 description: "Lot de valeur 100"
+ *                 type_lot: "Infuseur à thé"
+ *                 pourcentage_gagnant: 10
+ *                 user_id: 1
+ *       404:
+ *         description: Utilisateur non trouvé ou pas de lots associés
  * 
  * components:
  *   schemas:
@@ -190,10 +214,11 @@ const batchController = require('../controllers/batchController');
 
 router.get('/', batchController.getAllBatches)
 router.get('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.getBatchById)
+router.get('/retrieve', batchMiddleware.validateUserIdGettingBatch(Validator.batchByUserIdSchema), batchController.getBatchByUserId)
 router.delete('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.deleteBatchById)
 router.put('/:id', batchMiddleware.validateBatch(Validator.batchSchema), batchController.updateBatchById)
 router.patch('/:id', batchMiddleware.validateBatchPatch(Validator.batchPatchSchema), batchController.partialUpdateBatchById);
 router.post('/', batchMiddleware.validateBatch(Validator.batchSchema), batchController.createBatch)
-router.post('/varify', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.verifyBatch)
+router.post('/verify', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.verifyBatch)
 
 module.exports = router

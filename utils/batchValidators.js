@@ -20,4 +20,8 @@ const batchIdSchema = Yup.object({
     id: Yup.number().required().positive().integer()
 });
 
-module.exports = { batchSchema, batchIdSchema, batchPatchSchema};
+const batchByUserIdSchema = Yup.object({
+    user_id: Yup.number().required().positive().integer()
+});
+
+module.exports = { batchSchema, batchIdSchema, batchPatchSchema, batchByUserIdSchema};

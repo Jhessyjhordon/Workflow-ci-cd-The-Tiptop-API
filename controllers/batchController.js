@@ -1,6 +1,7 @@
 const db = require('../db');
 const jwt = require('jsonwebtoken');
 const Batch = require('../models/batchModel')
+const User = require('../models/batchModel')
 
 require('dotenv').config();
 
@@ -230,5 +231,50 @@ const createBatch = async (req, res) => {
     }
   };
 
+  const getBatchByUserId = async (req, res) => {
+    const token = req.headers.authorization;
+    const decodedToken = authService.decodeToken(token)
+    try {
+      const user = await User.findByPk(decodedToken.id);
+  
+      if (!user) {
+        return res.status(404).json({
+          error: true,
+          message: ["Utilisateur non trouvé"]
+        });
+      }
 
-module.exports = {getBatchById, deleteBatchById, getAllBatches, updateBatchById, createBatch, partialUpdateBatchById, verifyBatch};
+      const batch = await User.findOne({ where: { user_id: user.id } });
+  
+      if (!batch) {
+        return res.status(404).json({
+          error: true,
+          message: ["Cet utilisateur ne possède aucun lot"]
+        });
+      }
+  
+
+  
+      return res.status(201).json({
+        error: false,
+        message: ['Lo trouvé'],
+        batch: batch.toJSON()
+      });
+  
+    } catch (error) {
+      return res.status(500).json({
+        error: true,
+        message: ["Erreur lors de la récupération du lot"]
+      });
+    }
+  };
+
+
+module.exports = {getBatchById, 
+                  deleteBatchById, 
+                  getAllBatches, 
+                  updateBatchById, 
+                  createBatch, 
+                  partialUpdateBatchById, 
+                  verifyBatch, 
+                  getBatchByUserId};

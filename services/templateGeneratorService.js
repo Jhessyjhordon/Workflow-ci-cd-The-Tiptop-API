@@ -1,15 +1,15 @@
-const generateConfirmationEmailTemplate = (message) => {
+function generateTemplate(message){
     return `
     <html>
         <head>
             <title>Confirmation de compte</title>
         </head>
         <body>
-            <h1>${message}</h1>
+            <p>${message}</p>
         </body>
       </html>
     `;
-  };
-
-  module.exports = { generateConfirmationEmailTemplate };
+  }
+  
+  module.exports = { generateTemplate };
   

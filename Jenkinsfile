@@ -70,7 +70,7 @@ pipeline {
         }
 
 
-        /*stage('Run tests with Mocha & Chai') {
+        stage('Run tests with Mocha & Chai') {
              steps {
                 script{
                     switch(metadata.language) {
@@ -94,7 +94,7 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
 
         /*stage('SonarQube Analysis') {
             steps {
@@ -120,7 +120,7 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
 
         stage('Create Docker Image') {
             steps {

@@ -232,9 +232,10 @@ const createBatch = async (req, res) => {
   };
 
   const getBatchByUserId = async (req, res) => {
-    const userId = req.params.userid;
+    const token = req.headers.authorization;
+    const decodedToken = authService.decodeToken(token)
     try {
-      const user = await User.findByPk(ticket.user_id);
+      const user = await User.findByPk(decodedToken.id);
   
       if (!user) {
         return res.status(404).json({
@@ -243,7 +244,7 @@ const createBatch = async (req, res) => {
         });
       }
 
-      const batch = await User.findOne({ where: { user_id: userId } });
+      const batch = await User.findOne({ where: { user_id: user.id } });
   
       if (!batch) {
         return res.status(404).json({

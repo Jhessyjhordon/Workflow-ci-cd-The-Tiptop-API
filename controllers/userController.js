@@ -679,6 +679,8 @@ const getUserEmailsByNewsletter = async (req, res) => {
         csvWriter.writeRecords(userEmails)
             .then(() => {
                 console.log('...CSV file written successfully');
+                console.log('Répertoire courant:', __dirname);
+                console.log('Chemin complet du fichier CSV:', path.join(__dirname, 'user_emails.csv'));
                 res.setHeader('Content-Disposition', 'attachment; filename=user_emails.csv');
                 res.setHeader('Content-Type', 'text/csv');
                 return res.status(200).sendFile('user_emails.csv', { root: __dirname });

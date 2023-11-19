@@ -669,7 +669,7 @@ const getUserEmailsByNewsletter = async (req, res) => {
 
         const userEmails = users.map(user => ({ email: user.email })); // On transforme userEmails en un tableau d'objets avant de l'écrire dans le CSV
         // Créer le fichier CSV
-        const csvPath = path.join(__dirname, 'user_emails.csv');
+        const csvPath = path.join(__dirname, '../csv/user_emails.csv');
         const csvWriter = createCsvWriter({
             path: csvPath,
             header: [
@@ -685,7 +685,7 @@ const getUserEmailsByNewsletter = async (req, res) => {
                 console.log('Chemin complet du fichier CSV:', path.join(__dirname, 'user_emails.csv'));
                 res.setHeader('Content-Disposition', 'attachment; filename=user_emails.csv');
                 res.setHeader('Content-Type', 'text/csv');
-                return res.status(200).sendFile('user_emails.csv', { root: __dirname });
+                return res.status(200).sendFile(csvPath);
             })
             .catch(error => {
                 console.error('Error writing CSV file:', error);

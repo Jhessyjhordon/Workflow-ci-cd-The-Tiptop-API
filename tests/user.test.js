@@ -213,7 +213,8 @@ describe('User Routes', () => {
             phone: "0102030405",
             email: "tototototo@gmail.com",
             firstname: "First Name",
-            lastname: "Last Name"
+            lastname: "Last Name",
+            newsletter: 1
           };
     
           const res = await chai

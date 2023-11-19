@@ -9,6 +9,7 @@ const authService = require('../services/authService');
 const mailService = require('../services/mailService');
 const templateGeneratorService = require('../services/templateGeneratorService')
 const path = require('path'); // Ajout du service path
+const mailchimp = require('../config/mailchimp') // Appel de la configuration mailchimp
 
 
 // Contrôleur d'inscription d'utilisateur
@@ -696,8 +697,22 @@ const getUserEmailsByNewsletter = async (req, res) => {
         }
         else if (mode === 'mailchimp') {
             // Préparer les données pour Mailchimp
-            // Envoyer les données à Mailchimp (cette partie sera implémentée plus tard)
-            return res.status(200).json({ message: 'Données préparées pour Mailchimp' });
+            const formattedUsersForMailchimp = users.map(user => ({ // On map les utilisateurs récupérés par Sequelize en un format que Mailchimp peut comprendre
+                email_address: user.email,
+                status: 'subscribed' 
+            }));
+            try {
+                const response = await mailchimp.lists.batchListMembers('a8075bc308', {
+                    members: formattedUsersForMailchimp,
+                    update_existing: true,
+                });
+        
+                console.log('Réponse Mailchimp:', response);
+                return res.status(200).json({ message: 'Synchronisation avec Mailchimp réussie', response });
+            } catch (error) {
+                console.error('Erreur Mailchimp:', error);
+                return res.status(500).json({ error: true, message: 'Erreur lors de la synchronisation avec Mailchimp', details: error });
+            }
         } 
         else {
             return res.status(400).json({ error: true, message: 'Mode non spécifié ou invalide' });

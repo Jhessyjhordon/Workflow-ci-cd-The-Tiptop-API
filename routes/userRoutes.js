@@ -36,7 +36,7 @@ router.post('/upload', userController.uploadPhoto);
 
 /**
  * @swagger
- * /user/email/newsletter:
+ * /user/email/newsletter?newsletter=1&mode=?:
  *   get:
  *     summary: Get user emails by newsletter status
  *     tags: [Users]

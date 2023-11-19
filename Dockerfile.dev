@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:20-alpine3.18
 
 WORKDIR /var/jenkins_home/workspace/the-tiptop-api/
 

@@ -661,38 +661,47 @@ const partialUpdateUserById = async (req, res) => {
 
 const getUserEmailsByNewsletter = async (req, res) => {
     try {
-        const { newsletter } = req.query;
+        const { newsletter, mode } = req.query;
         const users = await User.findAll({
             attributes: ['email'],
             where: { newsletter },
         });
 
-        const userEmails = users.map(user => ({ email: user.email })); // On transforme userEmails en un tableau d'objets avant de l'écrire dans le CSV
-        // Créer le fichier CSV
-        const csvPath = path.join(__dirname, '../csv/user_emails.csv');
-        const csvWriter = createCsvWriter({
-            path: csvPath,
-            header: [
-                { id: 'email', title: 'Email' },
-            ],
-        });
-
-        // Écrire les données dans le fichier CSV
-        csvWriter.writeRecords(userEmails)
-            .then(() => {
-                console.log('...CSV file written successfully');
-                console.log('Répertoire courant:', __dirname);
-                console.log('Chemin complet du fichier CSV:', path.join(__dirname, 'user_emails.csv'));
-                res.setHeader('Content-Disposition', 'attachment; filename=user_emails.csv');
-                res.setHeader('Content-Type', 'text/csv');
-                return res.status(200).sendFile(csvPath);
-            })
-            .catch(error => {
-                console.error('Error writing CSV file:', error);
-                return res.status(500).json({ error: true, message: 'Internal server error' });
+        if(mode==='csv'){
+            const userEmails = users.map(user => ({ email: user.email })); // On transforme userEmails en un tableau d'objets avant de l'écrire dans le CSV
+            // Créer le fichier CSV
+            const csvPath = path.join(__dirname, '../csv/user_emails.csv');
+            const csvWriter = createCsvWriter({
+                path: csvPath,
+                header: [
+                    { id: 'email', title: 'Email' },
+                ],
             });
 
-        // return res.status(200).json({ userEmails });
+            // Écrire les données dans le fichier CSV
+            csvWriter.writeRecords(userEmails)
+                .then(() => {
+                    console.log('...CSV file written successfully');
+                    console.log('Répertoire courant:', __dirname);
+                    console.log('Chemin complet du fichier CSV:', path.join(__dirname, 'user_emails.csv'));
+                    res.setHeader('Content-Disposition', 'attachment; filename=user_emails.csv');
+                    res.setHeader('Content-Type', 'text/csv');
+                    return res.status(200).sendFile(csvPath);
+                })
+                .catch(error => {
+                    console.error('Error writing CSV file:', error);
+                    return res.status(500).json({ error: true, message: 'Internal server error' });
+                } );
+            // return res.status(200).json({ userEmails });
+        }
+        else if (mode === 'mailchimp') {
+            // Préparer les données pour Mailchimp
+            // Envoyer les données à Mailchimp (cette partie sera implémentée plus tard)
+            return res.status(200).json({ message: 'Données préparées pour Mailchimp' });
+        } 
+        else {
+            return res.status(400).json({ error: true, message: 'Mode non spécifié ou invalide' });
+        }
     } catch (error) {
         console.error('Error fetching user emails:', error);
         return res.status(500).json({ error: true, message: 'Internal server error' });

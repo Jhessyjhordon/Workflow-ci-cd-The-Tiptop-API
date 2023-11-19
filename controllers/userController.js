@@ -8,6 +8,7 @@ const accountCofirmationService = require('../services/accountCofirmationService
 const authService = require('../services/authService');
 const mailService = require('../services/mailService');
 const templateGeneratorService = require('../services/templateGeneratorService')
+const path = require('path'); // Ajout du service path
 
 
 // Contrôleur d'inscription d'utilisateur

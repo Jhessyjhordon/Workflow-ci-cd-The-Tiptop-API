@@ -15,6 +15,7 @@ let userSchema = Yup.object({
     role: Yup.string().required().min(1).max(155),
     birthDate: Yup.date().required(),
     address: Yup.string().required().min(1).max(155),
+    newsletter: Yup.boolean().required(),
     // isVerify:Yup.boolean()
 });
 

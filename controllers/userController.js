@@ -1,6 +1,7 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const User = require('../models/userModel'); // Assurez-vous que le chemin est correct
 const uploadService = require('../services/uploadService');
 const accountCofirmationService = require('../services/accountCofirmationService');
@@ -92,6 +93,7 @@ const UserCreation = async (req, res) => {
             UpdatedAt: new Date(),
             isVerify: false,
             role: body.role,
+            newsletter: body.newsletter,
             expiresAt: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
         });
 
@@ -665,7 +667,26 @@ const getUserEmailsByNewsletter = async (req, res) => {
         });
 
         const userEmails = users.map(user => user.email);
-        return res.status(200).json(userEmails);
+        // Créer le fichier CSV
+        const csvWriter = createCsvWriter({
+            path: 'user_emails.csv',
+            header: [
+                { id: 'email', title: 'Email' },
+            ],
+        });
+
+        // Écrire les données dans le fichier CSV
+        csvWriter.writeRecords(userEmails)
+            .then(() => {
+                console.log('...CSV file written successfully');
+                return res.status(200).sendFile('user_emails.csv', { root: __dirname });
+            })
+            .catch(error => {
+                console.error('Error writing CSV file:', error);
+                return res.status(500).json({ error: true, message: 'Internal server error' });
+            });
+
+        // return res.status(200).json({ userEmails });
     } catch (error) {
         console.error('Error fetching user emails:', error);
         return res.status(500).json({ error: true, message: 'Internal server error' });

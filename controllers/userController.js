@@ -669,8 +669,9 @@ const getUserEmailsByNewsletter = async (req, res) => {
 
         const userEmails = users.map(user => ({ email: user.email })); // On transforme userEmails en un tableau d'objets avant de l'écrire dans le CSV
         // Créer le fichier CSV
+        const csvPath = path.join(__dirname, 'user_emails.csv');
         const csvWriter = createCsvWriter({
-            path: 'user_emails.csv',
+            path: csvPath,
             header: [
                 { id: 'email', title: 'Email' },
             ],

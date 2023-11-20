@@ -112,7 +112,7 @@ pipeline {
                                 echo "PATH+SONAR est : ${scannerHome}/bin"
                                 withEnv(["PATH+SONAR=${scannerHome}/bin"]) {
                                     sh "sonar-scanner \
-                                        -Dsonar.host.url=http://sonarqube.dsp-archiwebo22b-ji-rw-ah.fr/ \
+                                        -Dsonar.host.url=https://sonarqube.dsp-archiwebo22b-ji-rw-ah.fr/ \
                                         -Dsonar.login=${SONAR_TOKEN}"
                                 }
                             }

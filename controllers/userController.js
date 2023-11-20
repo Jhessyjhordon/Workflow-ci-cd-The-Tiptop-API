@@ -8,6 +8,8 @@ const accountCofirmationService = require('../services/accountCofirmationService
 const authService = require('../services/authService');
 const mailService = require('../services/mailService');
 const templateGeneratorService = require('../services/templateGeneratorService')
+const path = require('path'); // Ajout du service path
+const mailchimp = require('../config/mailchimp') // Appel de la configuration mailchimp
 
 
 // Contrôleur d'inscription d'utilisateur
@@ -660,33 +662,61 @@ const partialUpdateUserById = async (req, res) => {
 
 const getUserEmailsByNewsletter = async (req, res) => {
     try {
-        const { newsletter } = req.query;
+        const { newsletter, mode } = req.query;
         const users = await User.findAll({
             attributes: ['email'],
             where: { newsletter },
         });
 
-        const userEmails = users.map(user => user.email);
-        // Créer le fichier CSV
-        const csvWriter = createCsvWriter({
-            path: 'user_emails.csv',
-            header: [
-                { id: 'email', title: 'Email' },
-            ],
-        });
-
-        // Écrire les données dans le fichier CSV
-        csvWriter.writeRecords(userEmails)
-            .then(() => {
-                console.log('...CSV file written successfully');
-                return res.status(200).sendFile('user_emails.csv', { root: __dirname });
-            })
-            .catch(error => {
-                console.error('Error writing CSV file:', error);
-                return res.status(500).json({ error: true, message: 'Internal server error' });
+        if(mode==='csv'){
+            const userEmails = users.map(user => ({ email: user.email })); // On transforme userEmails en un tableau d'objets avant de l'écrire dans le CSV
+            // Créer le fichier CSV
+            const csvPath = path.join(__dirname, '../csv/user_emails.csv');
+            const csvWriter = createCsvWriter({
+                path: csvPath,
+                header: [
+                    { id: 'email', title: 'Email' },
+                ],
             });
 
-        // return res.status(200).json({ userEmails });
+            // Écrire les données dans le fichier CSV
+            csvWriter.writeRecords(userEmails)
+                .then(() => {
+                    console.log('...CSV file written successfully');
+                    console.log('Répertoire courant:', __dirname);
+                    console.log('Chemin complet du fichier CSV:', path.join(__dirname, 'user_emails.csv'));
+                    res.setHeader('Content-Disposition', 'attachment; filename=user_emails.csv');
+                    res.setHeader('Content-Type', 'text/csv');
+                    return res.status(200).sendFile(csvPath);
+                })
+                .catch(error => {
+                    console.error('Error writing CSV file:', error);
+                    return res.status(500).json({ error: true, message: 'Internal server error' });
+                } );
+            // return res.status(200).json({ userEmails });
+        }
+        else if (mode === 'mailchimp') {
+            // Préparer les données pour Mailchimp
+            const formattedUsersForMailchimp = users.map(user => ({ // On map les utilisateurs récupérés par Sequelize en un format que Mailchimp peut comprendre
+                email_address: user.email,
+                status: 'subscribed' 
+            }));
+            try {
+                const response = await mailchimp.lists.batchListMembers('a8075bc308', {
+                    members: formattedUsersForMailchimp,
+                    update_existing: true,
+                });
+        
+                console.log('Réponse Mailchimp:', response);
+                return res.status(200).json({ message: 'Synchronisation avec Mailchimp réussie', response });
+            } catch (error) {
+                console.error('Erreur Mailchimp:', error);
+                return res.status(500).json({ error: true, message: 'Erreur lors de la synchronisation avec Mailchimp', details: error });
+            }
+        } 
+        else {
+            return res.status(400).json({ error: true, message: 'Mode non spécifié ou invalide' });
+        }
     } catch (error) {
         console.error('Error fetching user emails:', error);
         return res.status(500).json({ error: true, message: 'Internal server error' });

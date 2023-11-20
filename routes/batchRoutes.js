@@ -3,6 +3,7 @@ const router = express.Router();
 const Validator = require('../utils/batchValidators');
 
 const batchMiddleware = require('../middlewares/batchMiddleware');
+const userMiddleware = require('../middlewares/userMiddleware');
 const batchController = require('../controllers/batchController');
 
 /**
@@ -214,7 +215,7 @@ const batchController = require('../controllers/batchController');
 
 router.get('/', batchController.getAllBatches)
 router.get('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.getBatchById)
-router.get('/retrieve', batchMiddleware.validateUserIdGettingBatch(Validator.batchByUserIdSchema), batchController.getBatchByUserId)
+router.get('/retrieve', userMiddleware.checkIfUserToken, batchController.getBatchByUserId)
 router.delete('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.deleteBatchById)
 router.put('/:id', batchMiddleware.validateBatch(Validator.batchSchema), batchController.updateBatchById)
 router.patch('/:id', batchMiddleware.validateBatchPatch(Validator.batchPatchSchema), batchController.partialUpdateBatchById);

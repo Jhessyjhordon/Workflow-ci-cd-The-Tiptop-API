@@ -2,6 +2,7 @@ const db = require('../db');
 const jwt = require('jsonwebtoken');
 const Batch = require('../models/batchModel')
 const User = require('../models/batchModel')
+const authService = require('../services/authService')
 
 require('dotenv').config();
 
@@ -257,7 +258,7 @@ const createBatch = async (req, res) => {
   
       return res.status(201).json({
         error: false,
-        message: ['Lo trouvé'],
+        message: ['Lot trouvé'],
         batch: batch.toJSON()
       });
   

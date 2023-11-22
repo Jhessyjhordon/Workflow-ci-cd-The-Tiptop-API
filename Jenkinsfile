@@ -12,12 +12,20 @@ pipeline {
                 script{
                     // Déclaration et initialisation des variables ici
                     def currentBranch = env.BRANCH_NAME ?: 'dev' 
+                    def buildNumber = env.BUILD_NUMBER
                     def folderName = (currentBranch == 'main') ? 'the-tiptop-api' :
                                      (currentBranch == 'preprod') ? 'the-tiptop-api-preprod' :
                                      'the-tiptop-api-dev' 
 
+                    def dockerFileBuild = (currentBranch == 'main') ? 'Dockerfile.prod' :
+                                          (currentBranch == 'preprod') ? 'Dockerfile.preprod' :
+                                          'Dockerfile.dev' 
+
                     echo "Current branch: ${currentBranch}"
                     echo "Folder name set to: ${folderName}"
+                    echo "Build number set to : ${buildNumber}"
+                    env.dockerFileBuild = dockerFileBuild
+                    echo "Utilisation du dockerfile suivant: ${env.dockerFileBuild}"
 
                     // Enregistrer les variables pour utilisation dans les stages suivants
                     env.folderName = folderName
@@ -129,7 +137,7 @@ pipeline {
                     // Créer une image Docker pour l'API
                     def apiImageName = "${env.folderName}:${buildNumber}"
                     dir("${WORKSPACE}/${env.folderName}") {
-                        sh "docker build -t ${apiImageName} ."
+                        sh "docker build -t ${apiImageName} -f ${env.dockerFileBuild} ."
                     }
                 }
             }

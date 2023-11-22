@@ -1,0 +1,27 @@
+FROM node:20-alpine3.18
+
+WORKDIR /var/jenkins_home/workspace/the-tiptop-api/
+
+COPY package*.json ./
+
+# Installer les dépendances, y compris les outils de compilation
+# nécessaires pour les modules natifs
+RUN apk add --no-cache python3 make g++ && \
+    npm install && \
+    npm uninstall bcrypt && \
+    npm install bcrypt
+
+COPY . .
+
+EXPOSE 4001
+
+# COPY wait-for-it.sh /usr/wait-for-it.sh
+
+# RUN chmod +x /usr/wait-for-it.sh
+
+RUN apk update && apk add bash
+
+# CMD ["npm", "run", "dev"]
+
+# CMD ["/usr/wait-for-it.sh", "db:3306", "--", "npm", "run", "dev"]
+CMD ["npm", "run", "dev"]

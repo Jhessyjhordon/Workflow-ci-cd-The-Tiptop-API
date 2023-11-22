@@ -13,7 +13,7 @@ const batch_data = [];
 for (const type of typesLot) {
 
   batch_data.push({
-    user_id : faker.random.number({ min: 6, max: 15 }),
+    employee_id : faker.random.number({ min: 1, max: 5 }),
     type_lot:type,
     valeur: faker.random.number({ min: 1, max: 1000 }),
     description: faker.lorem.sentence(),

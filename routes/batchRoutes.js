@@ -138,7 +138,7 @@ const batchController = require('../controllers/batchController');
  *                 description: "Lot de valeur 100"
  *                 type_lot: "Infuseur à thé"
  *                 pourcentage_gagnant: 10
- *                 user_id: 1
+ *                 employee_id: 1
  *       404:
  *         description: Utilisateur non trouvé ou pas de lots associés
  * 
@@ -151,7 +151,7 @@ const batchController = require('../controllers/batchController');
  *         - description
  *         - type_lot
  *         - pourcentage_gagnant
- *         - user_id
+ *         - employee_id
  *       properties:
  *         valeur:
  *           type: number
@@ -165,7 +165,7 @@ const batchController = require('../controllers/batchController');
  *         pourcentage_gagnant:
  *           type: number
  *           description: pourcentage gagnant du lot
- *         user_id:
+ *         employee_id:
  *           type: number
  *           description: ID de l'utilisateur associé au lot
  *       example:
@@ -173,7 +173,7 @@ const batchController = require('../controllers/batchController');
  *         description: Lot de valeur 100
  *         type_lot: Infuseur à thé
  *         pourcentage_gagnant: 10
- *         user_id: 1
+ *         employee_id: 1
  *     VerifyBatch:
  *       type: object
  *       required:
@@ -197,12 +197,12 @@ const batchController = require('../controllers/batchController');
  *         pourcentage_gagnant:
  *           type: number
  *           description: pourcentage gagnant du lot
- *         user_id:
+ *         employee_id:
  *           type: number
  *           description: ID de l'utilisateur associé au lot
  *       example:
  *         valeur: 10
- *         user_id: 3
+ *         employee_id: 3
  */
 
 

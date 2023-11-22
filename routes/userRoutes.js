@@ -54,6 +54,27 @@ router.get('/email/newsletter', userController.getUserEmailsByNewsletter);
 
 /**
  * @swagger
+ * /user/email/newsletter:
+ *   put:
+ *     summary: Unsubscribe user from newsletter
+ *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: email
+ *         schema:
+ *           type: string
+ *         description: User email to unsubscribe from the newsletter
+ *           example: 'user@example.com'
+ *     responses:
+ *       200:
+ *         description: User successfully unsubscribed
+ *       404:
+ *         description: User not found
+ */
+router.put('/email/newsletter', userController.unsubscribeFromNewsletter);
+
+/**
+ * @swagger
  * /user/auth/google:
  *   get:
  *     summary: Authentification via Google
@@ -314,6 +335,28 @@ router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userC
  *         description: Erreur lors de la confirmation de l'utilisateur
  */
 router.get('/confirm/:token', userController.UserConfirme)
+
+/**
+ * @swagger
+ * /user/email/unsubscribe/newsletter:
+ *   put:
+ *     summary: Unsubscribe user from newsletter
+ *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: email
+ *         schema:
+ *           type: string
+ *         description: User email to unsubscribe from the newsletter
+ *           example: 'user@example.com'
+ *     responses:
+ *       200:
+ *         description: User successfully unsubscribed
+ *       404:
+ *         description: User not found
+ */
+router.put('/email/unsubscribe/newsletter',userMiddleware.checkIfUserToken, userController.unsubscribeFromNewsletter);
+
 
 /**
  * @swagger

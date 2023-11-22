@@ -1,7 +1,8 @@
 const db = require('../db');
 const jwt = require('jsonwebtoken');
 const Batch = require('../models/batchModel')
-const User = require('../models/batchModel')
+const User = require('../models/userModel')
+const Ticket = require('../models/ticketModel') 
 const authService = require('../services/authService')
 
 require('dotenv').config();
@@ -145,7 +146,7 @@ const updateBatchById = async (req, res) => {
       batchToUpdate.valeur = body.valeur;
       batchToUpdate.description = body.description;
       batchToUpdate.pourcentage_gagnant = body.pourcentage_gagnant;
-      batchToUpdate.user_id = body.user_id;
+      batchToUpdate.employee_id = body.employee_id;
       batchToUpdate.type_lot = body.type_lot;
       batchToUpdate.updatedAt = new Date();
   
@@ -212,7 +213,7 @@ const createBatch = async (req, res) => {
         valeur: body.valeur,
         description: body.description,
         pourcentage_gagnant: body.pourcentage_gagnant,
-        user_id: body.user_id,
+        employee_id: body.employee_id,
         type_lot: body.type_lot,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -245,7 +246,16 @@ const createBatch = async (req, res) => {
         });
       }
 
-      const batch = await User.findOne({ where: { user_id: user.id } });
+      const ticket = await Ticket.findOne({ where: { user_id: user.id } } )
+
+      if (!ticket) {
+        return res.status(404).json({
+          error: true,
+          message: ["Cet utilisateur ne possède aucun ticket!"]
+        });
+      }
+      
+      const batch = await Batch.findOne({ where: { id: ticket.batch_id } });
   
       if (!batch) {
         return res.status(404).json({
@@ -253,9 +263,7 @@ const createBatch = async (req, res) => {
           message: ["Cet utilisateur ne possède aucun lot"]
         });
       }
-  
 
-  
       return res.status(201).json({
         error: false,
         message: ['Lot trouvé'],

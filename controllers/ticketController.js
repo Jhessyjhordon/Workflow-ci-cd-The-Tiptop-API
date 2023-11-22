@@ -35,6 +35,9 @@ const verifyTicket = async (req, res) => {
       });
     }
 
+    ticket.state = "checked"
+    ticket.save()
+
     const data = {
       "ticket": {
         "id": ticket.id,
@@ -42,6 +45,7 @@ const verifyTicket = async (req, res) => {
         "montantAchat": ticket.montantAchat,
         "dateAchat": ticket.dateAchat,
         "statusGain": ticket.statusGain,
+        "state": ticket.state,
         "user": {
           "id": user.id,
           "lastname": user.lastname,
@@ -129,6 +133,7 @@ const createTicket = async (req, res) => {
       ticketToUpdate.statusGain = body.statusGain;
       ticketToUpdate.batchId = body.batchId;
       ticketToUpdate.userId = body.userId;
+      ticketToUpdate.state = body.state;
       ticketToUpdate.updatedAt = new Date();
   
       // Enregistrez les modifications dans la base de données

@@ -12,6 +12,7 @@ pipeline {
                 script{
                     // Déclaration et initialisation des variables ici
                     def currentBranch = env.BRANCH_NAME ?: 'dev' 
+                    def buildNumber = env.BUILD_NUMBER
                     def folderName = (currentBranch == 'main') ? 'the-tiptop-api' :
                                      (currentBranch == 'preprod') ? 'the-tiptop-api-preprod' :
                                      'the-tiptop-api-dev' 

@@ -635,6 +635,9 @@ const partialUpdateUserById = async (req, res) => {
         if (body.birthDate) {
             userToUpdate.birthDate = body.birthDate;
         }
+        if (body.newsletter) {
+            userToUpdate.newsletter = body.newsletter;
+        }
         if (body.newPassword) {
             // Ajoutez le code pour mettre à jour le mot de passe si nécessaire
             // Assurez-vous de gérer les hashs des mots de passe correctement
@@ -723,7 +726,6 @@ const getUserEmailsByNewsletter = async (req, res) => {
     }
 };
 
-  
 module.exports = { UserLogin, 
     UserRegister, 
     getUserById, 

@@ -5,7 +5,7 @@ const batchSchema = Yup.object({
     type_lot: Yup.string().required().min(1).max(155),
     description: Yup.string().required().min(1).max(255),
     pourcentage_gagnant: Yup.number().required().positive(),
-    user_id: Yup.number().required().positive().integer(),
+    employee_id: Yup.number().required().positive().integer(),
 });
 
 const batchPatchSchema = Yup.object({
@@ -13,7 +13,7 @@ const batchPatchSchema = Yup.object({
     type_lot: Yup.string().min(1).max(155),
     description: Yup.string().min(1).max(255),
     pourcentage_gagnant: Yup.number().positive(),
-    user_id: Yup.number().positive().integer().moreThan(0),
+    employee_id: Yup.number().positive().integer().moreThan(0),
 });
 
 const batchIdSchema = Yup.object({

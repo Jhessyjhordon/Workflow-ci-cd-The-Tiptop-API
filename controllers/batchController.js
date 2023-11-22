@@ -146,7 +146,7 @@ const updateBatchById = async (req, res) => {
       batchToUpdate.valeur = body.valeur;
       batchToUpdate.description = body.description;
       batchToUpdate.pourcentage_gagnant = body.pourcentage_gagnant;
-      batchToUpdate.user_id = body.user_id;
+      batchToUpdate.employee_id = body.employee_id;
       batchToUpdate.type_lot = body.type_lot;
       batchToUpdate.updatedAt = new Date();
   
@@ -213,7 +213,7 @@ const createBatch = async (req, res) => {
         valeur: body.valeur,
         description: body.description,
         pourcentage_gagnant: body.pourcentage_gagnant,
-        user_id: body.user_id,
+        employee_id: body.employee_id,
         type_lot: body.type_lot,
         createdAt: new Date(),
         updatedAt: new Date()

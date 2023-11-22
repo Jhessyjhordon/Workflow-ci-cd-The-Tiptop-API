@@ -54,23 +54,23 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - mysql-data:/var/lib/mysql
-  dbtests:
-    container_name: TheTiptop_DbTest
-    image: mysql:latest
-    env_file:
-      - .env
-    ports:
-      - 3308:3306
-    networks:
-      - public
-    restart: always
-    environment:
-      - MYSQL_DATABASE=${MYSQL_TEST_DATABASE}
-      - MYSQL_USER=${MYSQL_TEST_USER}
-      - MYSQL_PASSWORD=${MYSQL_TEST_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_TEST_ROOT_PASSWORD}
-    volumes:
-      - mysql-data-test:/var/lib/mysql
+  # dbtests:
+  #   container_name: TheTiptop_DbTest
+  #   image: mysql:latest
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - 3308:3306
+  #   networks:
+  #     - public
+  #   restart: always
+  #   environment:
+  #     - MYSQL_DATABASE=${MYSQL_TEST_DATABASE}
+  #     - MYSQL_USER=${MYSQL_TEST_USER}
+  #     - MYSQL_PASSWORD=${MYSQL_TEST_PASSWORD}
+  #     - MYSQL_ROOT_PASSWORD=${MYSQL_TEST_ROOT_PASSWORD}
+  #   volumes:
+  #     - mysql-data-test:/var/lib/mysql
 volumes:
   mysql-data:
-  mysql-data-test:
+  # mysql-data-test:

@@ -15,6 +15,7 @@ const ticketPatchSchema = Yup.object({
     montantTicket: Yup.number().positive(),
     dateAchat: Yup.date(),
     gainAttribue: Yup.boolean(),
+    state: Yup.string().min(1).max(255),
     statusGain: Yup.string().min(1).max(255),
     batchId: Yup.number().positive().integer(),
     userId: Yup.number().positive().integer(),

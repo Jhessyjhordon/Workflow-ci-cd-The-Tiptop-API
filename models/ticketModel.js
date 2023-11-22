@@ -30,6 +30,10 @@ const Ticket = db.sequelize.define("Ticket", {
       type: db.DataTypes.INTEGER,
       allowNull: false,
     },
+    state: { 
+      type: db.DataTypes.ENUM('unchecked','checked', 'claimed', 'recieved'),
+      defaultValue: 'unchecked'
+    },
     statusGain: {
       type: db.DataTypes.STRING,
       allowNull: true,

@@ -112,7 +112,7 @@ const ticketController = require('../controllers/ticketController');
  *         description: Nouvelles informations du ticket
  *         required: true
  *         schema:
- *           $ref: '#/components/schemas/Ticket'
+ *           $ref: '#/components/schemas/TicketUpdate'
  *     responses:
  *       200:
  *         description: Ticket mis à jour avec succès
@@ -137,7 +137,7 @@ const ticketController = require('../controllers/ticketController');
  *         description: Nouvelles informations du ticket
  *         required: true
  *         schema:
- *           $ref: '#/components/schemas/Ticket'
+ *           $ref: '#/components/schemas/TicketUpdate'
  *     responses:
  *       200:
  *         description: Ticket mis à jour avec succès
@@ -190,6 +190,9 @@ const ticketController = require('../controllers/ticketController');
  *                   type: string
  *                   format: date-time
  *                   example: "2023-11-08T12:00:00Z"
+ *                 state:
+ *                   type: string
+ *                   example: unchecked
  *                 user:
  *                   type: object
  *                   properties:
@@ -263,6 +266,53 @@ const ticketController = require('../controllers/ticketController');
  *         montantTicket: 50
  *         dateAchat: "2023-08-18"
  *         gainAttribue: false
+ *         state: unchecked
+ *         statusGain: "En attente"
+ *         batchId: 1
+ *         userId: 1
+ *     TicketUpdate:
+ *       type: object
+ *       required:
+ *         - numTicket
+ *         - montantTicket
+ *         - dateAchat
+ *         - gainAttribue
+ *         - statusGain
+ *         - batchId
+ *         - state
+ *         - userId
+ *       properties:
+ *         numTicket:
+ *           type: string
+ *           description: Numéro du ticket
+ *         montantTicket:
+ *           type: number
+ *           description: Montant du ticket
+ *         dateAchat:
+ *           type: string
+ *           format: date
+ *           description: Date d'achat du ticket
+ *         gainAttribue:
+ *           type: boolean
+ *           description: Indicateur de gain attribué
+ *         statusGain:
+ *           type: string
+ *           description: Statut du gain
+ *         batchId:
+ *           type: number
+ *           description: ID du lot associé au ticket
+ *         state:
+ *           type: string
+ *           description: Etat du gain check, unchecked, ...
+ *         userId:
+ *           type: number
+ *           description: ID de l'utilisateur associé au ticket
+ *       example:
+ *         numTicket: "12"
+ *         montantTicket: 50
+ *         dateAchat: "2023-08-18"
+ *         gainAttribue: false
+ *         state: unchecked
  *         statusGain: "En attente"
  *         batchId: 1
  *         userId: 1
@@ -272,7 +322,7 @@ const ticketController = require('../controllers/ticketController');
 router.get('/', ticketController.getAllTickets)
 router.get('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema), ticketController.getTicketById)
 router.delete('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema), ticketController.deleteTicketById)
-router.put('/:id', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.updateTicketById)
+router.put('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.updateTicketById)
 router.patch('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.partialUpdateTicketById)
 router.post('/', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.createTicket)
 router.post('/verify', ticketMiddleware.validateTicketIdInPost(Validator.ticketNumTicketSchema), ticketController.verifyTicket)

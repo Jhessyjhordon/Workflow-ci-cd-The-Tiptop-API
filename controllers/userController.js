@@ -726,6 +726,45 @@ const getUserEmailsByNewsletter = async (req, res) => {
     }
 };
 
+const unsubscribeFromNewsletter = async (req, res) => {
+    const token = req.headers.authorization;
+
+    if (!token) {
+        console.error('Token non valide');
+        return res.status(400).send('Token non valide');
+    }
+
+    const decodedToken = authService.decodeToken(token);
+    const user = await User.findByPk(decodedToken.id);
+
+    if (!user) {
+        return res.status(404).json({
+            error: true,
+            message: ["Utilisateur non trouvé"]
+        });
+    }
+
+    // Met à jour la propriété newsletter
+    user.newsletter = false;
+
+    try {
+        // Enregistre les modifications en base de données
+        await user.save();
+
+        // Retourne une réponse de succès
+        return res.status(200).json({
+            success: true,
+            message: "Désabonnement réussi"
+        });
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour de la newsletter:', error);
+        return res.status(500).json({
+            error: true,
+            message: "Erreur serveur lors du désabonnement à la newsletter"
+        });
+    }
+};
+
 module.exports = { UserLogin, 
     UserRegister, 
     getUserById, 
@@ -739,4 +778,5 @@ module.exports = { UserLogin,
     UserConfirme,
     partialUpdateUserById,
     getAllUsersByRoleEmployee,
-    getUserEmailsByNewsletter };
+    getUserEmailsByNewsletter,
+    unsubscribeFromNewsletter};

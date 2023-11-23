@@ -64,7 +64,7 @@ router.get('/email/newsletter', userController.getUserEmailsByNewsletter);
  *         schema:
  *           type: string
  *         description: User email to unsubscribe from the newsletter
- *           example: 'user@example.com'
+ *         example: 'user@example.com'
  *     responses:
  *       200:
  *         description: User successfully unsubscribed
@@ -348,7 +348,7 @@ router.get('/confirm/:token', userController.UserConfirme)
  *         schema:
  *           type: string
  *         description: User email to unsubscribe from the newsletter
- *           example: 'user@example.com'
+ *         example: 'user@example.com'
  *     responses:
  *       200:
  *         description: User successfully unsubscribed

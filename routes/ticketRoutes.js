@@ -324,7 +324,7 @@ router.get('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema), 
 router.delete('/:id', ticketMiddleware.validateTicketId(Validator.ticketIdSchema), ticketController.deleteTicketById)
 router.put('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.updateTicketById)
 router.patch('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.partialUpdateTicketById)
-router.post('/', ticketMiddleware.validateTicket(Validator.ticketSchema), ticketController.createTicket)
+router.post('/', ticketMiddleware.validateTicket(Validator.ticketCreationSchema), ticketController.createTicket)
 router.post('/verify', ticketMiddleware.validateTicketIdInPost(Validator.ticketNumTicketSchema), ticketController.verifyTicket)
 
 module.exports = router

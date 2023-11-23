@@ -765,6 +765,39 @@ const unsubscribeFromNewsletter = async (req, res) => {
     }
 };
 
+const getShortcutCustomerDetails = async (req, res) => {
+    try {
+        const decodedToken = req.user; // Utilisez le token décodé directement depuis le middleware d'authentification
+        
+        // Vérifier le rôle de l'utilisateur
+        if (decodedToken.role !== 'admin') {
+            return res.status(403).json({
+                error: true,
+                message: ["Accès refusé"]
+            });
+        }
+
+        // Récupérer la liste des utilisateurs
+        const users = await User.findAll({
+            attributes: ['id', 'firstname', 'lastname', 'photoUrl']
+            // Ajoutez d'autres attributs utilisateur si nécessaire
+        });
+
+        return res.status(200).json({
+            error: false,
+            message: ['Liste des utilisateurs'],
+            users
+        });
+
+    } catch (error) {
+        console.error('Erreur lors de la récupération des détails des utilisateurs:', error);
+        return res.status(500).json({
+            error: true,
+            message: "Erreur serveur lors de la récupération des détails des utilisateurs"
+        });
+    }
+};
+
 module.exports = { UserLogin, 
     UserRegister, 
     getUserById, 
@@ -779,4 +812,5 @@ module.exports = { UserLogin,
     partialUpdateUserById,
     getAllUsersByRoleEmployee,
     getUserEmailsByNewsletter,
-    unsubscribeFromNewsletter};
+    unsubscribeFromNewsletter,
+    getShortcutCustomerDetails};

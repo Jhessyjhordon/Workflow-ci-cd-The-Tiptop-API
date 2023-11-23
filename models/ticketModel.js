@@ -35,8 +35,8 @@ const Ticket = db.sequelize.define("Ticket", {
       defaultValue: 'unchecked'
     },
     statusGain: {
-      type: db.DataTypes.STRING,
-      allowNull: true,
+      type: db.DataTypes.ENUM('not demanded','demanded', 'assigned'),
+      defaultValue: 'not demanded'
     },
   }, {
     tableName: 'ticket',

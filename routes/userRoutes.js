@@ -54,6 +54,38 @@ router.get('/email/newsletter', userController.getUserEmailsByNewsletter);
 
 /**
  * @swagger
+ * /user/shortcut/customers/datails:
+ *   get:
+ *     summary: Get shortcut customer details
+ *     tags: 
+ *       - Users
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of user details
+ *         content:
+ *           application/json:
+ *             example:
+ *               - id: 1
+ *                 firstname: John
+ *                 lastname: Doe
+ *                 photoPath: /photos/johndoe.jpg
+ *               - id: 2
+ *                 firstname: Jane
+ *                 lastname: Smith
+ *                 photoPath: /photos/janesmith.jpg
+ *       401:
+ *         description: Unauthorized, invalid or missing token
+ *       403:
+ *         description: Forbidden, user does not have admin privileges
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get('/shortcut/customers/datails',userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsAdmin, userController.getShortcutCustomerDetails);
+
+/**
+ * @swagger
  * /user/email/newsletter:
  *   put:
  *     summary: Unsubscribe user from newsletter

@@ -563,8 +563,9 @@ const UserConfirme = async (req, res) => {
 
             return res.status(200).send(htmlContent);
         }
+        toDay = new Date()
 
-        if (new Date() > user.expiresAt) {
+        if (toDay > user.expiresAt) {
             // return res.status(400).json({ message: "Le lien de confirmation a expiré" });
             const newToken = accountCofirmationService.generateConfirmationToken(); // Générez un nouveau token
 

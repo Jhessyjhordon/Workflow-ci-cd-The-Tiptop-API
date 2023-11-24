@@ -2,7 +2,8 @@ require('dotenv').config();
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const User = require('../models/userModel'); // Assurez-vous que le chemin est correct
+const User = require('../models/userModel');
+const Ticket = require('../models/ticketModel');
 const uploadService = require('../services/uploadService');
 const accountCofirmationService = require('../services/accountCofirmationService');
 const authService = require('../services/authService');
@@ -563,6 +564,7 @@ const UserConfirme = async (req, res) => {
 
             return res.status(200).send(htmlContent);
         }
+
         toDay = new Date()
 
         if (toDay > user.expiresAt) {
@@ -812,12 +814,10 @@ const deleateAccount = async (req, res) => {
             });
         }
 
-        // il faut  verifier si le user à reclamer son Gain, s'il y en a un
-        // ====>>>>>>>> Aru c'est pout toi ;-)
-        //Par contre on fait du soft Delete
+        const  ticket = Ticket.findOne({ where: { user_id: user.id} })
+        if (ticket){  ticket.user_id = null      }
 
-        user.isDeleted = true
-        user.deletedAt = new Date()
+        await user.destroy();
 
         user.save()
 

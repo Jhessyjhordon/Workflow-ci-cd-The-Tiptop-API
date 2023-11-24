@@ -797,6 +797,43 @@ const getShortcutCustomerDetails = async (req, res) => {
         });
     }
 };
+const deleateAccount = async (req, res) => {
+    try {
+        const decodedToken = req.user; // Utilisez le token décodé directement depuis le middleware d'authentification
+        
+        // Récupérer la liste des utilisateurs
+        const user = await User.findByPk(decodedToken.id);
+
+        if (!user) {
+            return res.status(403).json({
+                error: true,
+                message: ["Utilisateur non trouver"]
+            });
+        }
+
+        // il faut  verifier si le user à reclamer son Gain, s'il y en a un
+        // ====>>>>>>>> Aru c'est pout toi ;-)
+        //Par contre on fait du soft Delete
+
+        user.isDeleted = true
+        user.deletedAt = new Date()
+
+        user.save()
+
+        return res.status(200).json({
+            error: false,
+            message: ['Liste des utilisateurs'],
+            users
+        });
+
+    } catch (error) {
+        console.error('Erreur lors de la récupération des détails des utilisateurs:', error);
+        return res.status(500).json({
+            error: true,
+            message: "Erreur serveur lors de la récupération des détails des utilisateurs"
+        });
+    }
+};
 
 module.exports = { UserLogin, 
     UserRegister, 
@@ -813,4 +850,6 @@ module.exports = { UserLogin,
     getAllUsersByRoleEmployee,
     getUserEmailsByNewsletter,
     unsubscribeFromNewsletter,
-    getShortcutCustomerDetails};
+    getShortcutCustomerDetails,
+    deleateAccount
+};

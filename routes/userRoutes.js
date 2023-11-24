@@ -331,7 +331,7 @@ router.patch('/:id', userMiddleware.checkIfUserToken, userMiddleware.validatePat
 router.patch('/delete/account/:id', 
                 userMiddleware.checkIfUserToken, 
                 userMiddleware.validatePatchUser(Validator.userIdSchema), 
-                userMiddleware.validateAccountDeletion(validator.userRegisterSchema),
+                userMiddleware.validateAccountDeletion(Validator.userAccountDeletionSchema),
                 userController.deleateAccount)
 
 

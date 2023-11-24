@@ -24,7 +24,7 @@ const Ticket = db.sequelize.define("Ticket", {
     },
     user_id: {
       type: db.DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     batch_id: {
       type: db.DataTypes.INTEGER,

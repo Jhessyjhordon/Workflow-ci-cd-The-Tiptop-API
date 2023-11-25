@@ -32,8 +32,8 @@ const userIdSchema = Yup.object({
     id: Yup.number().required().positive().integer()
 });
 
-const userAccountDeletionSchema = Yup.object({
-    isDeleted:  Yup.boolean().required(),
-});
+// const userAccountDeletionSchema = Yup.object({
+//     isDeleted:  Yup.boolean().required(),
+// });
 
 module.exports = {loginSchema, userSchema, userIdSchema, userRegisterSchema, userAccountDeletionSchema}

@@ -299,8 +299,8 @@ router.patch('/:id', userMiddleware.checkIfUserToken, userMiddleware.validatePat
 /**
  * @swagger
  * /user/delete/account/{id}:
- *   patch:
- *     summary: supprime le compte utilisateur
+ *   delete:
+ *     summary: Supprime le compte utilisateur
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -308,30 +308,18 @@ router.patch('/:id', userMiddleware.checkIfUserToken, userMiddleware.validatePat
  *         schema:
  *           type: string
  *         required: true
- *         description: ID de l'utilisateur à mettre à jour
- *       - in: body
- *         name: user
- *         description: Nouvelles informations partielles de l'utilisateur
- *         required: true
- *         schema:
- *           $ref: '#/components/schemas/User'
- *           properties:
- *             isDeleted:
- *               type: boolean
+ *         description: ID de l'utilisateur à supprimer
  *     responses:
  *       200:
- *         description: Utilisateur mis à jour avec succès
- *       400:
- *         description: Données de mise à jour partielles invalides
+ *         description: Utilisateur supprimé avec succès
  *       404:
  *         description: Utilisateur non trouvé
  *       500:
- *         description: Erreur lors de la mise à jour de l'utilisateur
+ *         description: Erreur lors de la suppression de l'utilisateur
  */
-router.patch('/delete/account/:id', 
+router.delete('/delete/account/:id',
                 userMiddleware.checkIfUserToken, 
-                userMiddleware.validatePatchUser(Validator.userIdSchema), 
-                userMiddleware.validateAccountDeletion(Validator.userAccountDeletionSchema),
+                userMiddleware.validateUserId(Validator.userIdSchema) ,
                 userController.deleateAccount)
 
 

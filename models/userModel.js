@@ -51,10 +51,6 @@ const User = db.sequelize.define('User', {
         type: db.DataTypes.STRING(255),
         defaultValue: true
     },
-    isDeleted:{
-        type: db.DataTypes.BOOLEAN,
-        defaultValue: false
-    },
     token: {
       type: db.DataTypes.STRING(255),
       allowNull: true,

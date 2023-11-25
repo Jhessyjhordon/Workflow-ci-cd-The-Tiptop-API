@@ -819,19 +819,17 @@ const deleateAccount = async (req, res) => {
 
         await user.destroy();
 
-        user.save()
 
         return res.status(200).json({
             error: false,
-            message: ['Liste des utilisateurs'],
-            users
+            message: ['Compte supprimé avec succès']
         });
 
     } catch (error) {
-        console.error('Erreur lors de la récupération des détails des utilisateurs:', error);
+        console.error('Erreur lors de la suppression du compteu tilisateur:', error);
         return res.status(500).json({
             error: true,
-            message: "Erreur serveur lors de la récupération des détails des utilisateurs"
+            message: "Erreur lors de la suppression du compteu tilisateur"
         });
     }
 };

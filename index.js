@@ -3,6 +3,9 @@ require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'dev'}` }); // 
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('Google Client ID:', process.env.GOOGLE_CLIENT_ID);
 console.log('Google Client Secret:', process.env.GOOGLE_CLIENT_SECRET);
+console.log('Database Host:', process.env.DBHOSTNAME);
+console.log('Database User:', process.env.MYSQL_USER);
+console.log('Database Name:', process.env.MYSQL_DATABASE);
 const { swaggerUi, specs } = require('./docs/swagger');
 const bodyParser = require('body-parser')
 const cors = require('cors');

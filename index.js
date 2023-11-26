@@ -1,5 +1,7 @@
 const express = require('express')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'dev'}` }); // Utilisez le fichier .env.dev par défaut
+console.log('Google Client ID:', process.env.GOOGLE_CLIENT_ID);
+console.log('Google Client Secret:', process.env.GOOGLE_CLIENT_SECRET);
 const { swaggerUi, specs } = require('./docs/swagger');
 const bodyParser = require('body-parser')
 const cors = require('cors');

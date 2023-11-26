@@ -51,7 +51,6 @@ describe('User Routes', () => {
 
   describe('GET /user', () => {
     it('should get list of all users when token is provided and user is an employee', async () => { // OK
-      console.log("Réponse complète de l'authentification : ", response_employee.body)
       console.log("Token de l'employee : ", token_employee)
       const res = await chai
         .request(server)

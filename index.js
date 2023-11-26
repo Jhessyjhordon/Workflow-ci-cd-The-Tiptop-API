@@ -1,6 +1,5 @@
 const express = require('express')
-require('dotenv').config();
-dotenv.config({ path: `.env.${process.env.NODE_ENV || 'dev'}` }); // Utilisez le fichier .env.dev par défaut
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'dev'}` }); // Utilisez le fichier .env.dev par défaut
 const { swaggerUi, specs } = require('./docs/swagger');
 const bodyParser = require('body-parser')
 const cors = require('cors');

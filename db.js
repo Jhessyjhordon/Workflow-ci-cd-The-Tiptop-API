@@ -13,6 +13,12 @@ const sequelize = new Sequelize(
   }
 );
 
+console.log("Configuring Sequelize with:");
+console.log("Database:", process.env.MYSQL_DATABASE);
+console.log("Username:", 'root'); // Vous avez codé en dur 'root' ici, assurez-vous que c'est ce que vous voulez.
+console.log("Password:", process.env.MYSQL_ROOT_PASSWORD); // Faites attention à la journalisation des mots de passe
+console.log("Host:", 'db'); // Vous avez également codé en dur 'db' ici comme hôte
+
 // console.log(sequelize);
 // console.log("MYSQL_DATABASE -> ", process.env.MYSQL_DATABASE, " MYSQL_ROOT_PASSWORD -> ", process.env.MYSQL_ROOT_PASSWORD, " DBHOSTNAME -> ", process.env.HOSTNAME);
 

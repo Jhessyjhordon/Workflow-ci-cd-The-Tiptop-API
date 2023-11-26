@@ -1,5 +1,5 @@
 var mysql      = require('mysql2');
-require('dotenv').config();
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'dev'}` }); // Utilisez le fichier .env.dev par défaut
 
 //appel de sequilize
 const {Sequelize, DataTypes}  = require("sequelize");

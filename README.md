@@ -15,6 +15,14 @@ Cette Api a été mis en place, par un groupe d'étudiant, dans le cadre d'un pr
 		# If you are Root on your Laptop, run the following
 		docker compose -f docker-compose.api.dev.yml up
 
+Il y a un utilisateur administrateur créé spécialement pour vous à des fins de test, voici ses identifiants
+	
+	
+	
+		name : Antipas
+		firstname : Fidele
+		email : fidele.antipas@gmail.com
+		passwod: password
 
 Votre serveur d'api sera disponible sur : **[http://localhost:4000/](http://localhost:4000/)** :flame: :flame:
 

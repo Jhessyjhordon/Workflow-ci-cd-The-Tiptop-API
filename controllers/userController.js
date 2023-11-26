@@ -2,7 +2,8 @@ require('dotenv').config();
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const User = require('../models/userModel'); // Assurez-vous que le chemin est correct
+const User = require('../models/userModel');
+const Ticket = require('../models/ticketModel');
 const uploadService = require('../services/uploadService');
 const accountCofirmationService = require('../services/accountCofirmationService');
 const authService = require('../services/authService');
@@ -564,7 +565,9 @@ const UserConfirme = async (req, res) => {
             return res.status(200).send(htmlContent);
         }
 
-        if (new Date() > user.expiresAt) {
+        toDay = new Date()
+
+        if (toDay > user.expiresAt) {
             // return res.status(400).json({ message: "Le lien de confirmation a expiré" });
             const newToken = accountCofirmationService.generateConfirmationToken(); // Générez un nouveau token
 
@@ -765,6 +768,72 @@ const unsubscribeFromNewsletter = async (req, res) => {
     }
 };
 
+const getShortcutCustomerDetails = async (req, res) => {
+    try {
+        const decodedToken = req.user; // Utilisez le token décodé directement depuis le middleware d'authentification
+        
+        // Vérifier le rôle de l'utilisateur
+        if (decodedToken.role !== 'admin') {
+            return res.status(403).json({
+                error: true,
+                message: ["Accès refusé"]
+            });
+        }
+
+        // Récupérer la liste des utilisateurs
+        const users = await User.findAll({
+            attributes: ['id', 'firstname', 'lastname', 'photoUrl']
+            // Ajoutez d'autres attributs utilisateur si nécessaire
+        });
+
+        return res.status(200).json({
+            error: false,
+            message: ['Liste des utilisateurs'],
+            users
+        });
+
+    } catch (error) {
+        console.error('Erreur lors de la récupération des détails des utilisateurs:', error);
+        return res.status(500).json({
+            error: true,
+            message: "Erreur serveur lors de la récupération des détails des utilisateurs"
+        });
+    }
+};
+const deleateAccount = async (req, res) => {
+    try {
+        const decodedToken = req.user; // Utilisez le token décodé directement depuis le middleware d'authentification
+        
+        // Récupérer la liste des utilisateurs
+        const user = await User.findByPk(decodedToken.id);
+
+        if (!user) {
+            return res.status(403).json({
+                error: true,
+                message: ["Utilisateur non trouver"]
+            });
+        }
+
+        const  ticket = Ticket.findOne({ where: { user_id: user.id} })
+        if (ticket){  ticket.user_id = null      }
+
+        await user.destroy();
+
+
+        return res.status(200).json({
+            error: false,
+            message: ['Compte supprimé avec succès']
+        });
+
+    } catch (error) {
+        console.error('Erreur lors de la suppression du compteu tilisateur:', error);
+        return res.status(500).json({
+            error: true,
+            message: "Erreur lors de la suppression du compteu tilisateur"
+        });
+    }
+};
+
 module.exports = { UserLogin, 
     UserRegister, 
     getUserById, 
@@ -779,4 +848,7 @@ module.exports = { UserLogin,
     partialUpdateUserById,
     getAllUsersByRoleEmployee,
     getUserEmailsByNewsletter,
-    unsubscribeFromNewsletter};
+    unsubscribeFromNewsletter,
+    getShortcutCustomerDetails,
+    deleateAccount
+};

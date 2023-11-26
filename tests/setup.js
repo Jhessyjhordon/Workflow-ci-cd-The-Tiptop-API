@@ -1,5 +1,5 @@
 // setup.js
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'dev'}` }); // Utilisez le fichier .env.dev par défaut
+require('dotenv/config');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const { sequelizeTest } = require('../db.test');

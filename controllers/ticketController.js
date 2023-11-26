@@ -1,6 +1,6 @@
 const db = require('../db');
 const jwt = require('jsonwebtoken');
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'dev'}` }); // Utilisez le fichier .env.dev par défaut
+require('dotenv').config();
 const Ticket = require('../models/ticketModel');
 const User = require('../models/userModel');
 const Batch = require('../models/batchModel');

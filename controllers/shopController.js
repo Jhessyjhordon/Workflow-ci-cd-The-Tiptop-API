@@ -1,7 +1,7 @@
 const db = require('../db');
 const jwt = require('jsonwebtoken');
 const Shop = require('../models/shopModel');
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'dev'}` }); // Utilisez le fichier .env.dev par défaut
+require('dotenv').config();
 
 const today = new Date();
 const year = today.getFullYear();

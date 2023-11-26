@@ -1,4 +1,4 @@
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'dev'}` }); // Utilisez le fichier .env.dev par défaut
+require('dotenv').config();
 var jwt = require('jsonwebtoken')
 
 const validateRegister = (schema) => async (req, res, next) => {

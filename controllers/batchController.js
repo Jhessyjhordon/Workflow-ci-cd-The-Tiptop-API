@@ -5,7 +5,7 @@ const User = require('../models/userModel')
 const Ticket = require('../models/ticketModel') 
 const authService = require('../services/authService')
 
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'dev'}` }); // Utilisez le fichier .env.dev par défaut
+require('dotenv').config();
 
 
 const getBatchById = async (req, res) => {

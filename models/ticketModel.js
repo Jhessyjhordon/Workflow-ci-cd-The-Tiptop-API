@@ -24,7 +24,7 @@ const Ticket = db.sequelize.define("Ticket", {
     },
     user_id: {
       type: db.DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     batch_id: {
       type: db.DataTypes.INTEGER,
@@ -35,8 +35,8 @@ const Ticket = db.sequelize.define("Ticket", {
       defaultValue: 'unchecked'
     },
     statusGain: {
-      type: db.DataTypes.STRING,
-      allowNull: true,
+      type: db.DataTypes.ENUM('not demanded','demanded', 'assigned'),
+      defaultValue: 'not demanded'
     },
   }, {
     tableName: 'ticket',

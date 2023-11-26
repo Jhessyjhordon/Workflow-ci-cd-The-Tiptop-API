@@ -127,6 +127,43 @@ const getAllBatches = async (req, res) => {
     }
   };
 
+const getShortcutBatchs = async (req, res) => {
+    try {
+      const decodedToken = req.user; 
+
+       // Vérifier le rôle de l'utilisateur
+       if (decodedToken.role !== 'admin') {
+        return res.status(403).json({
+            error: true,
+            message: ["Accès refusé"]
+        });
+    }
+      // Utilisez Sequelize pour récupérer tous les lots
+      const batches = await Batch.findAll({
+        attributes: ['id', 'type_lot']
+    });
+  
+      if (batches.length === 0) {
+        return res.status(404).json({
+          error: true,
+          message: ["Aucun lot trouvé"]
+        });
+      }
+  
+      return res.status(200).json({
+        error: false,
+        message: ['Liste des Lots'],
+        batches
+      });
+    } catch (error) {
+      console.error('Erreur de requête Sequelize :', error);
+      return res.status(500).json({
+        error: true,
+        message: ["Une erreur est survenue lors de la récupération des Lots"]
+      });
+    }
+  };
+
 // Définissez la fonction updateBatchById avec Sequelize
 const updateBatchById = async (req, res) => {
     const batchId = req.params.id;
@@ -286,4 +323,5 @@ module.exports = {getBatchById,
                   createBatch, 
                   partialUpdateBatchById, 
                   verifyBatch, 
-                  getBatchByUserId};
+                  getBatchByUserId,
+                  getShortcutBatchs};

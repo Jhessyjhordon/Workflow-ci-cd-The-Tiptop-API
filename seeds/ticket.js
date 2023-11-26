@@ -30,7 +30,7 @@ const ticket_data = [];
        montantAchat : faker.random.number({ min: 10, max: 100 }),
        dateAchat : faker.date.past(),
        gainAttribue : gainAttribue,
-       statusGain : gainAttribue ? 'Attribué' : 'Non attribué',
+       statusGain : gainAttribue ? 'assigned' : 'not demanded',
       })
     }
 

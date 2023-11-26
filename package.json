@@ -13,12 +13,13 @@
     ]
   },
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc mocha --config ./.mocharc.js --timeout 10000 --exit",
+    "test": "cross-env NODE_ENV=dev nyc mocha --config ./.mocharc.js --timeout 10000 --exit",
     "init-db": "node init-db.js",
     "start": "node server.js",
     "seed": "node seed.js",
     "dev": "npm run init-db && nodemon --watch .",
-    "start-with-seed": "npm run init-db && npm start"
+    "start-with-seed": "npm run init-db && npm start",
+    "preprod": "cross-env NODE_ENV=preprod npm run init-db && nodemon --watch ."
   },
   "repository": {
     "type": "git",

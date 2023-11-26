@@ -2,7 +2,7 @@
 // const argon2 = require('argon2');
 // const jwt = require('jsonwebtoken');
 const Jackpot = require('../models/jackpotModel') // <-------Alex doit voir ceci 
-require('dotenv').config();
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'dev'}` }); // Utilisez le fichier .env.dev par défaut
 
 const today = new Date();
 // const formattedToday = today.toISOString();

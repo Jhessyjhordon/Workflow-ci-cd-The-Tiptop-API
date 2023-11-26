@@ -21,6 +21,8 @@ EXPOSE 4001
 
 RUN apk update && apk add bash
 
+ENV NODE_ENV=prod
+
 # CMD ["npm", "run", "dev"]
 
 # CMD ["/usr/wait-for-it.sh", "db:3306", "--", "npm", "run", "dev"]

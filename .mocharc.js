@@ -1,6 +1,6 @@
 // .mocharc.js
 module.exports = {
-    require: ['dotenv-config.js'], // Pour charger les variables d'environnement avec dotenv
+    require: ['./dotenv-config.js'], // Pour charger les variables d'environnement avec dotenv
     recursive: true,
     reporter: 'spec', // Reporter compatible pour Sonarqube - mocha-sonarqube-reporter
     quiet: true,

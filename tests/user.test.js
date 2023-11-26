@@ -22,7 +22,7 @@ describe('User Routes', () => {
       .post('/user/login')
       .send({ email: 'toto123456@gmail.com', password: 'Password123' });
     token_employee = response_employee.body.jwt;
-    console.log("Réponse complète de l'authentification : ", response_employee.body)
+    //console.log("Réponse complète de l'authentification : ", response_employee.body)
     // console.log('Début du bloc before');
     const response_customer = await chai
       .request(server)
@@ -51,6 +51,7 @@ describe('User Routes', () => {
 
   describe('GET /user', () => {
     it('should get list of all users when token is provided and user is an employee', async () => { // OK
+      console.log("Réponse complète de l'authentification : ", response_employee.body)
       console.log("Token de l'employee : ", token_employee)
       const res = await chai
         .request(server)

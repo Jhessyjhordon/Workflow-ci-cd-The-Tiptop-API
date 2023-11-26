@@ -22,7 +22,7 @@ describe('User Routes', () => {
       .post('/user/login')
       .send({ email: 'toto123456@gmail.com', password: 'Password123' });
     token_employee = response_employee.body.jwt;
-    //console.log("Réponse de customer : ", response_employee)
+    //console.log("Réponse complète de l'authentification : ", response_employee.body)
     // console.log('Début du bloc before');
     const response_customer = await chai
       .request(server)

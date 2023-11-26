@@ -59,6 +59,10 @@ const User = db.sequelize.define('User', {
       type: db.DataTypes.DATE,
       allowNull: true,
     },
+    deletedAt: {
+      type: db.DataTypes.DATE,
+      allowNull: true,
+    },
   confirmAt: {
     type: db.DataTypes.DATE,
     allowNull: true,

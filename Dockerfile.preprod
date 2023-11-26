@@ -24,4 +24,4 @@ RUN apk update && apk add bash
 # CMD ["npm", "run", "dev"]
 
 # CMD ["/usr/wait-for-it.sh", "db:3306", "--", "npm", "run", "dev"]
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "preprod"]

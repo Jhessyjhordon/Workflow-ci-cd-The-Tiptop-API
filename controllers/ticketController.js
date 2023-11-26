@@ -88,7 +88,7 @@ const createTicket = async (req, res) => {
         montantTicket: body.montantTicket,
         dateAchat: body.dateAchat,
         gainAttribue: body.gainAttribue,
-        statusGain: body.statusGain,
+        // statusGain: body.statusGain,
         batchId: body.batchId,
         userId: body.userId,
         createAt: new Date(),

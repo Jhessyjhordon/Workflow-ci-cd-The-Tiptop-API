@@ -1,5 +1,11 @@
 const express = require('express')
-require('dotenv').config();
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'dev'}` }); // Utilisez le fichier .env.dev par défaut
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('Google Client ID:', process.env.GOOGLE_CLIENT_ID);
+console.log('Google Client Secret:', process.env.GOOGLE_CLIENT_SECRET);
+console.log('Database Host:', process.env.DBHOSTNAME);
+console.log('Database User:', process.env.MYSQL_USER);
+console.log('Database Name:', process.env.MYSQL_DATABASE);
 const { swaggerUi, specs } = require('./docs/swagger');
 const bodyParser = require('body-parser')
 const cors = require('cors');
@@ -39,7 +45,7 @@ app.use(bodyParser.json())
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: 'http://localhost:4000/auth/google/callback',
+  callbackURL: process.env.GOOGLE_CALLBACK_URL,
 }, (accessToken, refreshToken, profile, done) => {
   // Handle user information and authentication here
   // 'profile' contains user information

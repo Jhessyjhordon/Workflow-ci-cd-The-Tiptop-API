@@ -54,6 +54,38 @@ router.get('/email/newsletter', userController.getUserEmailsByNewsletter);
 
 /**
  * @swagger
+ * /user/shortcut/customers/datails:
+ *   get:
+ *     summary: Get shortcut customer details
+ *     tags: 
+ *       - Users
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of user details
+ *         content:
+ *           application/json:
+ *             example:
+ *               - id: 1
+ *                 firstname: John
+ *                 lastname: Doe
+ *                 photoPath: /photos/johndoe.jpg
+ *               - id: 2
+ *                 firstname: Jane
+ *                 lastname: Smith
+ *                 photoPath: /photos/janesmith.jpg
+ *       401:
+ *         description: Unauthorized, invalid or missing token
+ *       403:
+ *         description: Forbidden, user does not have admin privileges
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get('/shortcut/customers/datails',userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsAdmin, userController.getShortcutCustomerDetails);
+
+/**
+ * @swagger
  * /user/email/newsletter:
  *   put:
  *     summary: Unsubscribe user from newsletter
@@ -263,6 +295,32 @@ router.post('/', userMiddleware.validateUserCreation(Validator.userSchema), user
  *         description: Erreur lors de la mise à jour de l'utilisateur
  */
 router.patch('/:id', userMiddleware.checkIfUserToken, userMiddleware.validatePatchUser(Validator.userIdSchema), userController.partialUpdateUserById)
+
+/**
+ * @swagger
+ * /user/delete/account/{id}:
+ *   delete:
+ *     summary: Supprime le compte utilisateur
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID de l'utilisateur à supprimer
+ *     responses:
+ *       200:
+ *         description: Utilisateur supprimé avec succès
+ *       404:
+ *         description: Utilisateur non trouvé
+ *       500:
+ *         description: Erreur lors de la suppression de l'utilisateur
+ */
+router.delete('/delete/account/:id',
+                userMiddleware.checkIfUserToken, 
+                userMiddleware.validateUserId(Validator.userIdSchema) ,
+                userController.deleateAccount)
 
 
 /**

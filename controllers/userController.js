@@ -487,8 +487,8 @@ const GoogleAuth = async (req, res) => {
       if (!user) {
         
         const newUser = await User.create({
-            firstname: userData.name.givenName,
-            lastname: userData.name.familyName,
+            firstname: userData.givenName,
+            lastname: userData.familyName,
             email: userData.emails[0].value,
             photoUrl: userData.photos[0].value,
             CreatedAt: new Date(),

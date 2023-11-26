@@ -22,7 +22,7 @@ EXPOSE 4001
 RUN apk update && apk add bash
 
 # On mets la variable environnement de NODE_ENV à dev_test
-ENV NODE_ENV=dev_test
+ENV NODE_ENV=dev
 
 # CMD ["npm", "run", "dev"]
 

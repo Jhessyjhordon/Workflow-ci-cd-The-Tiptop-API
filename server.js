@@ -14,7 +14,11 @@ if (process.env.NODE_ENV !== 'dev') {
   });
 } else {
   // En mode test, on n'écoute pas sur un port réel
-  console.log('Serveur en mode test, en attente de requêtes via supertest...');
+  app.listen(PORT, () => {
+    console.log('Serveur en mode test, en attente de requêtes via supertest...');
+    console.log(`Serveur démarré sur le port ${PORT}`);
+    module.exports = app;
+  });
   // Exporter l'application pour les tests sans démarrer le serveur
   module.exports = app;
 }

@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+// require('dotenv').config();
+// dotenv.config({ path: `.env.${process.env.NODE_ENV || 'dev'}` });
 const passport = require('passport');
 const Validator = require('../utils/userValidators');
 
@@ -118,7 +120,10 @@ router.put('/email/newsletter', userController.unsubscribeFromNewsletter);
  */
 router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile' ] }));
 
-router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), userController.GoogleAuth);
+router.get('/auth/google/callback', passport.authenticate('google', { 
+                                                                failureRedirect: `${process.env.GOOGLE_CLIENT_ID}/auth/login`,
+                                                                // successRedirect: '/dashboard', 
+                                                            }), userController.GoogleAuth);
 
 /**
  * @swagger

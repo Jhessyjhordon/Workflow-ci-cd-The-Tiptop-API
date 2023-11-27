@@ -116,7 +116,7 @@ router.put('/email/newsletter', userController.unsubscribeFromNewsletter);
  *       '302':
  *         description: Redirige l'utilisateur vers la page d'authentification Google
  */
-router.get('/auth/google', passport.authenticate('google', { scope: ['email'] }));
+router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile' ] }));
 
 router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), userController.GoogleAuth);
 

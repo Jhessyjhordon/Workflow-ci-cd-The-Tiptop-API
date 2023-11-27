@@ -491,7 +491,7 @@ const GoogleAuth = async (req, res) => {
       const userEmail = userData.emails[0].value; // Supposons que l'email est la première valeur dans le tableau des emails
       const firstname = userData.name.givenName;
       const lastname = userData.name.familyName;
-      const user = await User.findOne({ where: { email: userEmail } });
+      let user = await User.findOne({ where: { email: userEmail } });
 
       if (!user) {
         

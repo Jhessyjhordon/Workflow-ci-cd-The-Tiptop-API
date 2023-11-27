@@ -62,6 +62,31 @@ const ticketController = require('../controllers/ticketController');
  *              $ref: '#/components/schemas/TicketDetailsError'
  *       500:
  *         description: Une erreur de serveur s'est produite
+ * /ticket/byuserid:
+ *   post:
+ *     summary: Vérifier le ticket par son user_id
+ *     tags: [Tickets]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TicketVerification'
+ *     responses:
+ *       201:
+ *         description: Le ticket a été créé avec succès.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TicketDetails'
+ *       404:
+ *        description: Ticket non trouvé ou détails introuvables
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/TicketDetailsError'
+ *       500:
+ *         description: Une erreur de serveur s'est produite
  * 
  * /ticket/{id}:
  *   get:
@@ -326,5 +351,6 @@ router.put('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema),
 router.patch('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.partialUpdateTicketById)
 router.post('/', ticketMiddleware.validateTicket(Validator.ticketCreationSchema), ticketController.createTicket)
 router.post('/verify', ticketMiddleware.validateTicketIdInPost(Validator.ticketNumTicketSchema), ticketController.verifyTicket)
+router.post('/byuserid', ticketMiddleware.validateTicketIdInPost(Validator.ticketUserIdSchema), ticketController.verifyTicketUserId)
 
 module.exports = router

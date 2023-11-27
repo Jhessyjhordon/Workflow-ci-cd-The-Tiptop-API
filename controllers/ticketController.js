@@ -76,6 +76,77 @@ const verifyTicket = async (req, res) => {
     });
   }
 };
+const verifyTicketUserId = async (req, res) => {
+  const userId = req.body.user_id;
+  try {
+    const ticket = await Ticket.findOne({ where: { userId: userId } });
+
+    if (!ticket) {
+      return res.status(404).json({
+        error: true,
+        message: ["Ticket non trouvé"]
+      });
+    }
+
+    const user = await User.findByPk(ticket.user_id);
+
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        message: ["Ce Ticket n'appartient à aucun Client"]
+      });
+    }
+
+    const batch = await Batch.findByPk(ticket.batch_id);
+
+    if (!batch) {
+      return res.status(404).json({
+        error: true,
+        message: ["Lot non trouvé"]
+      });
+    }
+
+    ticket.state = "checked"
+    ticket.save()
+
+    const data = {
+      "ticket": {
+        "id": ticket.id,
+        "numTicket": ticket.numTicket,
+        "montantAchat": ticket.montantAchat,
+        "dateAchat": ticket.dateAchat,
+        "statusGain": ticket.statusGain,
+        "state": ticket.state,
+        "user": {
+          "id": user.id,
+          "lastname": user.lastname,
+          "firstname": user.firstname,
+          "email": user.email,
+          "address": user.address,
+        },
+        "batch": {
+          "id": batch.id,
+          "type_lot": batch.type_lot,
+          "valeur": batch.valeur,
+          "description": batch.description
+        }
+      }
+    };
+
+    return res.status(201).json({
+      error: false,
+      message: ['Détail du ticket trouvé'],
+      data: data
+    });
+
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails du ticket', error);
+    return res.status(500).json({
+      error: true,
+      message: ["Erreur lors de la récupération des détails du ticket"]
+    });
+  }
+};
 
 
 const createTicket = async (req, res) => {
@@ -276,4 +347,4 @@ const createTicket = async (req, res) => {
     }
   };
 
-module.exports = { createTicket, updateTicketById, deleteTicketById, getAllTickets, getTicketById, partialUpdateTicketById, verifyTicket};
+module.exports = { createTicket, updateTicketById, deleteTicketById, getAllTickets, getTicketById, partialUpdateTicketById, verifyTicket, verifyTicketUserId};

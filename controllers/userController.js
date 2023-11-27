@@ -481,6 +481,9 @@ const GoogleAuth = async (req, res) => {
 
       console.log("======================>>>>>>>>>>>>>>>>>>>>>>>>><<c'est pour le debug")
       console.log(req.user)
+      console.log(userData.name)
+      console.log(userData.name.givenName)
+      console.log(userData.name.familyName)
 
       // Récupérer l'email de l'utilisateur depuis les données de Google
       const userEmail = userData.emails[0].value; // Supposons que l'email est la première valeur dans le tableau des emails

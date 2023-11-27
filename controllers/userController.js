@@ -479,22 +479,25 @@ const GoogleAuth = async (req, res) => {
       // Les données de l'utilisateur renvoyées par Google après une authentification réussie
       const userData = req.user;
 
-      console.log("======================>>>>>>>>>>>>>>>>>>>>>>>>><<c'est pour le debug")
-      console.log(req.user)
-      console.log(userData.name)
+    //   console.log("======================>>>>>>>>>>>>>>>>>>>>>>>>><<c'est pour le debug")
+    //   console.log(req.user)
+    //   console.log(userData.name)
       console.log(userData.name.givenName)
       console.log(userData.name.familyName)
+      console.log(userData.emails[0].value)
+      console.log(userData.photos[0].value)
 
       // Récupérer l'email de l'utilisateur depuis les données de Google
       const userEmail = userData.emails[0].value; // Supposons que l'email est la première valeur dans le tableau des emails
-      
+      const firstname = userData.name.givenName;
+      const lastname = userData.name.familyName;
       const user = await User.findOne({ where: { email: userEmail } });
 
       if (!user) {
         
         const newUser = await User.create({
-            firstname: userData.name.givenName,
-            lastname: userData.name.familyName,
+            firstname: firstname,
+            lastname: lastname,
             email: userData.emails[0].value,
             photoUrl: userData.photos[0].value,
             CreatedAt: new Date(),

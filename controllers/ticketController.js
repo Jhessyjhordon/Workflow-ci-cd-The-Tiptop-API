@@ -102,7 +102,7 @@ const verifyTicketUserId = async (req, res) => {
     if (!batch) {
       return res.status(404).json({
         error: true,
-        message: ["Lot non trouvé"]
+        message: ["Aucun lot n'est lié à ce ticket"]
       });
     }
 

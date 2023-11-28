@@ -14,7 +14,7 @@ function sendConfirmationEmail(userEmail,lastname, firstname, confirmationToken)
         from: process.env.THETIPTOP_GMAIL_LOGIN,
         to: userEmail,
         subject: 'Confirmation de votre compte',
-        text: `Félicitations ${firstname} ${lastname}, votre compte a été créé ,\n veuillez cliquer sur ce lien pour confirmer votre compte : ${process.env.THETIPTOP_API_URL}user/confirm/${confirmationToken}`, //à mettre à jour 
+        text: `Félicitations ${firstname} ${lastname}, votre compte a été créé ,\n veuillez cliquer sur ce lien pour confirmer votre compte : ${process.env.THETIPTOP_API_URL}/user/confirm/${confirmationToken}`, //à mettre à jour 
     };
 
     transporter.sendMail(mailOptions, (error, info) => {

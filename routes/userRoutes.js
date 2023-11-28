@@ -109,7 +109,7 @@ router.put('/email/newsletter', userController.unsubscribeFromNewsletter);
 
 /**
  * @swagger
- * /user/auth/google:
+ * /user/auth/google
  *   get:
  *     summary: Authentification via Google
  *     description: Redirige l'utilisateur vers la page d'authentification Google pour autoriser l'accès à l'adresse e-mail.

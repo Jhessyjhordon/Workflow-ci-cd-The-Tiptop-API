@@ -77,7 +77,7 @@ const verifyTicket = async (req, res) => {
   }
 };
 const verifyTicketUserId = async (req, res) => {
-  const userId = req.body.user_id;
+  const userId = req.body.userId;
   try {
     const ticket = await Ticket.findOne({ where: { user_id: userId } });
 

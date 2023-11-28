@@ -121,9 +121,10 @@ router.put('/email/newsletter', userController.unsubscribeFromNewsletter);
 router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile' ] }));
 
 router.get('/auth/google/callback', passport.authenticate('google', { 
-                                                                failureRedirect: `${process.env.GOOGLE_CLIENT_ID}/auth/login`,
-                                                                // successRedirect: '/dashboard', 
-                                                            }), userController.GoogleAuth);
+                                                                failureRedirect: `${process.env.THETIPTOP_API_URL}/auth/login`,
+                                                                successRedirect: `${process.env.THETIPTOP_API_URL}/auth/success`, 
+                                                            }));
+router.get('/auth/success`', userController.GoogleAuth);
 
 /**
  * @swagger

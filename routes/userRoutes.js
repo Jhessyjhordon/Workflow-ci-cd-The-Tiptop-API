@@ -122,7 +122,7 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'p
 
 router.get('/auth/google/callback', passport.authenticate('google', { 
                                                                 failureRedirect: `${process.env.THETIPTOP_API_URL}/auth/login`,
-                                                                successRedirect: `${process.env.THETIPTOP_API_URL}/auth/success`, 
+                                                                successRedirect: `${process.env.THETIPTOP_API_URL}/user/auth/success`, 
                                                             }));
 router.get('/auth/success`', userController.GoogleAuth);
 

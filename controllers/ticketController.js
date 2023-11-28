@@ -79,7 +79,7 @@ const verifyTicket = async (req, res) => {
 const verifyTicketUserId = async (req, res) => {
   const userId = req.body.user_id;
   try {
-    const ticket = await Ticket.findOne({ where: { userId: userId } });
+    const ticket = await Ticket.findOne({ where: { user_id: userId } });
 
     if (!ticket) {
       return res.status(404).json({
@@ -102,7 +102,7 @@ const verifyTicketUserId = async (req, res) => {
     if (!batch) {
       return res.status(404).json({
         error: true,
-        message: ["Lot non trouvé"]
+        message: ["Aucun lot n'est lié à ce ticket"]
       });
     }
 

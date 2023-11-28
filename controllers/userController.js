@@ -483,6 +483,8 @@ const GoogleAuth = async (req, res) => {
       const userEmail = userData.emails[0].value; // Supposons que l'email est la première valeur dans le tableau des emails
       const firstname = userData.name.givenName;
       const lastname = userData.name.familyName;
+      const email= userData.emails[0].value;
+      const photoUrl= userData.photos[0].value;
       let user = await User.findOne({ where: { email: userEmail } });
 
       if (!user) {
@@ -490,8 +492,8 @@ const GoogleAuth = async (req, res) => {
         const newUser = await User.create({
             firstname: firstname,
             lastname: lastname,
-            email: userData.emails[0].value,
-            photoUrl: userData.photos[0].value,
+            email: email,
+            photoUrl: photoUrl,
             CreatedAt: new Date(),
             UpdatedAt: new Date(),
             isVerify: true,

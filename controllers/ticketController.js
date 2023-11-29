@@ -88,6 +88,24 @@ const verifyTicketUserId = async (req, res) => {
       });
     }
 
+    const user = await User.findByPk(tickets.user_id);
+
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        message: ["Ce Ticket n'appartient à aucun Client"]
+      });
+    }
+
+    const batch = await Batch.findByPk(tickets.batch_id);
+
+    if (!batch) {
+      return res.status(404).json({
+        error: true,
+        message: ["Aucun lot n'est lié à ce ticket"]
+      });
+    }
+
     const data = tickets.map(ticket => ({
       "id": ticket.id,
       "numTicket": ticket.numTicket,
@@ -96,17 +114,17 @@ const verifyTicketUserId = async (req, res) => {
       "statusGain": ticket.statusGain,
       "state": "checked", // Tous les tickets ont maintenant le statut "checked"
       "user": {
-        "id": ticket.user.id,
-        "lastname": ticket.user.lastname,
-        "firstname": ticket.user.firstname,
-        "email": ticket.user.email,
-        "address": ticket.user.address,
+        "id": user.id,
+        "lastname": user.lastname,
+        "firstname": user.firstname,
+        "email": user.email,
+        "address": user.address,
       },
       "batch": {
-        "id": ticket.batch.id,
-        "type_lot": ticket.batch.type_lot,
-        "valeur": ticket.batch.valeur,
-        "description": ticket.batch.description
+        "id": batch.id,
+        "type_lot": batch.type_lot,
+        "valeur": batch.valeur,
+        "description": batch.description
       }
     }));
 

@@ -29,14 +29,8 @@ app.use(session({ secret: process.env.SECRET_KEY, resave: true, saveUninitialize
 app.use(passport.initialize());
 app.use(passport.session());
 
-// app.use(cors({
-//   origin: 'http://api.dev.dsp-archiwebo22b-ji-rw-ah.fr/',
-// }));
-// app.use(cors({
-//   origin: 'http://51.254.97.98:4000/',
-// }));
 app.use(cors({
-  origin: '*',
+  origin: process.env.THETIPTOP_FRONT_URL,
 }));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

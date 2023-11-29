@@ -79,74 +79,52 @@ const verifyTicket = async (req, res) => {
 const verifyTicketUserId = async (req, res) => {
   const userId = req.body.userId;
   try {
-    const ticket = await Ticket.findOne({ where: { user_id: userId } });
+    const tickets = await Ticket.findAll({ where: { user_id: userId } });
 
-    if (!ticket) {
+    if (!tickets || tickets.length === 0) {
       return res.status(404).json({
         error: true,
-        message: ["Ticket non trouvé"]
+        message: ["Aucun ticket non trouvé"]
       });
     }
 
-    const user = await User.findByPk(ticket.user_id);
-
-    if (!user) {
-      return res.status(404).json({
-        error: true,
-        message: ["Ce Ticket n'appartient à aucun Client"]
-      });
-    }
-
-    const batch = await Batch.findByPk(ticket.batch_id);
-
-    if (!batch) {
-      return res.status(404).json({
-        error: true,
-        message: ["Aucun lot n'est lié à ce ticket"]
-      });
-    }
-
-    ticket.state = "checked"
-    ticket.save()
-
-    const data = {
-      "ticket": {
-        "id": ticket.id,
-        "numTicket": ticket.numTicket,
-        "montantAchat": ticket.montantAchat,
-        "dateAchat": ticket.dateAchat,
-        "statusGain": ticket.statusGain,
-        "state": ticket.state,
-        "user": {
-          "id": user.id,
-          "lastname": user.lastname,
-          "firstname": user.firstname,
-          "email": user.email,
-          "address": user.address,
-        },
-        "batch": {
-          "id": batch.id,
-          "type_lot": batch.type_lot,
-          "valeur": batch.valeur,
-          "description": batch.description
-        }
+    const data = tickets.map(ticket => ({
+      "id": ticket.id,
+      "numTicket": ticket.numTicket,
+      "montantAchat": ticket.montantAchat,
+      "dateAchat": ticket.dateAchat,
+      "statusGain": ticket.statusGain,
+      "state": "checked", // Tous les tickets ont maintenant le statut "checked"
+      "user": {
+        "id": ticket.user.id,
+        "lastname": ticket.user.lastname,
+        "firstname": ticket.user.firstname,
+        "email": ticket.user.email,
+        "address": ticket.user.address,
+      },
+      "batch": {
+        "id": ticket.batch.id,
+        "type_lot": ticket.batch.type_lot,
+        "valeur": ticket.batch.valeur,
+        "description": ticket.batch.description
       }
-    };
+    }));
 
     return res.status(201).json({
       error: false,
-      message: ['Détail du ticket trouvé'],
+      message: ['Détails des tickets trouvés'],
       data: data
     });
 
   } catch (error) {
-    console.error('Erreur lors de la récupération des détails du ticket', error);
+    console.error('Erreur lors de la récupération des détails des tickets', error);
     return res.status(500).json({
       error: true,
-      message: ["Erreur lors de la récupération des détails du ticket"]
+      message: ["Erreur lors de la récupération des détails des tickets"]
     });
   }
 };
+
 
 
 const createTicket = async (req, res) => {

@@ -481,16 +481,19 @@ const GoogleAuth = async (req, res) => {
 
       // Récupérer l'email de l'utilisateur depuis les données de Google
       const userEmail = userData.emails[0].value; // Supposons que l'email est la première valeur dans le tableau des emails
-      
-      const user = await User.findOne({ where: { email: userEmail } });
+      const firstname = userData.name.givenName;
+      const lastname = userData.name.familyName;
+      const email= userData.emails[0].value;
+      const photoUrl= userData.photos[0].value;
+      let user = await User.findOne({ where: { email: userEmail } });
 
       if (!user) {
         
         const newUser = await User.create({
-            firstname: userData.givenName,
-            lastname: userData.familyName,
-            email: data.emails[0].value,
-            photoUrl: data.photos[0].value,
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            photoUrl: photoUrl,
             CreatedAt: new Date(),
             UpdatedAt: new Date(),
             isVerify: true,
@@ -500,11 +503,13 @@ const GoogleAuth = async (req, res) => {
         user = newUser;
       }
       const token = authService.generateToken(user)
-      return res.status(200).json({
-        error: false,
-        message: ['Connexion réussie'],
-        jwt: token
-        });
+      const redirectUrl = `${process.env.THETIPTOP_FRONT_URL}/concours?jwt=${encodeURIComponent(token)}`;
+      return res.redirect(redirectUrl);
+    //   return res.status(200).json({
+    //     error: false,
+    //     message: ['Connexion réussie'],
+    //     jwt: token
+    //     });
 
     } catch (error) {
       console.error('Erreur lors de l\'authentification Google :', error);

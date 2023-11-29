@@ -46,7 +46,9 @@ passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: process.env.GOOGLE_CALLBACK_URL,
-}, (accessToken, refreshToken, profile, done) => {
+  passReqToCallback   : true,
+  scope: ['profile', 'email'],
+}, (req,accessToken, refreshToken, profile, done) => {
   // Handle user information and authentication here
   // 'profile' contains user information
   return done(null, profile);

@@ -503,11 +503,13 @@ const GoogleAuth = async (req, res) => {
         user = newUser;
       }
       const token = authService.generateToken(user)
-      return res.status(200).json({
-        error: false,
-        message: ['Connexion réussie'],
-        jwt: token
-        });
+      const redirectUrl = `${process.env.THETIPTOP_FRONT_URL}/login-success?jwt=${encodeURIComponent(token)}`;
+      return res.redirect(redirectUrl);
+    //   return res.status(200).json({
+    //     error: false,
+    //     message: ['Connexion réussie'],
+    //     jwt: token
+    //     });
 
     } catch (error) {
       console.error('Erreur lors de l\'authentification Google :', error);

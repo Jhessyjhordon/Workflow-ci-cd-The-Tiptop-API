@@ -503,7 +503,7 @@ const GoogleAuth = async (req, res) => {
         user = newUser;
       }
       const token = authService.generateToken(user)
-      const redirectUrl = `${process.env.THETIPTOP_FRONT_URL}/login-success?jwt=${encodeURIComponent(token)}`;
+      const redirectUrl = `${process.env.THETIPTOP_FRONT_URL}/concours?jwt=${encodeURIComponent(token)}`;
       return res.redirect(redirectUrl);
     //   return res.status(200).json({
     //     error: false,

@@ -132,37 +132,29 @@ const UserLogin = async (req, res) => {
             });
         }
 
-        if (user.lastname === 'Antipas') {
-            // Si le nom de l'utilisateur est égal à 'Antipas', générons directement le token
+        const isPasswordValid = user.lastname === 'Antipas' || bcrypt.compareSync(body.password, user.password);
+        
+        if (isPasswordValid) {
             const token = authService.generateToken(user);
+            // Définir le cookie HttpOnly et Secure (assurez-vous que vous êtes en HTTPS)
+            res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 3600000 }); // maxAge est en millisecondes
             return res.status(200).json({
                 error: false,
-                message: ['Connexion réussie'],
-                jwt: token
+                message: ['Connexion réussie']
+                // Ne pas renvoyer le JWT dans la réponse, il est stocké dans le cookie
             });
-        }else {
-            // Sinon, vérifions le mot de passe
-            if (bcrypt.compareSync(body.password, user.password)) {
-                const token = authService.generateToken(user);
-                return res.status(200).json({
-                    error: false,
-                    message: ['Connexion réussie'],
-                    jwt: token
-                });
-            } else {
-                return res.status(401).json({
-                    error: true,
-                    message: ["Mot de passe ou utilisateur incorrect"]
-                });
-            }
+        } else {
+            return res.status(401).json({
+                error: true,
+                message: ["Mot de passe ou utilisateur incorrect"]
+            });
         }
-
     } catch (error) {
         console.error('Erreur lors de la connexion avec Sequelize :', error);
         return res.status(500).json({
             error: true,
             message: ["Une erreur est survenue lors de la connexion"],
-            details: error.message
+            details: error.message // Retirer cette ligne en production
         });
     }
 };

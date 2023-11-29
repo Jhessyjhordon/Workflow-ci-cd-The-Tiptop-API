@@ -152,7 +152,7 @@ pipeline {
                     def containerName = (env.currentBranch == 'dev') ? "api-dev" :
                                         (env.currentBranch == 'preprod') ? "api-preprod" :
                                         (env.currentBranch == 'main') ? "api-prod" :
-                                        "api-unknown" // Valeur par défaut ou pour les branches non spécifiées
+                                        "api-dev" // Valeur par défaut ou pour les branches non spécifiées
 
                     echo "Container Name: ${containerName}"
 

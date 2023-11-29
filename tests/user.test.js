@@ -21,20 +21,26 @@ describe('User Routes', () => {
       .request(server)
       .post('/user/login')
       .send({ email: 'toto123456@gmail.com', password: 'Password123' });
-    token_employee = response_employee.body.jwt;
+    // Extraire le token du cookie
+    token_employee = extractToken(response_employee);
     //console.log("Réponse complète de l'authentification : ", response_employee.body)
     // console.log('Début du bloc before');
     const response_customer = await chai
       .request(server)
       .post('/user/login')
       .send({ email: 'toto12345@gmail.com', password: 'Password123' });
-    token_customer = response_customer.body.jwt;
+    //token_customer = response_customer.body.jwt;
+    // Extraire le token du cookie
+    token_customer = extractToken(response_customer);
     // console.log("Réponse de customer : ", response_customer)
     const response_admin = await chai
     .request(server)
     .post('/user/login')
     .send({ email: 'fidele.antipas@gmail.com', password: 'password' });
     token_admin = response_admin.body.jwt;
+    // Extraire le token du cookie
+    token_admin = extractToken(response_admin);
+    
   });
 
   it('should have valid JWT tokens after before hook', function() { // OK
@@ -47,6 +53,13 @@ describe('User Routes', () => {
     expect(token_admin).to.be.a('string').and.to.have.length.above(20);
     expect(token_admin.split('.')).to.have.lengthOf(3);
   });
+
+  // Fonction pour extraire le token du cookie
+  function extractToken(response) {
+    const cookie = response.headers['set-cookie'][0];
+    const token = cookie.split(';')[0].split('=')[1];
+    return token;
+  }
 });
 
   describe('GET /user', () => {

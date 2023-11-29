@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+// require('dotenv').config();
+// dotenv.config({ path: `.env.${process.env.NODE_ENV || 'dev'}` });
 const passport = require('passport');
 const Validator = require('../utils/userValidators');
 
@@ -116,9 +118,13 @@ router.put('/email/newsletter', userController.unsubscribeFromNewsletter);
  *       '302':
  *         description: Redirige l'utilisateur vers la page d'authentification Google
  */
-router.get('/auth/google', passport.authenticate('google', { scope: ['email'] }));
+router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile' ] }));
 
-router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), userController.GoogleAuth);
+router.get('/auth/google/callback', passport.authenticate('google', { 
+                                                                failureRedirect: `${process.env.THETIPTOP_API_URL}/auth/login`,
+                                                                successRedirect: `${process.env.THETIPTOP_API_URL}/user/auth/success`, 
+                                                            }));
+router.get('/auth/success', userController.GoogleAuth);
 
 /**
  * @swagger

@@ -33,5 +33,8 @@ const ticketIdSchema = Yup.object({
 const ticketNumTicketSchema = Yup.object({
     numTicket: Yup.number().required().positive().integer()
 });
+const ticketUserIdSchema = Yup.object({
+    userId: Yup.number().required().positive().integer()
+});
 
-module.exports = { ticketSchema, ticketIdSchema, ticketPatchSchema, ticketNumTicketSchema, ticketCreationSchema};
+module.exports = { ticketSchema, ticketIdSchema, ticketPatchSchema, ticketNumTicketSchema, ticketCreationSchema, ticketUserIdSchema};

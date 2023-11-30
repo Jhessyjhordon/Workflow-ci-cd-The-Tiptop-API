@@ -173,7 +173,7 @@ router.get('/role/employee', userMiddleware.checkIfUserToken ,userMiddleware.che
 
 /**
  * @swagger
- * /user/meid:
+ * /user/cookie/auth:
  *   get:
  *     summary: Récupère un utilisateur par son ID
  *     tags: [Users]
@@ -190,7 +190,7 @@ router.get('/role/employee', userMiddleware.checkIfUserToken ,userMiddleware.che
  *       404:
  *         description: Utilisateur non trouvé
  */
-router.get('/:id',userMiddleware.checkIfUserTokenFromCookie, userMiddleware.validateUserId(Validator.userIdSchema), userController.getIdByToken)
+router.get('/cookie/auth',userMiddleware.checkIfUserTokenFromCookie, userMiddleware.validateUserId(Validator.userIdSchema), userController.getIdByToken)
 
 /**
  * @swagger

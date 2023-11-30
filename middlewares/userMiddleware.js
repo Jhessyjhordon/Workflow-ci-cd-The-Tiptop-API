@@ -143,7 +143,8 @@ const checkIfUserTokenFromCookie = (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
     // Stocker des informations de l'utilisateur dans req
     req.user = {
-      id: decodedToken.id
+      id: decodedToken.id,
+      role: decodedToken.role
     } // ou une propriété spécifique du decodedToken
     next();
   } catch (error) {

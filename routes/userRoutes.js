@@ -173,6 +173,27 @@ router.get('/role/employee', userMiddleware.checkIfUserToken ,userMiddleware.che
 
 /**
  * @swagger
+ * /user/meid:
+ *   get:
+ *     summary: Récupère un utilisateur par son ID
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID de l'utilisateur
+ *     responses:
+ *       200:
+ *         description: ID Utilisateur récupéré avec succès
+ *       404:
+ *         description: Utilisateur non trouvé
+ */
+router.get('/:id',userMiddleware.checkIfUserTokenFromCookie, userMiddleware.validateUserId(Validator.userIdSchema), userController.getIdByToken)
+
+/**
+ * @swagger
  * /user/{id}:
  *   get:
  *     summary: Récupère un utilisateur par son ID

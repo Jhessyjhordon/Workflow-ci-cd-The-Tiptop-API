@@ -159,6 +159,28 @@ const UserLogin = async (req, res) => {
     }
 };
 
+// Contrôleur pour récupérer l'id en fonction du token
+const getIdByToken = async (req, res)=> {
+    const token = req.cookies.token;
+
+    try{
+        // Décoder le token pour obtenir les informations utilisateur
+        const decodedToken = authService.decodeToken(token)
+
+        const userId = decodedToken.id
+        return res.status(200).json({
+            error: false,
+            userId
+        });
+    }catch (error){
+        console.error("Erreur lors de la récupération de l'ID avec Sequelize :", error);
+        return res.status(403).json({
+            error: true,
+            message: ["Erreur lors de la requête"]
+        })
+    }
+};
+
 // Contrôleur pour la route GET '/'
 const getAllUsers = async (req, res) => {
     const token =  req.headers.authorization; // Récupérer le token de l'en-tête
@@ -833,7 +855,8 @@ const deleateAccount = async (req, res) => {
 
 module.exports = { UserLogin, 
     UserRegister, 
-    getUserById, 
+    getUserById,
+    getIdByToken, 
     deleteUserById, 
     updateUserById, 
     getAllUsers, 

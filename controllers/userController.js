@@ -160,7 +160,7 @@ const UserLogin = async (req, res) => {
 };
 
 // Contrôleur pour récupérer l'id en fonction du token
-const getIdByToken = async (req, res)=> {
+const getIdAndRoleByToken = async (req, res)=> {
     const token = req.cookies.token;
 
     try{
@@ -168,9 +168,11 @@ const getIdByToken = async (req, res)=> {
         const decodedToken = authService.decodeToken(token)
 
         const userId = decodedToken.id
+        const userRole = decodedToken.role
         return res.status(200).json({
             error: false,
-            userId
+            userId,
+            userRole,
         });
     }catch (error){
         console.error("Erreur lors de la récupération de l'ID avec Sequelize :", error);
@@ -856,7 +858,7 @@ const deleateAccount = async (req, res) => {
 module.exports = { UserLogin, 
     UserRegister, 
     getUserById,
-    getIdByToken, 
+    getIdAndRoleByToken, 
     deleteUserById, 
     updateUserById, 
     getAllUsers, 

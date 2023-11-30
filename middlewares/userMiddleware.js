@@ -144,7 +144,7 @@ const checkIfUserTokenFromCookie = (req, res, next) => {
     // Stocker des informations de l'utilisateur dans req
     req.user = {
       id: decodedToken.id,
-      role: decodedToken.role
+      role: decodedToken.role,
     } // ou une propriété spécifique du decodedToken
     next();
   } catch (error) {

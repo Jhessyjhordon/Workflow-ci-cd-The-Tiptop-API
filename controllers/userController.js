@@ -163,7 +163,8 @@ const UserLogin = async (req, res) => {
 const userCheckToken = async (req, res) => {
     const token = req.cookies.token;
     try {
-        if (token && tokenIsValid(token)) { // tokenIsValid est une fonction hypothétique pour valider le token
+        if (token) {
+            const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY); // Utilisez la même clé secrète que celle utilisée pour signer le token
             res.json({ isAuthenticated: true });
         } else {
             res.json({ isAuthenticated: false });

@@ -140,7 +140,9 @@ const checkIfUserTokenFromCookie = (req, res, next) => {
     // Vérifier la validité du token et l'assigner à la variable decodedToken
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
     // Stocker des informations de l'utilisateur dans req
-    req.user = decodedToken; // ou une propriété spécifique du decodedToken
+    req.user = {
+      id: decodedToken.id
+    } // ou une propriété spécifique du decodedToken
     next();
   } catch (error) {
     return res.status(403).json({

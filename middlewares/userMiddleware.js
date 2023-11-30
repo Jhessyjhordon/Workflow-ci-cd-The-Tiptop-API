@@ -128,29 +128,30 @@ const checkIfUserToken = (req, res, next) => {
   }
 };
 
+
 const checkIfUserTokenFromCookie = (req, res, next) => {
-  //const token = req.cookies.token;
-  return req.cookies.token
-  // if (!token) {
-  //   return res.status(401).json({
-  //     error: true,
-  //     message: 'Accès non autorisé : Token manquant.'
-  //   });
-  // }
-  // try {
-  //   // Vérifier la validité du token et l'assigner à la variable decodedToken
-  //   const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-  //   // Stocker des informations de l'utilisateur dans req
-  //   req.user = {
-  //     id: decodedToken.id
-  //   } // ou une propriété spécifique du decodedToken
-  //   next();
-  // } catch (error) {
-  //   return res.status(403).json({
-  //     error: true,
-  //     message: 'Accès refusé : Token invalide ou expiré.'
-  //   });
-  // }
+  console.log(req.cookies); 
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({
+      error: true,
+      message: 'Accès non autorisé : Token manquant.'
+    });
+  }
+  try {
+    // Vérifier la validité du token et l'assigner à la variable decodedToken
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    // Stocker des informations de l'utilisateur dans req
+    req.user = {
+      id: decodedToken.id
+    } // ou une propriété spécifique du decodedToken
+    next();
+  } catch (error) {
+    return res.status(403).json({
+      error: true,
+      message: 'Accès refusé : Token invalide ou expiré.'
+    });
+  }
 };
 
 

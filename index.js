@@ -13,6 +13,7 @@ const session = require('express-session');
 const passport = require('passport');
 const { cleanExpiredLinks } = require('./tasks/scheduledTasks');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(session({ secret: process.env.SECRET_KEY, resave: true, saveUninitialize
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cookieParser());
 
 app.use(cors({
   origin: process.env.THETIPTOP_FRONT_URL,

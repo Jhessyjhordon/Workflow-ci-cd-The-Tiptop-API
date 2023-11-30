@@ -137,7 +137,7 @@ const UserLogin = async (req, res) => {
         if (isPasswordValid) {
             const token = authService.generateToken(user);
             // Définir le cookie HttpOnly et Secure (assurez-vous que vous êtes en HTTPS)
-            res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 3600000 }); // maxAge est en millisecondes
+            res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'none', maxAge: 3600000 }); // maxAge est en millisecondes
             return res.status(200).json({
                 error: false,
                 message: ['Connexion réussie']

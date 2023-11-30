@@ -33,6 +33,8 @@ app.use(cookieParser());
 
 app.use(cors({
   origin: process.env.THETIPTOP_FRONT_URL,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

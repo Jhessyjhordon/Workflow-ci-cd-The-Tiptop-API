@@ -400,6 +400,28 @@ router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userC
 
 /**
  * @swagger
+ * /user/check-auth:
+ *   post:
+ *     summary: Vérifie le token d'un utilisateur
+ *     tags: [Users]
+ *     security: [] 
+ *     requestBody:
+ *       description: Vérification du token de l'utilisateur
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginCredentials' 
+ *     responses:
+ *       200:
+ *         description: isAuthenticated: true/false
+ *       401:
+ *         description: Token invalide ou expiré
+ */
+router.post('/check-auth', userMiddleware.checkIfUserTokenFromCookie, userController.userCheckToken)
+
+/**
+ * @swagger
  * /user/logout:
  *   post:
  *     summary: Connecte un utilisateur

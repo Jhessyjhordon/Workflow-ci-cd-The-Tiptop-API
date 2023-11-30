@@ -159,6 +159,25 @@ const UserLogin = async (req, res) => {
     }
 };
 
+// Contrôle du token s'il est valide
+const userCheckToken = async (req, res) => {
+    const token = req.cookies.token;
+    try {
+        if (token && tokenIsValid(token)) { // tokenIsValid est une fonction hypothétique pour valider le token
+            res.json({ isAuthenticated: true });
+        } else {
+            res.json({ isAuthenticated: false });
+        }
+    } catch (error) {
+        console.error('Erreur lors de la vérification du token :', error);
+        return res.status(401).json({
+            error: true,
+            message: ["Token invalide ou expiré"]
+        });
+    }
+};
+
+// Contrôle de la déconnexion d'un user
 const userLogout = async (req, res) => {
     try {
         // Écraser le cookie en définissant sa date d'expiration dans le passé
@@ -881,6 +900,7 @@ const deleateAccount = async (req, res) => {
 };
 
 module.exports = { UserLogin, 
+    userCheckToken,
     userLogout,
     UserRegister, 
     getUserById,

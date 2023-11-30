@@ -400,6 +400,28 @@ router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userC
 
 /**
  * @swagger
+ * /user/logout:
+ *   post:
+ *     summary: Connecte un utilisateur
+ *     tags: [Users]
+ *     security: [] 
+ *     requestBody:
+ *       description: Informations de connexion de l'utilisateur
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginCredentials' 
+ *     responses:
+ *       200:
+ *         description: Déconnexion réussie
+ *       500:
+ *         description: Une erreur est survenue lors de la déconnexion
+ */
+router.post('/logout', userController.userLogout)
+
+/**
+ * @swagger
  * /user/confirm/{token}:
  *   get:
  *     summary: Confirme un utilisateur avec un token de confirmation

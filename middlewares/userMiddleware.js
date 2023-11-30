@@ -130,7 +130,6 @@ const checkIfUserToken = (req, res, next) => {
 
 
 const checkIfUserTokenFromCookie = (req, res, next) => {
-  console.log(req.cookies); 
   const token = req.cookies.token;
   if (!token) {
     return res.status(401).json({

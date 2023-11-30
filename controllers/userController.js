@@ -159,6 +159,24 @@ const UserLogin = async (req, res) => {
     }
 };
 
+const userLogout = async (req, res) => {
+    try {
+        // Écraser le cookie en définissant sa date d'expiration dans le passé
+        res.cookie('token', '', { expires: new Date(0) });
+
+        return res.status(200).json({
+            error: false,
+            message: ['Déconnexion réussie']
+        });
+    } catch (error) {
+        console.error('Erreur lors de la déconnexion :', error);
+        return res.status(500).json({
+            error: true,
+            message: ["Une erreur est survenue lors de la déconnexion"]
+        });
+    }
+};
+
 // Contrôleur pour récupérer l'id en fonction du token
 const getIdAndRoleByToken = async (req, res)=> {
     const token = req.cookies.token;
@@ -856,6 +874,7 @@ const deleateAccount = async (req, res) => {
 };
 
 module.exports = { UserLogin, 
+    userLogout,
     UserRegister, 
     getUserById,
     getIdAndRoleByToken, 

@@ -154,7 +154,7 @@ router.get('/', userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsEmp
  *       200:
  *         description: Liste des utilisateurs récupérée avec succès
  */
-router.get('/role/customer', userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsEmployeeOrAdmin,userController.getAllUsersByRoleClient)
+router.get('/role/customer', userMiddleware.checkIfUserTokenFromCookie ,userMiddleware.checkIfUserIsEmployeeOrAdmin,userController.getAllUsersByRoleClient)
 
 /**
  * @swagger

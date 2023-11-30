@@ -94,17 +94,52 @@ const checkIfUserIsAdmin = (req, res, next) => {
   next();
 };
 
+// const checkIfUserIsEmployeeOrAdmin = (req, res, next) => {
+//   const token = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET_KEY);
+//   // const user = req.user; // L'objet utilisateur décodé à partir du token
+//   if (token.role !== 'employee' && token.role !== 'admin') {
+//       return res.status(403).json({
+//           error: true,
+//           message: "Accès refusé : vous n'êtes pas autorisé à effectuer cette action."
+//       });
+//   }
+//   next();
+// };
+
 const checkIfUserIsEmployeeOrAdmin = (req, res, next) => {
-  const token = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET_KEY);
-  // const user = req.user; // L'objet utilisateur décodé à partir du token
-  if (token.role !== 'employee' && token.role !== 'admin') {
-      return res.status(403).json({
+  const token = req.cookies.token; // Récupérer le token du cookie
+
+  // Vérifiez si le token est présent
+  if (!token) {
+      return res.status(401).json({
           error: true,
-          message: "Accès refusé : vous n'êtes pas autorisé à effectuer cette action."
+          message: "Accès refusé : aucun token fourni."
       });
   }
-  next();
+
+  try {
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+      // Vérifiez si l'utilisateur a le rôle requis
+      if (decodedToken.role !== 'employee' && decodedToken.role !== 'admin') {
+          return res.status(403).json({
+              error: true,
+              message: "Accès refusé : vous n'êtes pas autorisé à effectuer cette action."
+          });
+      }
+
+      // Stockez les informations utilisateur décodées dans req pour une utilisation ultérieure
+      req.user = decodedToken;
+
+      next();
+  } catch (error) {
+      return res.status(403).json({
+          error: true,
+          message: "Token invalide ou expiré."
+      });
+  }
 };
+
 
 const checkIfUserToken = (req, res, next) => {
   const authHeader = req.headers.authorization;

@@ -257,7 +257,7 @@ const getAllUsers = async (req, res) => {
 
 // Contrôleur pour la route GET '/' pour les USERS selon le rôle client
 const getAllUsersByRoleClient = async (req, res) => {
-    const token = req.headers.authorization; // Récupérer le token de l'en-tête
+    const token = req.cookies.token; // Récupérer le token du cookie
 
     try {
         // Vérifier la présence du token
@@ -269,7 +269,7 @@ const getAllUsersByRoleClient = async (req, res) => {
         }
 
         // Décoder le token pour obtenir les informations utilisateur
-        const decodedToken = authService.decodeToken(token)
+        const decodedToken = authService.decodeToken(token);
 
         // Vérifier le rôle de l'utilisateur (assumons que le rôle est stocké dans decodedToken.role)
         if (decodedToken.role !== 'admin' && decodedToken.role !== 'employee') {
@@ -304,6 +304,7 @@ const getAllUsersByRoleClient = async (req, res) => {
         });
     }
 };
+
 
 // Contrôleur pour la route GET '/' pour les USERS selon le rôle client
 const getAllUsersByRoleEmployee = async (req, res) => {

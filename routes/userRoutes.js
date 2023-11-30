@@ -190,7 +190,7 @@ router.get('/role/employee', userMiddleware.checkIfUserToken ,userMiddleware.che
  *       404:
  *         description: Utilisateur non trouvé
  */
-router.get('/cookie/auth',userMiddleware.checkIfUserTokenFromCookie, userMiddleware.validateUserId(Validator.userIdSchema), userController.getIdByToken)
+router.get('/cookie/auth',userMiddleware.checkIfUserTokenFromCookie, userController.getIdByToken)
 
 /**
  * @swagger

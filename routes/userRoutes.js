@@ -414,7 +414,7 @@ router.post('/login', userMiddleware.validateLogin(Validator.loginSchema), userC
  *             $ref: '#/components/schemas/LoginCredentials' 
  *     responses:
  *       200:
- *         description: isAuthenticated: true or false
+ *         description: isAuthenticated true or false
  *       401:
  *         description: Token invalide ou expiré
  */

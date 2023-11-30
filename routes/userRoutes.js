@@ -431,7 +431,7 @@ router.post('/check-auth', userMiddleware.checkIfUserTokenFromCookie, userContro
  *       200:
  *         description: isAuthenticated true or false
  */
-router.get('/cookie-presence', userController.userCheckTokenPresence);
+router.get('/cookie-presence', userMiddleware.checkIfUserTokenFromCookiePresence, userController.userCheckTokenPresence);
 
 /**
  * @swagger

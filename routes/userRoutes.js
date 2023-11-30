@@ -422,6 +422,19 @@ router.post('/check-auth', userMiddleware.checkIfUserTokenFromCookie, userContro
 
 /**
  * @swagger
+ * /user/cookie-presence:
+ *   get:
+ *     summary: Vérifie le token d'un utilisateur s'il est valide et présent
+ *     tags: [Users]
+ *     security: [] 
+ *     responses:
+ *       200:
+ *         description: isAuthenticated true or false
+ */
+router.get('/cookie-presence', userController.userCheckTokenPresence);
+
+/**
+ * @swagger
  * /user/logout:
  *   post:
  *     summary: Connecte un utilisateur

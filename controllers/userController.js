@@ -178,6 +178,24 @@ const userCheckToken = async (req, res) => {
     }
 };
 
+// Contrôle du token s'il est valide et présent
+const userCheckTokenPresence = async (req, res) => {
+    const token = req.cookies.token;
+    if (token) {
+        try {
+            jwt.verify(token, process.env.JWT_SECRET_KEY); // Utilisez la même clé secrète que celle utilisée pour signer le token
+            res.json({ isAuthenticated: true });
+        } catch (error) {
+            // Si une erreur se produit pendant la vérification du token (par exemple, si le token est expiré)
+            console.error('Erreur lors de la vérification du token:', error);
+            res.json({ isAuthenticated: false });
+        }
+    } else {
+        // Si aucun token n'est trouvé
+        res.json({ isAuthenticated: false });
+    }
+};
+
 // Contrôle de la déconnexion d'un user
 const userLogout = async (req, res) => {
     try {
@@ -902,6 +920,7 @@ const deleateAccount = async (req, res) => {
 
 module.exports = { UserLogin, 
     userCheckToken,
+    userCheckTokenPresence,
     userLogout,
     UserRegister, 
     getUserById,

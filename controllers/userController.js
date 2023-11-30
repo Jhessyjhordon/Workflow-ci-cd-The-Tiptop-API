@@ -162,7 +162,13 @@ const UserLogin = async (req, res) => {
 const userLogout = async (req, res) => {
     try {
         // Écraser le cookie en définissant sa date d'expiration dans le passé
-        res.cookie('token', '', { expires: new Date(0) });
+        res.cookie('token', '', { 
+            expires: new Date(0),
+            domain: '.dsp-archiwebo22b-ji-rw-ah.fr',
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
 
         return res.status(200).json({
             error: false,

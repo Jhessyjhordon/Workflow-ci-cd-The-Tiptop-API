@@ -3,7 +3,6 @@ const Batch = require('../models/batchModel');
 const User = require('../models/userModel');
 const Ticket = require('../models/ticketModel');
 const sequelizeService = require('../services/sequelizeService');
-
 require('dotenv').config();
 
 

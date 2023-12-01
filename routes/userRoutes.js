@@ -423,7 +423,7 @@ router.post('/check-auth', userMiddleware.checkIfUserTokenFromCookie, userContro
 /**
  * @swagger
  * /user/cookie-presence:
- *   get:
+ *   post:
  *     summary: Vérifie le token d'un utilisateur s'il est valide et présent
  *     tags: [Users]
  *     security: [] 
@@ -431,7 +431,7 @@ router.post('/check-auth', userMiddleware.checkIfUserTokenFromCookie, userContro
  *       200:
  *         description: isAuthenticated true or false
  */
-router.get('/cookie-presence', userMiddleware.checkIfUserTokenFromCookiePresence, userController.userCheckTokenPresence);
+router.post('/cookie-presence', userController.userCheckTokenPresence);
 
 /**
  * @swagger

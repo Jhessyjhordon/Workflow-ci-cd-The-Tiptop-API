@@ -189,25 +189,6 @@ const checkIfUserTokenFromCookie = (req, res, next) => {
   }
 };
 
-const checkIfUserTokenFromCookiePresence = (req, res, next) => {
-  const token = req.cookies.token;
-  if (token) {
-    try {
-      // Vérifier la validité du token
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      // Stocker des informations de l'utilisateur dans req
-      req.user = {
-        id: decodedToken.id,
-        role: decodedToken.role,
-      };
-    } catch (error) {
-      // Gestion des tokens invalides, mais ne pas arrêter la requête
-      console.error('Token invalide:', error);
-    }
-  }
-  // Continuer avec la requête, même si aucun token n'est trouvé ou si le token est invalide
-  next();
-};
 
 
 
@@ -216,7 +197,6 @@ module.exports = {
   validateLogin,
   validateUserId,
   checkIfUserTokenFromCookie,
-  checkIfUserTokenFromCookiePresence,
   checkIfUserIsEmployee,
   checkIfUserIsAdmin,
   checkIfUserIsEmployeeOrAdmin,

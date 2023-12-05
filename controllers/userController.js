@@ -1,6 +1,5 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const User = require('../models/userModel');
 const Ticket = require('../models/ticketModel');
@@ -505,11 +504,6 @@ const GoogleAuth = async (req, res) => {
       const token = authService.generateToken(user)
       const redirectUrl = `${process.env.THETIPTOP_FRONT_URL}/concours?jwt=${encodeURIComponent(token)}`;
       return res.redirect(redirectUrl);
-    //   return res.status(200).json({
-    //     error: false,
-    //     message: ['Connexion réussie'],
-    //     jwt: token
-    //     });
 
     } catch (error) {
       console.error('Erreur lors de l\'authentification Google :', error);

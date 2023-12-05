@@ -10,6 +10,7 @@ const mailService = require('../services/mailService');
 const templateGeneratorService = require('../services/templateGeneratorService')
 const path = require('path'); // Ajout du service path
 const mailchimp = require('../config/mailchimp') // Appel de la configuration mailchimp
+const sequelizeService = require('../services/sequelizeService');
 
 
 // Contrôleur d'inscription d'utilisateur
@@ -56,11 +57,7 @@ const UserRegister = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Erreur lors de l\'inscription avec Sequelize :', error);
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de l'inscription"]
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de l'inscription");
     }
 };
 
@@ -107,11 +104,7 @@ const UserCreation = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Erreur lors de la création avec Sequelize :', error);
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la création"]
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la création");
     }
 };
 
@@ -157,12 +150,7 @@ const UserLogin = async (req, res) => {
         }
 
     } catch (error) {
-        console.error('Erreur lors de la connexion avec Sequelize :', error);
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la connexion"],
-            details: error.message
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la connexion");
     }
 };
 
@@ -206,11 +194,7 @@ const getAllUsers = async (req, res) => {
                 message: ["Veillez vous reconnecter"] // Token expiré
             });
         }
-        console.error('Erreur lors de la récupération des utilisateurs avec Sequelize :', error);
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la récupération des utilisateurs"]
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la récupération des utilisateurs");
     }
 };
 
@@ -256,11 +240,7 @@ const getAllUsersByRoleClient = async (req, res) => {
                 message: ["Veillez vous reconnecter"] // Token expiré
             });
         }
-        console.error('Erreur lors de la récupération des utilisateurs avec Sequelize :', error);
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la récupération des utilisateurs"]
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la récupération des utilisateurs");
     }
 };
 
@@ -306,11 +286,7 @@ const getAllUsersByRoleEmployee = async (req, res) => {
                 message: ["Veillez vous reconnecter"] // Token expiré
             });
         }
-        console.error('Erreur lors de la récupération des utilisateurs avec Sequelize :', error);
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la récupération des utilisateurs"]
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la récupération des utilisateurs");
     }
 };
 
@@ -350,20 +326,6 @@ const updateUserById = async (req, res) => {
             });
         }
 
-        
-        // Vérification du mot de passe actuel
-        // if (body.currentPassword && body.newPassword) {
-        //     // bcrypt.compareSync(body.password, user.password)
-        //     const isCurrentPasswordValid  = await userToUpdate.comparePassword(body.currentPassword);
-
-        //     if (!isCurrentPasswordValid ) {
-        //         return res.status(401).json({
-        //             error: true,
-        //             message: ["Mot de passe actuel incorrect"]
-        //         });
-        //     }
-        // }
-
         // Mettre à jour les champs de l'utilisateur
         userToUpdate.firstname = body.firstname;
         userToUpdate.lastname = body.lastname;
@@ -371,15 +333,6 @@ const updateUserById = async (req, res) => {
         userToUpdate.phone = body.phone;
         userToUpdate.address = body.address;
         userToUpdate.birthDate = body.birthDate;
-        // userToUpdate.password = body.password;
-
-        // if (body.newPassword) {
-        //     // Mise à jour du mot de passe si un nouveau mot de passe est fourni
-        //     userToUpdate.password = body.newPassword;
-        // }
-
-        // Enregistrer les modifications dans la base de données
-        await userToUpdate.save();
 
         return res.status(200).json({
             error: false,
@@ -387,11 +340,7 @@ const updateUserById = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Erreur lors de la mise à jour de l\'utilisateur avec Sequelize :', error);
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la mise à jour de l'utilisateur"]
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la mise à jour de l'utilisateur");
     }
 };
 
@@ -424,11 +373,7 @@ const getUserById = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Erreur lors de la récupération de l\'utilisateur avec Sequelize :', error);
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la récupération de l'utilisateur"]
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la récupération de l'utilisateur");
     }
 };
 
@@ -465,11 +410,7 @@ const deleteUserById = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Erreur lors de la suppression de l\'utilisateur avec Sequelize :', error);
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la suppression de l'utilisateur"]
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la suppression de l'utilisateur");
     }
 };
 
@@ -506,12 +447,7 @@ const GoogleAuth = async (req, res) => {
       return res.redirect(redirectUrl);
 
     } catch (error) {
-      console.error('Erreur lors de l\'authentification Google :', error);
-      // Gérer les erreurs ici
-      res.status(500).json({
-        error: true,
-        message: ["Erreur lors de l'authentification avec Google"]
-      });
+        return sequelizeService.handleSequelizeError(res, error, "Erreur lors de l'authentification avec Google");
     }
   }
 
@@ -544,8 +480,7 @@ const GoogleAuth = async (req, res) => {
                 }
             }
         } catch (error) {
-            console.error('Erreur lors du téléchargement du fichier :', error);
-            res.status(500).send('Erreur lors du téléchargement du fichier.');
+            return sequelizeService.handleSequelizeError(res, error, "Erreur lors du téléchargement du fichier.");
         }
     });
 };
@@ -591,8 +526,7 @@ const UserConfirme = async (req, res) => {
         const htmlContent = templateGeneratorService.generateTemplate("Félicitation, votre compte a été confirmé");
         return res.status(200).send(htmlContent);
     } catch (error) {
-        console.error('Erreur lors de la confirmation de l\'utilisateur :', error);
-        return res.status(500).json({ message: "Erreur lors de la confirmation de l'utilisateur" });
+        return sequelizeService.handleSequelizeError(res, error, "Erreur lors de la confirmation de l'utilisateur");
     }
 };
 
@@ -657,11 +591,7 @@ const partialUpdateUserById = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Erreur lors de la mise à jour partielle de l\'utilisateur avec Sequelize :', error);
-        return res.status(500).json({
-            error: true,
-            message: ["Une erreur est survenue lors de la mise à jour partielle de l'utilisateur"]
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la mise à jour partielle de l'utilisateur");
     }
 };
 
@@ -723,8 +653,7 @@ const getUserEmailsByNewsletter = async (req, res) => {
             return res.status(400).json({ error: true, message: 'Mode non spécifié ou invalide' });
         }
     } catch (error) {
-        console.error('Error fetching user emails:', error);
-        return res.status(500).json({ error: true, message: 'Internal server error' });
+        return sequelizeService.handleSequelizeError(res, error, "Internal server error");
     }
 };
 
@@ -759,11 +688,7 @@ const unsubscribeFromNewsletter = async (req, res) => {
             message: "Désabonnement réussi"
         });
     } catch (error) {
-        console.error('Erreur lors de la mise à jour de la newsletter:', error);
-        return res.status(500).json({
-            error: true,
-            message: "Erreur serveur lors du désabonnement à la newsletter"
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Erreur serveur lors du désabonnement à la newsletter");
     }
 };
 
@@ -792,11 +717,7 @@ const getShortcutCustomerDetails = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Erreur lors de la récupération des détails des utilisateurs:', error);
-        return res.status(500).json({
-            error: true,
-            message: "Erreur serveur lors de la récupération des détails des utilisateurs"
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Erreur serveur lors de la récupération des détails des utilisateurs");
     }
 };
 const deleateAccount = async (req, res) => {
@@ -825,11 +746,7 @@ const deleateAccount = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Erreur lors de la suppression du compteu tilisateur:', error);
-        return res.status(500).json({
-            error: true,
-            message: "Erreur lors de la suppression du compteu tilisateur"
-        });
+        return sequelizeService.handleSequelizeError(res, error, "Erreur lors de la suppression du compteu tilisateur");
     }
 };
 

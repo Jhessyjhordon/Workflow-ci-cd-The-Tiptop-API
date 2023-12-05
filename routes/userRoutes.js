@@ -56,7 +56,7 @@ router.get('/email/newsletter', userController.getUserEmailsByNewsletter);
 
 /**
  * @swagger
- * /user/shortcut/customers/datails:
+ * /user/shortcut/customers/details:
  *   get:
  *     summary: Get shortcut customer details
  *     tags: 
@@ -84,7 +84,7 @@ router.get('/email/newsletter', userController.getUserEmailsByNewsletter);
  *       500:
  *         description: Internal Server Error
  */
-router.get('/shortcut/customers/datails',userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsAdmin, userController.getShortcutCustomerDetails);
+router.get('/shortcut/customers/details',userMiddleware.checkIfUserToken ,userMiddleware.checkIfUserIsAdmin, userController.getShortcutCustomerDetails);
 
 /**
  * @swagger

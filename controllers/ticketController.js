@@ -2,7 +2,7 @@ require('dotenv').config();
 const TicketModel = require('../models/ticketModel');
 const UserModel = require('../models/userModel');
 const BatchModel = require('../models/batchModel');
-const TicketNumGenerator = require('../services/ticketNuleroGenerator');
+const TicketNumGenerator = require('../services/ticketNumeroGenerator');
 const sequelizeService = require('../services/sequelizeService');
 
 const findTicketById = async (id) => {

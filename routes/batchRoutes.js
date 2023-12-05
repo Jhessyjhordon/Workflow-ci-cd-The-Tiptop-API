@@ -141,7 +141,7 @@ const batchController = require('../controllers/batchController');
  *                 employee_id: 1
  *       404:
  *         description: Utilisateur non trouvé ou pas de lots associés
- * /batch/shortcuted/datails:
+ * /batch/shortcuted/details:
  *   get:
  *     summary: Obtenir les lots raccourcis
  *     tags: [Batches]
@@ -221,7 +221,7 @@ const batchController = require('../controllers/batchController');
 
 
 router.get('/', batchController.getAllBatches)
-router.get('/shortcuted/datails', userMiddleware.checkIfUserToken, userMiddleware.checkIfUserIsAdmin, batchController.getShortcutBatchs)
+router.get('/shortcuted/details', userMiddleware.checkIfUserToken, userMiddleware.checkIfUserIsAdmin, batchController.getShortcutBatchs)
 router.get('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.getBatchById)
 router.get('/retrieve/byuserid', userMiddleware.checkIfUserToken, batchController.getBatchByUserId)
 router.delete('/:id', batchMiddleware.validateBatchId(Validator.batchIdSchema), batchController.deleteBatchById)

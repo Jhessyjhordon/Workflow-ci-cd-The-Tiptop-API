@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     env_file:
-      - .env
+      - .env.dev
     ports:
       - 4000:${PORT}
     networks:
@@ -41,7 +41,7 @@ services:
     container_name: TheTiptop_Db
     image: mysql:latest
     env_file:
-      - .env
+      - .env.dev
     ports:
       - 3307:3306
     networks:

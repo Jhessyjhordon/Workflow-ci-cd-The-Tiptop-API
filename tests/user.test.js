@@ -122,7 +122,7 @@ describe('User Routes', () => {
     it('should return a 404 if user ID does not exist', async () => { // OK
       const res = await chai
         .request(server)
-        .get('/user/999')
+        .get('/user/21541212415')
         .set('Authorization', 'Bearer ' + token_employee);
 
       expect(res.status).to.equal(404);
@@ -180,7 +180,7 @@ describe('User Routes', () => {
     it('should return a 404 if user ID does not exist (with valid token and employee role)', async () => { // OK
       const res = await chai
         .request(server)
-        .delete('/user/888')
+        .delete('/user/121544541')
         .set('Authorization', 'Bearer ' + token_admin);
 
       expect(res.status).to.equal(404);
@@ -246,7 +246,7 @@ describe('User Routes', () => {
     
           const res = await chai
             .request(server)
-            .put(`/user/890`)
+            .put(`/user/1234654651561`)
             .set('Authorization', 'Bearer ' + token_employee)
             .send(updatedUserData);
     

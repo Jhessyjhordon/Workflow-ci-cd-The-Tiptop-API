@@ -1,10 +1,8 @@
-const db = require('../db');
-const jwt = require('jsonwebtoken');
-const Batch = require('../models/batchModel')
-const User = require('../models/userModel')
-const Ticket = require('../models/ticketModel') 
-const authService = require('../services/authService')
-
+const authService = require('../services/authService');
+const Batch = require('../models/batchModel');
+const User = require('../models/userModel');
+const Ticket = require('../models/ticketModel');
+const sequelizeService = require('../services/sequelizeService');
 require('dotenv').config();
 
 
@@ -28,11 +26,7 @@ const getBatchById = async (req, res) => {
       batch: batch.toJSON() // Convertissez le modèle en objet JSON
     });
   } catch (error) {
-    console.error('Erreur de requête Sequelize :', error);
-    return res.status(500).json({
-      error: true,
-      message: ["Une erreur est survenue lors de la récupération du lot"]
-    });
+    return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la récupération du lot")
   }
 };
 
@@ -62,11 +56,7 @@ const verifyBatch = async (req, res) => {
       batch: batch.toJSON() // Convertissez le modèle en objet JSON
     });
   } catch (error) {
-    console.error('Erreur de requête Sequelize :', error);
-    return res.status(500).json({
-      error: true,
-      message: ["Une erreur est survenue lors de la récupération du lot"]
-    });
+    return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la récupération du lot")
   }
 };
 
@@ -92,11 +82,7 @@ const deleteBatchById = async (req, res) => {
         message: ['Lot supprimé avec succès']
       });
     } catch (error) {
-      console.error('Erreur de requête Sequelize :', error);
-      return res.status(500).json({
-        error: true,
-        message: ["Une erreur est survenue lors de la suppression du lot"]
-      });
+      return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la suppression du lot")
     }
   };
 
@@ -119,11 +105,7 @@ const getAllBatches = async (req, res) => {
         batches
       });
     } catch (error) {
-      console.error('Erreur de requête Sequelize :', error);
-      return res.status(500).json({
-        error: true,
-        message: ["Une erreur est survenue lors de la récupération des Lots"]
-      });
+      return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la récupération des Lots")
     }
   };
 
@@ -156,11 +138,7 @@ const getShortcutBatchs = async (req, res) => {
         batches
       });
     } catch (error) {
-      console.error('Erreur de requête Sequelize :', error);
-      return res.status(500).json({
-        error: true,
-        message: ["Une erreur est survenue lors de la récupération des Lots"]
-      });
+      return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la récupération des Lots")
     }
   };
 
@@ -189,19 +167,14 @@ const updateBatchById = async (req, res) => {
   
       // Enregistrez les modifications dans la base de données
       await batchToUpdate.save();
-      console.log("lot modifié")
-      console.log(batchToUpdate)
+      console.log("lot modifié") 
       return res.status(200).json({
         error: false,
         message: ['Lot mis à jour avec succès']
       });
     } catch (error) {
-      console.error('Erreur de mise à jour de lot avec Sequelize :', error);
-      return res.status(500).json({
-        error: true,
-        message: ["Une erreur est survenue lors de la mise à jour du lot"]
-      });
-    }   
+      return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la mise à jour du lot")
+    } 
   };
 
   const partialUpdateBatchById = async (req, res) => {
@@ -232,11 +205,7 @@ const updateBatchById = async (req, res) => {
         message: ['Lot mis à jour avec succès']
       });
     } catch (error) {
-      console.error('Erreur de mise à jour de lot avec Sequelize :', error);
-      return res.status(500).json({
-        error: true,
-        message: ["Une erreur est survenue lors de la mise à jour du lot"]
-      });
+      return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de la mise à jour du lot")
     }
   };
 
@@ -262,11 +231,7 @@ const createBatch = async (req, res) => {
         batch: newBatch // Vous pouvez également renvoyer les données du lot créé si nécessaire
       });
     } catch (error) {
-      console.error('Erreur lors de la création du lot avec Sequelize :', error);
-      return res.status(500).json({
-        error: true,
-        message: ["Une erreur est survenue lors de l'enregistrement du lot"]
-      });
+      return sequelizeService.handleSequelizeError(res, error, "Une erreur est survenue lors de l'enregistrement du lot")
     }
   };
 
@@ -308,10 +273,7 @@ const createBatch = async (req, res) => {
       });
   
     } catch (error) {
-      return res.status(500).json({
-        error: true,
-        message: ["Erreur lors de la récupération du lot"]
-      });
+      return sequelizeService.handleSequelizeError(res, error, "Erreur lors de la récupération du lot")
     }
   };
 

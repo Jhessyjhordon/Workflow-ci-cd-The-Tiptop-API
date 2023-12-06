@@ -2,6 +2,7 @@ require('dotenv').config();
 const TicketModel = require('../models/ticketModel');
 const UserModel = require('../models/userModel');
 const BatchModel = require('../models/batchModel');
+const TicketNumGenerator = require('../services/ticketNumeroGenerator');
 const sequelizeService = require('../services/sequelizeService');
 
 const findTicketById = async (id) => {
@@ -153,15 +154,15 @@ const verifyTicketUserId = async (req, res) => {
 
 const createTicket = async (req, res) => {
   const body = req.body;
-
+  const numTicket = TicketNumGenerator.generateUniqueTicketNumber();
   try {
       const newTicket = await TicketModel.create({
-          numTicket: body.numTicket,
-          montantTicket: body.montantTicket,
-          dateAchat: body.dateAchat,
-          gainAttribue: body.gainAttribue,
-          batchId: body.batchId,
-          userId: body.userId,
+          numTicket: numTicket,
+          montantTicket: body.montantAchat,
+          dateAchat: new Date(),
+          gainAttribue: 0.00,
+          batch_id: body.batchId,
+          user_id: body.userId,
           createAt: new Date(),
           updatedAt: new Date()
       });

@@ -63,7 +63,7 @@ const ticketController = require('../controllers/ticketController');
  *       500:
  *         description: Une erreur de serveur s'est produite
  * /ticket/byuserid:
- *   post:
+ *   get:
  *     summary: Vérifier le ticket par son user_id
  *     tags: [Tickets]
  *     requestBody:

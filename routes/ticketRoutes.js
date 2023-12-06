@@ -63,7 +63,7 @@ const ticketController = require('../controllers/ticketController');
  *       500:
  *         description: Une erreur de serveur s'est produite
  * /ticket/byuserid:
- *   get:
+ *   post:
  *     summary: Vérifier le ticket par son user_id
  *     tags: [Tickets]
  *     requestBody:
@@ -351,6 +351,6 @@ router.put('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema),
 router.patch('/:id', ticketMiddleware.validateTicket(Validator.ticketPatchSchema), ticketController.partialUpdateTicketById)
 router.post('/', ticketMiddleware.validateTicket(Validator.ticketCreationSchema), ticketController.createTicket)
 router.post('/verify', ticketMiddleware.validateTicketIdInPost(Validator.ticketNumTicketSchema), ticketController.verifyTicket)
-router.get('/byuserid/:userId', ticketMiddleware.validateTicketIdInGet(Validator.ticketUserIdSchema), ticketController.verifyTicketUserId)
+router.post('/byuserid', ticketMiddleware.validateTicketIdInPost(Validator.ticketUserIdSchema), ticketController.verifyTicketUserId)
 
 module.exports = router

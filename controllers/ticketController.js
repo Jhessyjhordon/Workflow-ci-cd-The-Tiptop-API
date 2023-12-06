@@ -87,7 +87,7 @@ const verifyTicket = async (req, res) => {
 };
 
 const verifyTicketUserId = async (req, res) => {
-  const userId = req.params.userId;
+  const userId = req.body.userId;
 
   try {
       const tickets = await TicketModel.findAll({ where: { user_id: userId } });
@@ -125,7 +125,7 @@ const verifyTicketUserId = async (req, res) => {
           montantAchat: ticket.montantAchat,
           dateAchat: ticket.dateAchat,
           statusGain: ticket.statusGain,
-          state: "checked",
+          state: ticket.state,
           user: {
               id: users[index].id,
               lastname: users[index].lastname,

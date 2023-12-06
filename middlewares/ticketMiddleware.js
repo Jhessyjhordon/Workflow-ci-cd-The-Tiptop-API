@@ -1,43 +1,33 @@
 const validateTicketId = (schema) => async (req, res, next) => {
-    try {
-        await schema.validate(req.params);
-  
-        return next();
-    } catch (err) {
-        return res.status(400).json({ type: err.name, message: err.message });
-    }
-  };
+  try {
+      await schema.validate(req.params);
+
+      return next();
+  } catch (err) {
+      return res.status(400).json({ type: err.name, message: err.message });
+  }
+};
 const validateTicketIdInPost = (schema) => async (req, res, next) => {
-    try {
-      await schema.validate(req.body);
-  
-        return next();
-    } catch (err) {
-        return res.status(400).json({ type: err.name, message: err.message });
-    }
-  };
-  
-const validateTicketIdInGet = (schema) => async (req, res, next) => {
-    try {
-        // Utiliser req.params pour les paramètres d'URL
-        await schema.validate(req.params);
-        return next();
-    } catch (err) {
-        return res.status(400).json({ type: err.name, message: err.message });
-    }
+  try {
+    await schema.validate(req.body);
+
+      return next();
+  } catch (err) {
+      return res.status(400).json({ type: err.name, message: err.message });
+  }
 };
 
 const validateTicket = (schema) => async (req, res, next) => {
-    try {
-      await schema.validate(req.body);
+  try {
+    await schema.validate(req.body);
 
-      return next();
-    } catch (err) {
-      return res.status(409).json({ type: err.name, message: err.message });
-    }
+    return next();
+  } catch (err) {
+    return res.status(409).json({ type: err.name, message: err.message });
+  }
 };
 
 
-  module.exports = { 
-    validateTicketId,validateTicket, validateTicketIdInPost, validateTicketIdInGet
-  } 
+module.exports = { 
+  validateTicketId,validateTicket, validateTicketIdInPost
+} 

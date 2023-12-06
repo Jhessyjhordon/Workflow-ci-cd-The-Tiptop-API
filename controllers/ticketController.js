@@ -161,8 +161,8 @@ const createTicket = async (req, res) => {
           montantTicket: body.montantAchat,
           dateAchat: new Date(),
           gainAttribue: 0.00,
-          batchId: body.batchId,
-          userId: body.userId,
+          batch_id: body.batchId,
+          user_id: body.userId,
           createAt: new Date(),
           updatedAt: new Date()
       });

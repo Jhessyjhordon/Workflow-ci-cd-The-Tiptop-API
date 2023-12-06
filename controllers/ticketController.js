@@ -157,7 +157,7 @@ const createTicket = async (req, res) => {
   try {
       const newTicket = await TicketModel.create({
           numTicket: numTicket,
-          montantTicket: body.montantAchat,
+          montantAchat: body.montantAchat,
           dateAchat: new Date(),
           gainAttribue: 0.00,
           batch_id: body.batchId,

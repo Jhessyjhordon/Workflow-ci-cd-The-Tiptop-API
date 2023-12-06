@@ -48,7 +48,6 @@ const verifyTicket = async (req, res) => {
           });
       }
 
-      ticket.state = "checked";
       await ticket.save();
 
       const data = {

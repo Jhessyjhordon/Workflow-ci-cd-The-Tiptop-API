@@ -87,7 +87,7 @@ const verifyTicket = async (req, res) => {
 };
 
 const verifyTicketUserId = async (req, res) => {
-  const userId = req.query.userId;
+  const userId = req.params.userId;
 
   try {
       const tickets = await TicketModel.findAll({ where: { user_id: userId } });

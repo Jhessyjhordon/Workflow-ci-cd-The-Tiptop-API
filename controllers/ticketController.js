@@ -125,7 +125,7 @@ const verifyTicketUserId = async (req, res) => {
           montantAchat: ticket.montantAchat,
           dateAchat: ticket.dateAchat,
           statusGain: ticket.statusGain,
-          state: "checked",
+          state: ticket.state,
           user: {
               id: users[index].id,
               lastname: users[index].lastname,

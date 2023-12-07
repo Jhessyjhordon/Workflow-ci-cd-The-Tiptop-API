@@ -10,7 +10,7 @@ const ticketSchema = Yup.object({
     
 });
 const ticketCreationSchema = Yup.object({
-    montantTicket: Yup.number().required().positive(),
+    montantAchat: Yup.number().required().positive(),
     batchId: Yup.number().required().positive().integer(),
     userId: Yup.number().required().positive().integer(),
     

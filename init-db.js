@@ -35,39 +35,39 @@ Ticket.belongsTo(User, { as: 'User', foreignKey: 'user_id' });
 
 Shop.belongsTo(User, { as: 'User', foreignKey: 'user_id' });
 
-// data insertion
-db.sequelize.sync().then(() => {
-  return User.bulkCreate(user_data)
-    .then((users) => {
-      console.log(`${users.length} utilisateurs ont été insérés.`);
-    })
-    .then(() => {
-      return Batch.bulkCreate(batch_data)
-        .then((batchs) => {
-          console.log(`${batchs.length} lots ont été insérés.`);
-        });
-    })
-    .then(() => {
-      return Jackpot.bulkCreate(jackpot_data)
-        .then((jackpots) => {
-          console.log(`${jackpots.length} jackpot a été inséré.`);
-        });
-    })
-    .then(() => {
-      return Shop.bulkCreate(shop_data)
-        .then((shops) => {
-          console.log(`${shops.length} shops ont été insérés.`);
-        });
-    })
-    .then(() => {
-      return Ticket.bulkCreate(ticket_data)
-        .then((tickets) => {
-          console.log(`${tickets.length} tickets ont été insérés.`);
-        });
-    })
-    .catch((error) => {
-      console.error('Erreur lors de l\'insertion :', error);
-    });
-}).catch((error) => {
-  console.error('Unable to create table : ', error);
-});
+// data insertion <--------- cette section est mise en commentaire afin de ne pas inserer de nuveau les données dans la bd
+// db.sequelize.sync().then(() => {
+//   return User.bulkCreate(user_data)
+//     .then((users) => {
+//       console.log(`${users.length} utilisateurs ont été insérés.`);
+//     })
+//     .then(() => {
+//       return Batch.bulkCreate(batch_data)
+//         .then((batchs) => {
+//           console.log(`${batchs.length} lots ont été insérés.`);
+//         });
+//     })
+//     .then(() => {
+//       return Jackpot.bulkCreate(jackpot_data)
+//         .then((jackpots) => {
+//           console.log(`${jackpots.length} jackpot a été inséré.`);
+//         });
+//     })
+//     .then(() => {
+//       return Shop.bulkCreate(shop_data)
+//         .then((shops) => {
+//           console.log(`${shops.length} shops ont été insérés.`);
+//         });
+//     })
+//     .then(() => {
+//       return Ticket.bulkCreate(ticket_data)
+//         .then((tickets) => {
+//           console.log(`${tickets.length} tickets ont été insérés.`);
+//         });
+//     })
+//     .catch((error) => {
+//       console.error('Erreur lors de l\'insertion :', error);
+//     });
+// }).catch((error) => {
+//   console.error('Unable to create table : ', error);
+// });

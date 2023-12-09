@@ -78,57 +78,57 @@ pipeline {
         }
 
 
-        // stage('Run tests with Mocha & Chai') {
-        //      steps {
-        //         script{
-        //             switch(metadata.language) {
-        //                 case 'NodeJS':
-        //                     echo "Installation des dépendances"
-        //                     dir("${WORKSPACE}/${env.folderName}") {
-        //                         sh "npm install" // Installation des dépendances npm
-        //                     }
-        //                     echo "Lancement des tests avec Mocha & Chai"
-        //                     dir("${WORKSPACE}/${env.folderName}") {
-        //                         echo "Vérification du répertoire de travail"
-        //                         sh 'pwd' // Imprime le répertoire de travail actuel
-        //                         sh 'ls -la' // Liste tous les fichiers et dossiers dans le répertoire courant
-        //                         sh 'ls -la tests'
-        //                         sh "npm test" // Exécution des tests mocha pour l'API dans le workdir
-        //                     }
-        //                     break
+        stage('Run tests with Mocha & Chai') {
+             steps {
+                script{
+                    switch(metadata.language) {
+                        case 'NodeJS':
+                            echo "Installation des dépendances"
+                            dir("${WORKSPACE}/${env.folderName}") {
+                                sh "npm install" // Installation des dépendances npm
+                            }
+                            echo "Lancement des tests avec Mocha & Chai"
+                            dir("${WORKSPACE}/${env.folderName}") {
+                                echo "Vérification du répertoire de travail"
+                                sh 'pwd' // Imprime le répertoire de travail actuel
+                                sh 'ls -la' // Liste tous les fichiers et dossiers dans le répertoire courant
+                                sh 'ls -la tests'
+                                sh "npm test" // Exécution des tests mocha pour l'API dans le workdir
+                            }
+                            break
                         
-        //                 default:
-        //                     echo "echo Aucune étape de compilation requise ou langage non reconnu"
-        //             }
-        //         }
-        //     }
-        // }
+                        default:
+                            echo "echo Aucune étape de compilation requise ou langage non reconnu"
+                    }
+                }
+            }
+        }
 
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         echo "Analyse SonarQube pour API"
-        //         dir("${WORKSPACE}/${env.folderName}") {
-        //             withCredentials([string(credentialsId: 'SonarQubeApi', variable: 'SONAR_TOKEN')]) {
-        //                 // Afficher la valeur de WORKSPACE
-        //                 echo "WORKSPACE est : ${WORKSPACE}"
+        stage('SonarQube Analysis') {
+            steps {
+                echo "Analyse SonarQube pour API"
+                dir("${WORKSPACE}/${env.folderName}") {
+                    withCredentials([string(credentialsId: 'SonarQubeApi', variable: 'SONAR_TOKEN')]) {
+                        // Afficher la valeur de WORKSPACE
+                        echo "WORKSPACE est : ${WORKSPACE}"
 
-        //                 withSonarQubeEnv('SonarQube') {
-        //                     script {
-        //                         def scannerHome = tool name: 'SonarQubeApi'
-        //                         echo "scannerHome est : ${scannerHome}"
-        //                         // Afficher le chemin d'accès de Sonar
-        //                         echo "PATH+SONAR est : ${scannerHome}/bin"
-        //                         withEnv(["PATH+SONAR=${scannerHome}/bin"]) {
-        //                             sh "sonar-scanner \
-        //                                 -Dsonar.host.url=https://sonarqube.dsp-archiwebo22b-ji-rw-ah.fr/ \
-        //                                 -Dsonar.login=${SONAR_TOKEN}"
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+                        withSonarQubeEnv('SonarQube') {
+                            script {
+                                def scannerHome = tool name: 'SonarQubeApi'
+                                echo "scannerHome est : ${scannerHome}"
+                                // Afficher le chemin d'accès de Sonar
+                                echo "PATH+SONAR est : ${scannerHome}/bin"
+                                withEnv(["PATH+SONAR=${scannerHome}/bin"]) {
+                                    sh "sonar-scanner \
+                                        -Dsonar.host.url=https://sonarqube.dsp-archiwebo22b-ji-rw-ah.fr/ \
+                                        -Dsonar.login=${SONAR_TOKEN}"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         stage('Create Docker Image') {
             steps {
